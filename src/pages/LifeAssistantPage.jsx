@@ -48,7 +48,7 @@ export default function LifeAssistantPage() {
         body: JSON.stringify({ sessionId, content: text, service: activeService.id }),
       });
       const data = await res.json();
-      const reply = data.message ?? data.content ?? data.reply ?? 'I received your message.';
+      const reply = data.assistantMessage?.content ?? 'I received your message.';
       setMessages(prev => [...prev, { role: 'assistant', text: reply, id: Date.now() }]);
     } catch {
       setMessages(prev => [
