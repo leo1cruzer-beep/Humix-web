@@ -40,7 +40,7 @@ export default function LifeAssistantPage() {
     setIsTyping(true);
 
     try {
-      const res = await fetch('https://paint-processed-second-routing.trycloudflare.com/api/chat/message', {
+      const res = await fetch('https://synopsis-isbn-configuring-fields.trycloudflare.com/api/chat/message', {
         method: 'POST',
         mode: 'cors',
         credentials: 'omit',
