@@ -3,6 +3,10 @@
     {
       "source": "/api/proxy/:path*",
       "destination": "https://api.humix.app:8443/:path*"
+    },
+    {
+      "source": "/((?!api).*)",
+      "destination": "/index.html"
     }
   ]
 }
