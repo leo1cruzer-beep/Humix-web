@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
+import AuthModal from './AuthModal';
 
 const NAV_LINKS = [
   { label: 'Explore',   to: '/explore' },
@@ -12,7 +13,12 @@ const NAV_LINKS = [
 
 export default function Navbar() {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [authModal, setAuthModal] = useState({ open: false, tab: 'login' });
   const { pathname } = useLocation();
+
+  const openLogin = () => { setDrawerOpen(false); setAuthModal({ open: true, tab: 'login' }); };
+  const openSignup = () => { setDrawerOpen(false); setAuthModal({ open: true, tab: 'signup' }); };
+  const closeAuth = () => setAuthModal((prev) => ({ ...prev, open: false }));
 
   useEffect(() => {
     document.body.style.overflow = drawerOpen ? 'hidden' : '';
@@ -37,8 +43,8 @@ export default function Navbar() {
           </div>
 
           <div className="nav-right-buttons" style={s.rightButtons}>
-            <button className="btn btn-ghost" style={{ padding: '8px 18px' }}>Log In</button>
-            <button className="btn btn-blue" style={{ padding: '8px 18px' }}>Get Started</button>
+            <button className="btn btn-ghost" style={{ padding: '8px 18px' }} onClick={openLogin}>Log In</button>
+            <button className="btn btn-blue" style={{ padding: '8px 18px' }} onClick={openSignup}>Get Started</button>
           </div>
 
           <button
@@ -92,17 +98,20 @@ export default function Navbar() {
           );
         })}
 
-        <Link to="/login" style={{ ...s.drawerLink, color: '#737373' }}>Log In</Link>
+        <button onClick={openLogin} style={{ ...s.drawerLink, color: '#737373', background: 'none', border: 'none', width: '100%', textAlign: 'left', cursor: 'pointer' }}>Log In</button>
 
         <div style={{ padding: '16px 24px', marginTop: 'auto', borderTop: '1px solid #E8E8E4' }}>
           <button
             className="btn btn-blue"
             style={{ width: '100%', justifyContent: 'center', padding: '13px 16px', fontSize: '15px' }}
+            onClick={openSignup}
           >
             Get Started
           </button>
         </div>
       </div>
+
+      <AuthModal isOpen={authModal.open} onClose={closeAuth} defaultTab={authModal.tab} />
     </>
   );
 }
