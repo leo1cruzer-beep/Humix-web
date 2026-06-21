@@ -42,6 +42,8 @@ export default function LifeAssistantPage() {
     try {
       const res = await fetch('https://paint-processed-second-routing.trycloudflare.com/api/chat/message', {
         method: 'POST',
+        mode: 'cors',
+        credentials: 'omit',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ sessionId, content: text, service: activeService.id }),
       });
