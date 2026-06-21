@@ -4,11 +4,12 @@ import { Menu, X } from 'lucide-react';
 import AuthModal from './AuthModal';
 
 const NAV_LINKS = [
-  { label: 'Explore',   to: '/explore' },
-  { label: 'Services',  to: '/services' },
-  { label: 'Pricing',   to: '/pricing' },
-  { label: 'Community', to: '/community' },
-  { label: 'Career',    to: '/career' },
+  { label: 'Explore',        to: '/explore' },
+  { label: 'Services',       to: '/services' },
+  { label: 'Life Assistant', to: '/life-assistant' },
+  { label: 'Pricing',        to: '/pricing' },
+  { label: 'Community',      to: '/community' },
+  { label: 'Career',         to: '/career' },
 ];
 
 export default function Navbar() {

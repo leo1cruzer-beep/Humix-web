@@ -7,6 +7,7 @@ import ServicesPage from './pages/ServicesPage.jsx';
 import PricingPage from './pages/PricingPage.jsx';
 import CommunityPage from './pages/CommunityPage.jsx';
 import CareerPage from './pages/CareerPage.jsx';
+import LifeAssistantPage from './pages/LifeAssistantPage.jsx';
 import NotFoundPage from './pages/NotFoundPage.jsx';
 
 export default function App() {
@@ -20,8 +21,9 @@ export default function App() {
           <Route path="/services"  element={<ServicesPage />} />
           <Route path="/pricing"   element={<PricingPage />} />
           <Route path="/community" element={<CommunityPage />} />
-          <Route path="/career"    element={<CareerPage />} />
-          <Route path="*"          element={<NotFoundPage />} />
+          <Route path="/career"          element={<CareerPage />} />
+          <Route path="/life-assistant" element={<LifeAssistantPage />} />
+          <Route path="*"               element={<NotFoundPage />} />
         </Routes>
       </div>
       <Footer />
