@@ -40,7 +40,7 @@ export default function LifeAssistantPage() {
     setIsTyping(true);
 
     try {
-      const res = await fetch('https://api.humix.app:8443/api/chat/message', {
+      const res = await fetch('https://paint-processed-second-routing.trycloudflare.com/api/chat/message', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ sessionId, content: text, service: activeService.id }),
