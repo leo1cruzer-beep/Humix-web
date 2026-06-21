@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/proxy/:path*",
-      "destination": "https://api.humix.app:8443/:path*"
+      "destination": "http://13.140.184.192:8443/:path*"
     },
     {
       "source": "/((?!api).*)",
