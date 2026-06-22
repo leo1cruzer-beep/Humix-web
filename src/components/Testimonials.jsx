@@ -71,31 +71,31 @@ export default function Testimonials() {
 }
 
 const s = {
-  section: { padding: '96px 0', background: '#FAFAFA', borderBottom: '1px solid #F4F4F5' },
+  section: { padding: '96px 0', background: 'var(--bg-page)', borderBottom: '1px solid var(--border)' },
   header: { marginBottom: 48 },
   title: {
     fontFamily: "'Inter', sans-serif",
     fontSize: 'clamp(28px, 3.5vw, 40px)', fontWeight: 700,
-    letterSpacing: '-1.2px', lineHeight: 1.1, color: '#0A0A0A', marginBottom: 10,
+    letterSpacing: '-1.2px', lineHeight: 1.1, color: 'var(--text-primary)', marginBottom: 10,
   },
-  sub: { fontSize: 16, color: '#71717A', fontWeight: 400 },
+  sub: { fontSize: 16, color: 'var(--text-secondary)', fontWeight: 400 },
   grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 20 },
   card: {
-    background: '#fff', border: '1px solid #E4E4E7', borderRadius: 14,
+    background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 14,
     padding: '28px 24px',
     boxShadow: '0 2px 12px rgba(0,0,0,0.04)',
     display: 'flex', flexDirection: 'column', gap: 16,
     transition: 'transform 0.22s var(--ease), box-shadow 0.22s var(--ease)',
   },
   stars: { fontSize: 14, color: '#FBBF24', letterSpacing: 2 },
-  quote: { fontSize: 15, color: '#374151', lineHeight: 1.7, fontStyle: 'italic', flex: 1 },
-  author: { display: 'flex', alignItems: 'center', gap: 12, paddingTop: 16, borderTop: '1px solid #F4F4F5', flexWrap: 'wrap' },
+  quote: { fontSize: 15, color: 'var(--text-secondary)', lineHeight: 1.7, fontStyle: 'italic', flex: 1 },
+  author: { display: 'flex', alignItems: 'center', gap: 12, paddingTop: 16, borderTop: '1px solid var(--border)', flexWrap: 'wrap' },
   avatar: {
     width: 40, height: 40, borderRadius: '50%',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
     fontSize: 13, fontWeight: 700, flexShrink: 0,
   },
-  name: { fontSize: 14, fontWeight: 600, color: '#0A0A0A' },
-  meta: { fontSize: 12, color: '#9CA3AF', marginTop: 1 },
+  name: { fontSize: 14, fontWeight: 600, color: 'var(--text-primary)' },
+  meta: { fontSize: 12, color: 'var(--text-muted)', marginTop: 1 },
   serviceTag: { fontSize: 10, fontWeight: 700, padding: '3px 8px', borderRadius: 99, letterSpacing: '0.02em', flexShrink: 0 },
 };

@@ -56,7 +56,7 @@ export default function StatsBar() {
 }
 
 const s = {
-  section: { background: '#fff', padding: '96px 0', borderTop: '1px solid #F4F4F5', borderBottom: '1px solid #F4F4F5' },
+  section: { background: 'var(--bg-card)', padding: '96px 0', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' },
   inner: {
     display: 'grid',
     gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
@@ -66,9 +66,9 @@ const s = {
   num: {
     fontSize: 'clamp(40px, 5.5vw, 64px)',
     fontWeight: 800, letterSpacing: '-2.5px', lineHeight: 1,
-    color: '#0A0A0A', display: 'flex', alignItems: 'baseline', gap: 2,
+    color: 'var(--text-primary)', display: 'flex', alignItems: 'baseline', gap: 2,
     fontFamily: "'Inter', sans-serif",
   },
   suffix: { fontSize: 'clamp(24px, 3vw, 36px)', fontWeight: 800, color: '#2563EB' },
-  label: { fontSize: 14, fontWeight: 400, color: '#71717A', lineHeight: 1.5 },
+  label: { fontSize: 14, fontWeight: 400, color: 'var(--text-secondary)', lineHeight: 1.5 },
 };

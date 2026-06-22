@@ -36,7 +36,7 @@ function ServiceCard({ service, onClick }) {
       onClick={onClick}
       style={{
         ...styles.card,
-        borderBottomColor: hovered ? '#222' : '#E5E7EB',
+        borderBottomColor: hovered ? 'var(--text-primary)' : 'var(--border)',
         boxShadow: hovered ? '0 4px 16px rgba(0,0,0,0.07)' : 'none',
         transform: hovered ? 'translateY(-2px)' : 'translateY(0)',
       }}
@@ -65,7 +65,7 @@ function ServiceCard({ service, onClick }) {
 
 const styles = {
   section: {
-    background: '#fff',
+    background: 'var(--bg-card)',
     padding: '96px 0 112px',
   },
   header: {
@@ -74,7 +74,7 @@ const styles = {
   title: {
     fontSize: 'clamp(32px, 4vw, 48px)',
     fontWeight: 700,
-    color: '#111',
+    color: 'var(--text-primary)',
     letterSpacing: '-1.5px',
     lineHeight: 1.1,
     marginBottom: 16,
@@ -83,7 +83,7 @@ const styles = {
   subtitle: {
     fontSize: 16,
     fontWeight: 400,
-    color: '#6B7280',
+    color: 'var(--text-secondary)',
     lineHeight: 1.6,
     maxWidth: 480,
   },
@@ -91,12 +91,12 @@ const styles = {
     display: 'grid',
     gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
     gap: 0,
-    borderTop: '1px solid #F3F4F6',
+    borderTop: '1px solid var(--border)',
   },
   card: {
-    background: '#fff',
+    background: 'var(--bg-card)',
     border: 'none',
-    borderBottom: '1px solid #E5E7EB',
+    borderBottom: '1px solid var(--border)',
     borderLeft: '1px solid transparent',
     borderRight: '1px solid transparent',
     borderTop: '1px solid transparent',
@@ -110,7 +110,7 @@ const styles = {
     borderRadius: 0,
     borderBottomWidth: 2,
     borderBottomStyle: 'solid',
-    borderBottomColor: '#E5E7EB',
+    borderBottomColor: 'var(--border)',
   },
   cardInner: {
     display: 'flex',
@@ -125,7 +125,7 @@ const styles = {
   cardName: {
     fontSize: 20,
     fontWeight: 700,
-    color: '#111',
+    color: 'var(--text-primary)',
     letterSpacing: '-0.4px',
     lineHeight: 1.2,
     marginBottom: 10,
@@ -134,13 +134,13 @@ const styles = {
   cardDesc: {
     fontSize: 14,
     fontWeight: 400,
-    color: '#6B7280',
+    color: 'var(--text-secondary)',
     lineHeight: 1.6,
     fontFamily: 'Inter, sans-serif',
   },
   arrow: {
     fontSize: 20,
-    color: '#111',
+    color: 'var(--text-primary)',
     flexShrink: 0,
     lineHeight: 1,
     transition: 'opacity 0.2s, transform 0.2s',

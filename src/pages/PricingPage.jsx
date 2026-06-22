@@ -222,7 +222,7 @@ function FaqItem({ faq, open, onToggle }) {
 const s = {
   header: {
     padding: '64px 48px 48px',
-    background: '#F7F7F5',
+    background: 'var(--bg-page)',
   },
   container: {
     maxWidth: '1000px',
@@ -262,15 +262,15 @@ const s = {
     alignItems: 'center',
   },
   card: {
-    background: '#FFFFFF',
+    background: 'var(--bg-card)',
     borderRadius: '16px',
     flex: 1,
     overflow: 'hidden',
   },
   badge: {
     textAlign: 'center',
-    background: '#EEF2FF',
-    color: '#1B4FD8',
+    background: 'var(--accent-light)',
+    color: 'var(--accent)',
     fontSize: '12px',
     fontWeight: 600,
     padding: '6px 0',
@@ -281,7 +281,7 @@ const s = {
     margin: '0 auto',
   },
   faqItem: {
-    borderBottom: '1px solid #E8E8E4',
+    borderBottom: '1px solid var(--border)',
   },
   faqToggle: {
     display: 'flex',

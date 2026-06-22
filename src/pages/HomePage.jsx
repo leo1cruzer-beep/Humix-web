@@ -169,7 +169,7 @@ function SocialProofStrip() {
 
 function HowItWorksSection() {
   return (
-    <section style={{ ...s.section, background: '#F7F7F5' }}>
+    <section style={{ ...s.section, background: 'var(--bg-page)' }}>
       <div className="container" style={s.container}>
         <h2 className="section-heading" style={{ textAlign: 'center', marginBottom: '48px' }}>
           How it works
@@ -206,7 +206,7 @@ const s = {
     paddingBottom: '96px',
     textAlign: 'center',
     overflow: 'hidden',
-    background: '#F7F7F5',
+    background: 'var(--bg-page)',
   },
   dotGrid: {
     position: 'absolute',
@@ -226,13 +226,13 @@ const s = {
     fontWeight: 700,
     fontSize: 'clamp(36px, 5vw, 56px)',
     letterSpacing: '-0.04em',
-    color: '#1A1A1A',
+    color: 'var(--text-primary)',
     lineHeight: 1.1,
     marginBottom: '20px',
   },
   subheadline: {
     fontSize: '18px',
-    color: '#737373',
+    color: 'var(--text-secondary)',
     lineHeight: 1.6,
     maxWidth: '520px',
     margin: '0 auto 32px',
@@ -257,8 +257,8 @@ const s = {
     gap: '16px',
   },
   catCard: {
-    background: '#FFFFFF',
-    border: '1px solid #E8E8E4',
+    background: 'var(--bg-card)',
+    border: '1px solid var(--border)',
     borderRadius: '16px',
     padding: '24px',
     textAlign: 'left',
@@ -270,16 +270,16 @@ const s = {
     width: '48px',
     height: '48px',
     borderRadius: '12px',
-    background: '#F0F0ED',
+    background: 'var(--icon-bg)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     flexShrink: 0,
   },
   stripWrap: {
-    background: '#FFFFFF',
-    borderTop: '1px solid #E8E8E4',
-    borderBottom: '1px solid #E8E8E4',
+    background: 'var(--bg-card)',
+    borderTop: '1px solid var(--border)',
+    borderBottom: '1px solid var(--border)',
     padding: '48px 24px',
     textAlign: 'center',
   },
@@ -304,11 +304,11 @@ const s = {
     fontWeight: 700,
     fontSize: '28px',
     letterSpacing: '-0.03em',
-    color: '#1A1A1A',
+    color: 'var(--text-primary)',
   },
   statLabel: {
     fontSize: '13px',
-    color: '#737373',
+    color: 'var(--text-secondary)',
   },
   stepsRow: {
     display: 'grid',
@@ -329,8 +329,8 @@ const s = {
     width: '40px',
     height: '40px',
     borderRadius: '50%',
-    background: '#EEF2FF',
-    color: '#1B4FD8',
+    background: 'var(--accent-light)',
+    color: 'var(--accent)',
     fontFamily: "'Inter', sans-serif",
     fontWeight: 700,
     fontSize: '16px',

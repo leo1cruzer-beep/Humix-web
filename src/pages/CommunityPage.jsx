@@ -175,7 +175,7 @@ function PostRow({ post, hov, onHover, onLeave }) {
     <div
       style={{
         ...s.postRow,
-        background: hov ? '#F7F7F5' : 'transparent',
+        background: hov ? 'var(--icon-bg)' : 'transparent',
       }}
       onMouseEnter={onHover}
       onMouseLeave={onLeave}
@@ -215,8 +215,8 @@ function PostRow({ post, hov, onHover, onLeave }) {
 
 const s = {
   header: {
-    background: '#F7F7F5',
-    borderBottom: '1px solid #E8E8E4',
+    background: 'var(--bg-page)',
+    borderBottom: '1px solid var(--border)',
     padding: '64px 48px',
   },
   container: {
@@ -230,8 +230,8 @@ const s = {
     gap: '16px',
   },
   catCard: {
-    background: '#FFFFFF',
-    border: '1px solid #E8E8E4',
+    background: 'var(--bg-card)',
+    border: '1px solid var(--border)',
     borderRadius: '16px',
     padding: '24px',
     transition: 'all 0.18s ease',
@@ -240,7 +240,7 @@ const s = {
     width: '48px',
     height: '48px',
     borderRadius: '12px',
-    background: '#F0F0ED',
+    background: 'var(--icon-bg)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -257,7 +257,7 @@ const s = {
     gap: '16px',
     padding: '16px',
     borderRadius: '8px',
-    borderBottom: '1px solid #E8E8E4',
+    borderBottom: '1px solid var(--border)',
     cursor: 'pointer',
     transition: 'background 0.15s ease',
   },
@@ -268,8 +268,8 @@ const s = {
     top: '80px',
   },
   trendingBox: {
-    background: '#FFFFFF',
-    border: '1px solid #E8E8E4',
+    background: 'var(--bg-card)',
+    border: '1px solid var(--border)',
     borderRadius: '16px',
     padding: '24px',
   },

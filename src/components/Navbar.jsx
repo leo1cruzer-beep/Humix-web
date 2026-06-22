@@ -218,11 +218,11 @@ const s = {
     flexShrink: 0,
   },
   hamburger: {
-    display: 'none',
     background: 'none',
     border: 'none',
     cursor: 'pointer',
     padding: '4px',
+    display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
   },

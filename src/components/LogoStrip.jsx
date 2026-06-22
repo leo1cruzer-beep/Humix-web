@@ -38,8 +38,8 @@ export default function LogoStrip() {
 }
 
 const s = {
-  section: { background: '#fff', padding: '64px 0', borderBottom: '1px solid #F4F4F5', overflow: 'hidden' },
-  label: { fontSize: 12, fontWeight: 600, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.1em', textAlign: 'center', marginBottom: 32 },
+  section: { background: 'var(--bg-card)', padding: '64px 0', borderBottom: '1px solid var(--border)', overflow: 'hidden' },
+  label: { fontSize: 12, fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', textAlign: 'center', marginBottom: 32 },
   strip: {
     overflow: 'hidden',
     maskImage: 'linear-gradient(to right, transparent, black 14%, black 86%, transparent)',

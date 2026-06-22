@@ -55,7 +55,7 @@ export default function HowItWorks() {
 const styles = {
   section: {
     padding: '80px 0',
-    background: '#fff',
+    background: 'var(--bg-card)',
   },
   header: {
     textAlign: 'center',
@@ -64,12 +64,12 @@ const styles = {
   title: {
     fontSize: 30,
     fontWeight: 700,
-    color: '#111827',
+    color: 'var(--text-primary)',
     letterSpacing: '-0.5px',
   },
   subtitle: {
     fontSize: 16,
-    color: '#6B7280',
+    color: 'var(--text-secondary)',
     marginTop: 8,
   },
   steps: {
@@ -99,13 +99,13 @@ const styles = {
   stepTitle: {
     fontSize: 18,
     fontWeight: 700,
-    color: '#111827',
+    color: 'var(--text-primary)',
     marginBottom: 10,
     letterSpacing: '-0.2px',
   },
   stepDesc: {
     fontSize: 14,
-    color: '#6B7280',
+    color: 'var(--text-secondary)',
     lineHeight: 1.6,
   },
   cta: {

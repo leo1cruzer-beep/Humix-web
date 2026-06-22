@@ -85,7 +85,7 @@ function ServiceCard({ svc, cardRef, delay, onClick }) {
 /* ── Icons — simple 20×20 line icons ─────────────────────────── */
 const ip = {
   width: 20, height: 20, viewBox: '0 0 20 20', fill: 'none',
-  stroke: '#374151', strokeWidth: '1.5', strokeLinecap: 'round', strokeLinejoin: 'round',
+  stroke: 'var(--text-secondary)', strokeWidth: '1.5', strokeLinecap: 'round', strokeLinejoin: 'round',
 };
 
 function IconBolt()      { return <svg {...ip}><path d="M12 2L4 11h5l-1 7 8-9h-5l1-7z"/></svg>; }
@@ -101,8 +101,8 @@ function IconPen()       { return <svg {...ip}><path d="M14.5 2.5l3 3-10 10H4v-3
 const s = {
   section: {
     padding: '96px 0 88px',
-    background: '#FAFAFA',
-    borderTop: '1px solid #F4F4F5',
+    background: 'var(--bg-page)',
+    borderTop: '1px solid var(--border)',
   },
   header: {
     marginBottom: 48,
@@ -110,7 +110,7 @@ const s = {
   title: {
     fontSize: 'clamp(26px, 3.2vw, 38px)',
     fontWeight: 700,
-    color: '#0A0A0A',
+    color: 'var(--text-primary)',
     letterSpacing: '-1.1px',
     lineHeight: 1.1,
     marginBottom: 10,
@@ -118,7 +118,7 @@ const s = {
   },
   subtitle: {
     fontSize: 16,
-    color: '#71717A',
+    color: 'var(--text-secondary)',
     lineHeight: 1.55,
     maxWidth: 440,
   },
@@ -126,8 +126,8 @@ const s = {
     display: 'block',
     textAlign: 'left',
     width: '100%',
-    background: '#ffffff',
-    border: '1px solid #E4E4E7',
+    background: 'var(--bg-card)',
+    border: '1px solid var(--border)',
     borderRadius: 12,
     padding: '24px',
     cursor: 'pointer',
@@ -139,7 +139,7 @@ const s = {
     width: 44,
     height: 44,
     borderRadius: 10,
-    background: '#F4F4F5',
+    background: 'var(--icon-bg)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -149,13 +149,13 @@ const s = {
   cardTitle: {
     fontSize: 15,
     fontWeight: 700,
-    color: '#0A0A0A',
+    color: 'var(--text-primary)',
     marginBottom: 5,
     letterSpacing: '-0.2px',
   },
   cardSub: {
     fontSize: 13,
-    color: '#71717A',
+    color: 'var(--text-secondary)',
     lineHeight: 1.5,
   },
 };

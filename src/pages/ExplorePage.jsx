@@ -255,11 +255,11 @@ function ToolCard({ tool }) {
 function EmptyState({ onClear }) {
   return (
     <div style={{ textAlign: 'center', padding: '80px 24px' }}>
-      <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: '#F0F0ED', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
-        <Search size={28} color="#A3A3A3" strokeWidth={1.5} />
+      <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'var(--icon-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
+        <Search size={28} color="var(--text-muted)" strokeWidth={1.5} />
       </div>
-      <h3 style={{ fontWeight: 600, fontSize: '18px', color: '#1A1A1A', marginBottom: '8px' }}>Nothing here yet</h3>
-      <p style={{ fontSize: '14px', color: '#737373', marginBottom: '24px' }}>Try adjusting your filters or search query</p>
+      <h3 style={{ fontWeight: 600, fontSize: '18px', color: 'var(--text-primary)', marginBottom: '8px' }}>Nothing here yet</h3>
+      <p style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '24px' }}>Try adjusting your filters or search query</p>
       <button className="btn btn-blue" style={{ padding: '10px 24px' }} onClick={onClear}>Clear Filters</button>
     </div>
   );
@@ -267,8 +267,8 @@ function EmptyState({ onClear }) {
 
 const s = {
   pageHeader: {
-    background: '#FFFFFF',
-    borderBottom: '1px solid #E8E8E4',
+    background: 'var(--bg-card)',
+    borderBottom: '1px solid var(--border)',
     padding: '48px 0 32px',
     marginBottom: '40px',
   },
@@ -286,11 +286,11 @@ const s = {
     height: '48px',
     paddingLeft: '44px',
     paddingRight: '16px',
-    border: '1px solid #E8E8E4',
+    border: '1px solid var(--border)',
     borderRadius: '8px',
     fontSize: '15px',
-    color: '#1A1A1A',
-    background: '#FFFFFF',
+    color: 'var(--text-primary)',
+    background: 'var(--input-bg)',
     outline: 'none',
     transition: 'border-color 0.18s ease',
     fontFamily: "'Inter', sans-serif",
@@ -317,12 +317,12 @@ const s = {
     border: 'none',
     cursor: 'pointer',
     fontSize: '13px',
-    color: '#737373',
+    color: 'var(--text-secondary)',
     fontFamily: "'Inter', sans-serif",
     padding: 0,
   },
   filterSection: {
-    borderTop: '1px solid #E8E8E4',
+    borderTop: '1px solid var(--border)',
     paddingTop: '16px',
     paddingBottom: '16px',
   },
@@ -356,8 +356,8 @@ const s = {
     gap: '16px',
   },
   toolCard: {
-    background: '#FFFFFF',
-    border: '1px solid #E8E8E4',
+    background: 'var(--bg-card)',
+    border: '1px solid var(--border)',
     borderRadius: '16px',
     padding: '24px',
     transition: 'all 0.18s ease',

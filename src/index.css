@@ -458,3 +458,40 @@ ul { list-style: none; }
 }
 .chat-send-btn:hover:not(:disabled) { background: #1540B0; }
 .chat-send-btn:disabled { cursor: not-allowed; }
+
+/* ─── Dark mode overrides (catch inline styles) ─────────────── */
+[data-theme="dark"] section {
+  background-color: var(--bg-page) !important;
+  border-color: var(--border) !important;
+}
+[data-theme="dark"] .card,
+[data-theme="dark"] .pricing-card,
+[data-theme="dark"] .feature-card,
+[data-theme="dark"] .service-card,
+[data-theme="dark"] .community-card,
+[data-theme="dark"] .result-card,
+[data-theme="dark"] .step-card,
+[data-theme="dark"] .testimonial-card,
+[data-theme="dark"] .cat-card,
+[data-theme="dark"] .job-card,
+[data-theme="dark"] .form-card,
+[data-theme="dark"] .social-proof-strip,
+[data-theme="dark"] .services-grid button,
+[data-theme="dark"] .explore-grid > div,
+[data-theme="dark"] .cat-grid > button,
+[data-theme="dark"] .pricing-row > div {
+  background: var(--bg-card) !important;
+  border-color: var(--border) !important;
+}
+[data-theme="dark"] input,
+[data-theme="dark"] textarea,
+[data-theme="dark"] select {
+  background: var(--input-bg) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border) !important;
+}
+[data-theme="dark"] .chat-input-bar {
+  background: var(--bg-card) !important;
+  border-color: var(--border) !important;
+}
+[data-theme="dark"] :focus-visible { outline-color: var(--accent); }
