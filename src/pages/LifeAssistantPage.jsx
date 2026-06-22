@@ -9,45 +9,95 @@ const SERVICES = [
   { id: 'freelancing', label: 'Freelancing', Icon: Briefcase,     desc: 'Find work and grow your income' },
 ];
 
+const LANGUAGES = [
+  { code: 'en', label: 'English',  name: 'english'  },
+  { code: 'ur', label: 'اردو',    name: 'urdu'     },
+  { code: 'pa', label: 'پنجابی',  name: 'punjabi'  },
+];
+
+async function apiPost(path, body) {
+  const res = await fetch(path, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+  return res.json();
+}
+
 export default function LifeAssistantPage() {
-  const [activeService, setActiveService] = useState(null);
-  const [messages, setMessages] = useState([]);
-  const [inputText, setInputText] = useState('');
-  const [isTyping, setIsTyping] = useState(false);
-  const [sessionId] = useState(() => crypto.randomUUID());
+  const [activeService, setActiveService]   = useState(null);
+  const [messages, setMessages]             = useState([]);
+  const [inputText, setInputText]           = useState('');
+  const [isTyping, setIsTyping]             = useState(false);
+  const [isInitializing, setIsInitializing] = useState(false);
+  const [sessionId, setSessionId]           = useState(null);
+  const [selectedLang, setSelectedLang]     = useState('en');
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isTyping]);
 
-  const selectService = (svc) => {
+  const selectService = async (svc) => {
     setActiveService(svc);
     setMessages([]);
     setInputText('');
     setIsTyping(false);
+    setSessionId(null);
+    setSelectedLang('en');
+    setIsInitializing(true);
+
     setTimeout(() => {
       document.getElementById('chat-panel')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 100);
+
+    try {
+      // 1. Create session
+      const sessionData = await apiPost('/api/proxy/api/chat/session', { service: svc.id });
+      const newId = sessionData.sessionId;
+      setSessionId(newId);
+
+      // 2. Set language to English
+      await apiPost('/api/proxy/api/chat/message', { sessionId: newId, content: 'english', language: 'en' });
+
+      // 3. Skip onboarding
+      await apiPost('/api/proxy/api/chat/message', { sessionId: newId, content: 'skip' });
+    } catch {
+      // If init fails, allow user to still try chatting
+    } finally {
+      setIsInitializing(false);
+    }
+  };
+
+  const switchLanguage = async (lang) => {
+    if (!sessionId || isTyping || isInitializing) return;
+    setSelectedLang(lang.code);
+    setIsTyping(true);
+    try {
+      await apiPost('/api/proxy/api/chat/message', {
+        sessionId,
+        content: lang.name,
+        language: lang.code,
+      });
+    } catch { /* silent fail */ } finally {
+      setIsTyping(false);
+    }
   };
 
   const sendMessage = async () => {
     const text = inputText.trim();
-    if (!text || isTyping) return;
+    if (!text || isTyping || isInitializing || !sessionId) return;
 
     setMessages(prev => [...prev, { role: 'user', text, id: Date.now() }]);
     setInputText('');
     setIsTyping(true);
 
     try {
-      const res = await fetch('/api/proxy/api/chat/message', {
-        method: 'POST',
-        mode: 'cors',
-        credentials: 'omit',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sessionId, content: text, service: activeService.id }),
+      const data = await apiPost('/api/proxy/api/chat/message', {
+        sessionId,
+        content: text,
+        service: activeService.id,
       });
-      const data = await res.json();
       const reply = data.assistantMessage?.content ?? 'I received your message.';
       setMessages(prev => [...prev, { role: 'assistant', text: reply, id: Date.now() }]);
     } catch {
@@ -109,11 +159,14 @@ export default function LifeAssistantPage() {
               service={activeService}
               messages={messages}
               isTyping={isTyping}
+              isInitializing={isInitializing}
               inputText={inputText}
               onInput={setInputText}
               onSend={sendMessage}
               onKeyDown={handleKeyDown}
               messagesEndRef={messagesEndRef}
+              selectedLang={selectedLang}
+              onLangChange={switchLanguage}
             />
           </div>
         </section>
@@ -153,8 +206,9 @@ function ServiceCard({ svc, active, onClick }) {
   );
 }
 
-function ChatPanel({ service, messages, isTyping, inputText, onInput, onSend, onKeyDown, messagesEndRef }) {
+function ChatPanel({ service, messages, isTyping, isInitializing, inputText, onInput, onSend, onKeyDown, messagesEndRef, selectedLang, onLangChange }) {
   const { Icon, label } = service;
+  const busy = isTyping || isInitializing;
 
   return (
     <div style={s.chatWrap}>
@@ -166,14 +220,39 @@ function ChatPanel({ service, messages, isTyping, inputText, onInput, onSend, on
           </div>
           <span style={{ fontWeight: 600, fontSize: '16px', color: '#1A1A1A' }}>{label}</span>
         </div>
-        <span className="badge badge-blue" style={{ fontSize: '11px' }}>Powered by Humix AI</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          {/* Language selector */}
+          <div style={s.langBar}>
+            {LANGUAGES.map(lang => (
+              <button
+                key={lang.code}
+                onClick={() => onLangChange(lang)}
+                disabled={busy}
+                style={{
+                  ...s.langBtn,
+                  background: selectedLang === lang.code ? '#1B4FD8' : 'transparent',
+                  color: selectedLang === lang.code ? '#FFFFFF' : '#374151',
+                  fontFamily: "'Inter', sans-serif",
+                }}
+              >
+                {lang.label}
+              </button>
+            ))}
+          </div>
+          <span className="badge badge-blue" style={{ fontSize: '11px' }}>Powered by Humix AI</span>
+        </div>
       </div>
 
       {/* Messages */}
       <div style={s.messagesArea}>
-        {messages.length === 0 && !isTyping && (
+        {messages.length === 0 && !busy && (
           <div style={{ textAlign: 'center', padding: '64px 24px', color: '#A3A3A3', fontSize: '14px' }}>
             Start a conversation about {label.toLowerCase()} guidance.
+          </div>
+        )}
+        {isInitializing && messages.length === 0 && (
+          <div style={{ textAlign: 'center', padding: '64px 24px', color: '#A3A3A3', fontSize: '14px' }}>
+            Connecting…
           </div>
         )}
         {messages.map(msg => (
@@ -190,7 +269,7 @@ function ChatPanel({ service, messages, isTyping, inputText, onInput, onSend, on
             </div>
           </div>
         ))}
-        {isTyping && (
+        {isTyping && !isInitializing && (
           <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: '12px' }}>
             <div style={s.assistantBubble}>
               <TypingIndicator />
@@ -204,17 +283,18 @@ function ChatPanel({ service, messages, isTyping, inputText, onInput, onSend, on
       <div style={s.inputRow}>
         <input
           type="text"
-          placeholder={`Ask about ${label.toLowerCase()}...`}
+          placeholder={isInitializing ? 'Connecting…' : `Ask about ${label.toLowerCase()}...`}
           value={inputText}
           onChange={e => onInput(e.target.value)}
           onKeyDown={onKeyDown}
-          style={s.textInput}
+          disabled={busy}
+          style={{ ...s.textInput, opacity: busy ? 0.6 : 1 }}
         />
         <button
           className="btn btn-blue"
           style={{ padding: '10px 20px', flexShrink: 0 }}
           onClick={onSend}
-          disabled={!inputText.trim() || isTyping}
+          disabled={!inputText.trim() || busy}
         >
           <Send size={15} />
           Send
@@ -291,6 +371,23 @@ const s = {
     justifyContent: 'center',
     flexShrink: 0,
   },
+  langBar: {
+    display: 'flex',
+    gap: '4px',
+    background: '#F0F0ED',
+    borderRadius: '8px',
+    padding: '3px',
+  },
+  langBtn: {
+    border: 'none',
+    borderRadius: '6px',
+    padding: '4px 10px',
+    fontSize: '13px',
+    fontWeight: 500,
+    cursor: 'pointer',
+    transition: 'all 0.15s ease',
+    lineHeight: 1.4,
+  },
   chatWrap: {
     background: '#FFFFFF',
     border: '1px solid #E8E8E4',
@@ -303,6 +400,8 @@ const s = {
     justifyContent: 'space-between',
     padding: '16px 24px',
     borderBottom: '1px solid #E8E8E4',
+    flexWrap: 'wrap',
+    gap: '12px',
   },
   messagesArea: {
     minHeight: '400px',
