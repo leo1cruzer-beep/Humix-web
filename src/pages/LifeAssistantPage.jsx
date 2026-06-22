@@ -54,8 +54,11 @@ export default function LifeAssistantPage() {
       const sessionData = await apiPost('/api/proxy/api/chat/session', { service: svc.id });
       const newId = sessionData.sessionId;
       setSessionId(newId);
-      await apiPost('/api/proxy/api/chat/message', { sessionId: newId, content: 'English' });
-      await apiPost('/api/proxy/api/chat/message', { sessionId: newId, content: 'skip' });
+      // Complete all 4 onboarding steps so real AI kicks in immediately
+      await apiPost('/api/proxy/api/chat/message', { sessionId: newId, content: 'English' }); // step 0 → set language
+      await apiPost('/api/proxy/api/chat/message', { sessionId: newId, content: 'no' });       // step 1 → farmer
+      await apiPost('/api/proxy/api/chat/message', { sessionId: newId, content: 'no' });       // step 2 → children
+      await apiPost('/api/proxy/api/chat/message', { sessionId: newId, content: 'male' });     // step 3 → gender → complete
     } catch { /* allow user to still try chatting */ } finally {
       setIsInitializing(false);
       setTimeout(() => inputRef.current?.focus(), 100);
@@ -75,8 +78,10 @@ export default function LifeAssistantPage() {
       const sessionData = await apiPost('/api/proxy/api/chat/session', { service: activeService.id });
       const newId = sessionData.sessionId;
       setSessionId(newId);
-      await apiPost('/api/proxy/api/chat/message', { sessionId: newId, content: lang.content });
-      await apiPost('/api/proxy/api/chat/message', { sessionId: newId, content: 'skip' });
+      await apiPost('/api/proxy/api/chat/message', { sessionId: newId, content: lang.content }); // step 0 → language
+      await apiPost('/api/proxy/api/chat/message', { sessionId: newId, content: 'no' });          // step 1
+      await apiPost('/api/proxy/api/chat/message', { sessionId: newId, content: 'no' });          // step 2
+      await apiPost('/api/proxy/api/chat/message', { sessionId: newId, content: 'male' });        // step 3 → complete
     } catch { /* silent fail */ } finally {
       setIsInitializing(false);
     }
