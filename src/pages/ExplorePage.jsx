@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import {
   Search, ChevronDown, ChevronUp, SlidersHorizontal,
   Zap, TrendingUp, MessageCircle, Heart, Users, Briefcase, Gem, Pencil,
@@ -176,7 +176,7 @@ export default function ExplorePage() {
               <EmptyState onClear={clearAll} />
             ) : (
               <>
-                <p style={{ fontSize: '14px', color: '#737373', marginBottom: '20px' }}>
+                <p style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '20px' }}>
                   Showing {visible.length} of {filtered.length} results
                 </p>
                 <div className="explore-grid" style={s.resultsGrid}>
@@ -208,8 +208,8 @@ function FilterSection({ label, open, onToggle, children }) {
   return (
     <div style={s.filterSection}>
       <button style={s.filterToggle} onClick={onToggle}>
-        <span style={{ fontWeight: 600, fontSize: '13px', color: '#1A1A1A', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{label}</span>
-        {open ? <ChevronUp size={16} color="#737373" strokeWidth={1.5} /> : <ChevronDown size={16} color="#737373" strokeWidth={1.5} />}
+        <span style={{ fontWeight: 600, fontSize: '13px', color: 'var(--text-primary)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{label}</span>
+        {open ? <ChevronUp size={16} color="var(--text-secondary)" strokeWidth={1.5} /> : <ChevronDown size={16} color="var(--text-secondary)" strokeWidth={1.5} />}
       </button>
       {open && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '12px' }}>
@@ -222,12 +222,22 @@ function FilterSection({ label, open, onToggle, children }) {
 
 function ToolCard({ tool }) {
   const [hov, setHov] = useState(false);
+  const navigate = useNavigate();
+
+  const handleTryFree = () => {
+    if (tool.category === 'Life Assistant') {
+      navigate('/life-assistant');
+    } else {
+      navigate(`/explore?category=${encodeURIComponent(tool.category)}`);
+    }
+  };
+
   return (
     <div
       style={{
         ...s.toolCard,
-        borderColor: hov ? '#1B4FD8' : '#E8E8E4',
-        boxShadow: hov ? '0 4px 16px rgba(27,79,216,0.10)' : 'none',
+        borderColor: hov ? 'var(--accent)' : 'var(--border)',
+        boxShadow: hov ? 'var(--shadow-hover)' : 'none',
         transform: hov ? 'translateY(-2px)' : 'translateY(0)',
       }}
       onMouseEnter={() => setHov(true)}
@@ -237,11 +247,12 @@ function ToolCard({ tool }) {
         <span className="badge badge-blue" style={{ fontSize: '11px' }}>{tool.category}</span>
       </div>
       <h3 className="card-title" style={{ marginBottom: '8px' }}>{tool.title}</h3>
-      <p style={{ fontSize: '14px', color: '#737373', lineHeight: 1.55, marginBottom: '16px', flex: 1 }}>{tool.desc}</p>
+      <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: 1.55, marginBottom: '16px', flex: 1 }}>{tool.desc}</p>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto' }}>
-        <span style={{ fontSize: '12px', color: '#A3A3A3' }}>By Humix AI</span>
+        <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>By Humix AI</span>
         <button
-          style={{ fontSize: '13px', fontWeight: 600, color: '#1B4FD8', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+          onClick={handleTryFree}
+          style={{ fontSize: '13px', fontWeight: 600, color: 'var(--accent)', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
           onMouseEnter={e => { e.currentTarget.style.textDecoration = 'underline'; }}
           onMouseLeave={e => { e.currentTarget.style.textDecoration = 'none'; }}
         >

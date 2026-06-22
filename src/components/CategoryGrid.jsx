@@ -19,7 +19,11 @@ export default function CategoryGrid() {
             <ServiceCard
               key={service.id}
               service={service}
-              onClick={() => navigate(`/service/${service.slug}`)}
+              onClick={() =>
+                service.slug === 'life-assistant'
+                  ? navigate('/life-assistant')
+                  : navigate(`/service/${service.slug}`)
+              }
             />
           ))}
         </div>

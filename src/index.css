@@ -128,7 +128,7 @@ ul { list-style: none; }
   font-weight: 700;
   font-size: 40px;
   letter-spacing: -0.04em;
-  color: #1A1A1A;
+  color: var(--text-primary);
   line-height: 1.1;
 }
 .section-heading {
@@ -136,26 +136,26 @@ ul { list-style: none; }
   font-weight: 600;
   font-size: 24px;
   letter-spacing: -0.02em;
-  color: #1A1A1A;
+  color: var(--text-primary);
 }
 .card-title {
   font-family: 'Inter', sans-serif;
   font-weight: 600;
   font-size: 17px;
-  color: #1A1A1A;
+  color: var(--text-primary);
 }
 .body-text {
   font-family: 'Inter', sans-serif;
   font-weight: 400;
   font-size: 15px;
   line-height: 1.6;
-  color: #1A1A1A;
+  color: var(--text-primary);
 }
 .meta-text {
   font-family: 'Inter', sans-serif;
   font-weight: 400;
   font-size: 13px;
-  color: #737373;
+  color: var(--text-secondary);
 }
 .label-tag {
   font-family: 'Inter', sans-serif;
@@ -495,3 +495,29 @@ ul { list-style: none; }
   border-color: var(--border) !important;
 }
 [data-theme="dark"] :focus-visible { outline-color: var(--accent); }
+
+/* ─── Dark mode text color overrides ────────────────────────── */
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6 {
+  color: var(--text-primary) !important;
+}
+[data-theme="dark"] .page-title,
+[data-theme="dark"] .section-heading,
+[data-theme="dark"] .card-title {
+  color: var(--text-primary) !important;
+}
+[data-theme="dark"] .meta-text,
+[data-theme="dark"] .body-text {
+  color: var(--text-secondary) !important;
+}
+[data-theme="dark"] .btn-ghost-dark {
+  color: var(--text-primary) !important;
+  border-color: var(--border) !important;
+}
+[data-theme="dark"] .btn-ghost-dark:hover {
+  border-color: var(--text-primary) !important;
+}
