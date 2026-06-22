@@ -2,7 +2,7 @@
 
 /* ─── Reset ─────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { font-size: 16px; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; overflow-x: hidden; }
+html { font-size: 16px; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; overflow-x: hidden; max-width: 100%; }
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   color: #1A1A1A;
@@ -11,6 +11,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  max-width: 100%;
 }
 a { text-decoration: none; color: inherit; }
 button { font-family: inherit; cursor: pointer; border: none; outline: none; background: none; }
@@ -47,7 +48,7 @@ ul { list-style: none; }
   padding: 0 48px;
 }
 @media (max-width: 768px) {
-  .container { padding: 0 24px; }
+  .container { padding: 0 16px !important; }
 }
 
 /* ─── Buttons ───────────────────────────────────────────────── */
@@ -262,10 +263,10 @@ ul { list-style: none; }
 
 /* ─── Services page responsive ──────────────────────────────── */
 @media (max-width: 1024px) {
-  .service-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .service-grid, .services-grid { grid-template-columns: repeat(2, 1fr) !important; }
 }
 @media (max-width: 600px) {
-  .service-grid { grid-template-columns: 1fr !important; }
+  .service-grid, .services-grid { grid-template-columns: 1fr !important; }
 }
 
 /* ─── Explore page ──────────────────────────────────────────── */
@@ -336,4 +337,33 @@ ul { list-style: none; }
 .accordion-content.open {
   max-height: 400px;
   opacity: 1;
+}
+
+/* ─── Life Assistant chat — mobile keyboard fix ─────────────── */
+@media (max-width: 768px) {
+  .life-chat-section {
+    padding: 0 !important;
+  }
+  .life-chat-wrap {
+    border-radius: 0 !important;
+    border-left: none !important;
+    border-right: none !important;
+    display: flex;
+    flex-direction: column;
+    height: 100dvh;
+    overflow: hidden;
+    position: fixed;
+    inset: 0;
+    top: 64px;
+    z-index: 40;
+  }
+  .life-chat-messages {
+    flex: 1;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow-y: auto;
+  }
+  .life-chat-input {
+    flex-shrink: 0;
+  }
 }

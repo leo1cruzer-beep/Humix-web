@@ -31,7 +31,7 @@ export default function Navbar() {
   return (
     <>
       <nav style={s.nav}>
-        <div style={s.inner}>
+        <div className="nav-inner" style={s.inner}>
           <Link to="/" style={s.logo}>Humix</Link>
 
           <div className="nav-center-links" style={s.centerLinks}>

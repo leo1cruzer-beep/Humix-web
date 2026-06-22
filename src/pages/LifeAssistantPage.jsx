@@ -143,7 +143,7 @@ export default function LifeAssistantPage() {
 
       {/* Service Cards */}
       <section style={s.section}>
-        <div style={s.container}>
+        <div className="container" style={s.container}>
           <div className="life-svc-grid" style={s.grid}>
             {SERVICES.map(svc => (
               <ServiceCard
@@ -159,8 +159,8 @@ export default function LifeAssistantPage() {
 
       {/* Chat Panel */}
       {activeService && (
-        <section id="chat-panel" style={s.section}>
-          <div style={s.container}>
+        <section id="chat-panel" className="life-chat-section" style={s.section}>
+          <div className="container" style={s.container}>
             <ChatPanel
               service={activeService}
               messages={messages}
@@ -217,7 +217,7 @@ function ChatPanel({ service, messages, isTyping, isInitializing, inputText, onI
   const busy = isTyping || isInitializing;
 
   return (
-    <div style={s.chatWrap}>
+    <div className="life-chat-wrap" style={s.chatWrap}>
       {/* Header */}
       <div style={s.chatHeader}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -250,7 +250,7 @@ function ChatPanel({ service, messages, isTyping, isInitializing, inputText, onI
       </div>
 
       {/* Messages */}
-      <div style={s.messagesArea}>
+      <div className="life-chat-messages" style={s.messagesArea}>
         {messages.length === 0 && !busy && (
           <div style={{ textAlign: 'center', padding: '64px 24px', color: '#A3A3A3', fontSize: '14px' }}>
             Start a conversation about {label.toLowerCase()} guidance.
@@ -286,7 +286,7 @@ function ChatPanel({ service, messages, isTyping, isInitializing, inputText, onI
       </div>
 
       {/* Input */}
-      <div style={s.inputRow}>
+      <div className="life-chat-input" style={s.inputRow}>
         <input
           type="text"
           placeholder={isInitializing ? 'Connecting…' : `Ask about ${label.toLowerCase()}...`}

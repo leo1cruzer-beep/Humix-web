@@ -102,11 +102,11 @@ function HeroSection({ navigate }) {
 function CategoriesSection({ navigate }) {
   return (
     <section style={s.section}>
-      <div style={s.container}>
+      <div className="container" style={s.container}>
         <h2 className="section-heading" style={{ marginBottom: '32px', textAlign: 'center' }}>
           What do you need today?
         </h2>
-        <div style={s.catGrid}>
+        <div className="cat-grid" style={s.catGrid}>
           {CATEGORIES.map(({ id, label, desc, Icon }) => (
             <CategoryCard
               key={id}
@@ -170,11 +170,11 @@ function SocialProofStrip() {
 function HowItWorksSection() {
   return (
     <section style={{ ...s.section, background: '#F7F7F5' }}>
-      <div style={s.container}>
+      <div className="container" style={s.container}>
         <h2 className="section-heading" style={{ textAlign: 'center', marginBottom: '48px' }}>
           How it works
         </h2>
-        <div style={s.stepsRow}>
+        <div className="steps-row" style={s.stepsRow}>
           {STEPS.map((step, i) => (
             <StepItem key={step.n} step={step} isLast={i === STEPS.length - 1} />
           ))}
