@@ -10,9 +10,9 @@ const SERVICES = [
 ];
 
 const LANGUAGES = [
-  { code: 'en', label: 'English',  name: 'english'  },
-  { code: 'ur', label: 'اردو',    name: 'urdu'     },
-  { code: 'pa', label: 'پنجابی',  name: 'punjabi'  },
+  { code: 'en', label: 'English', content: 'English' },
+  { code: 'ur', label: 'اردو',   content: 'اردو'   },
+  { code: 'pa', label: 'پنجابی', content: 'پنجابی' },
 ];
 
 async function apiPost(path, body) {
@@ -58,7 +58,7 @@ export default function LifeAssistantPage() {
       setSessionId(newId);
 
       // 2. Set language to English
-      await apiPost('/api/proxy/api/chat/message', { sessionId: newId, content: 'english', language: 'en' });
+      await apiPost('/api/proxy/api/chat/message', { sessionId: newId, content: 'English' });
 
       // 3. Skip onboarding
       await apiPost('/api/proxy/api/chat/message', { sessionId: newId, content: 'skip' });
@@ -70,17 +70,23 @@ export default function LifeAssistantPage() {
   };
 
   const switchLanguage = async (lang) => {
-    if (!sessionId || isTyping || isInitializing) return;
+    if (isInitializing || selectedLang === lang.code) return;
     setSelectedLang(lang.code);
-    setIsTyping(true);
+    setMessages([]);
+    setInputText('');
+    setIsTyping(false);
+    setSessionId(null);
+    setIsInitializing(true);
+
     try {
-      await apiPost('/api/proxy/api/chat/message', {
-        sessionId,
-        content: lang.name,
-        language: lang.code,
-      });
+      const sessionData = await apiPost('/api/proxy/api/chat/session', { service: activeService.id });
+      const newId = sessionData.sessionId;
+      setSessionId(newId);
+
+      await apiPost('/api/proxy/api/chat/message', { sessionId: newId, content: lang.content });
+      await apiPost('/api/proxy/api/chat/message', { sessionId: newId, content: 'skip' });
     } catch { /* silent fail */ } finally {
-      setIsTyping(false);
+      setIsInitializing(false);
     }
   };
 
