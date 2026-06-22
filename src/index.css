@@ -339,31 +339,90 @@ ul { list-style: none; }
   opacity: 1;
 }
 
-/* ─── Life Assistant chat — mobile keyboard fix ─────────────── */
-@media (max-width: 768px) {
-  .life-chat-section {
-    padding: 0 !important;
-  }
-  .life-chat-wrap {
-    border-radius: 0 !important;
-    border-left: none !important;
-    border-right: none !important;
-    display: flex;
-    flex-direction: column;
-    height: 100dvh;
-    overflow: hidden;
-    position: fixed;
-    inset: 0;
-    top: 64px;
-    z-index: 40;
-  }
-  .life-chat-messages {
-    flex: 1;
-    min-height: 0 !important;
-    max-height: none !important;
-    overflow-y: auto;
-  }
-  .life-chat-input {
-    flex-shrink: 0;
-  }
+/* ─── Life Assistant page layout ────────────────────────────── */
+.life-assistant-page {
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #F7F7F5;
 }
+
+.service-cards-section {
+  flex-shrink: 0;
+  overflow-y: auto;
+  max-height: 40dvh;
+  background: #FFFFFF;
+  border-bottom: 1px solid #E8E8E4;
+}
+
+/* hide scrollbar on service pill row */
+.service-cards-section ::-webkit-scrollbar { display: none; }
+
+.chat-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
+  background: #FFFFFF;
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  padding-bottom: 80px;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-input-bar {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: white;
+  border-top: 1px solid #E8E8E4;
+  min-height: 60px;
+}
+
+.chat-input-field {
+  flex: 1;
+  border: 1px solid #E8E8E4;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 15px;
+  font-family: 'Inter', sans-serif;
+  outline: none;
+  min-width: 0;
+  color: #1A1A1A;
+  background: #FFFFFF;
+  transition: border-color 0.18s ease;
+}
+.chat-input-field:focus { border-color: #1B4FD8; }
+.chat-input-field:disabled { opacity: 0.6; }
+
+.chat-send-btn {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  background: #1B4FD8;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease;
+}
+.chat-send-btn:hover:not(:disabled) { background: #1540B0; }
+.chat-send-btn:disabled { cursor: not-allowed; }
