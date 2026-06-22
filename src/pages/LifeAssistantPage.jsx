@@ -152,7 +152,7 @@ export default function LifeAssistantPage() {
       <div className="chat-section">
         {!activeService ? (
           <div style={s.emptyState}>
-            <p style={{ color: '#A3A3A3', fontSize: '15px', textAlign: 'center', padding: '0 24px' }}>
+            <p style={{ color: 'var(--text-muted)', fontSize: '15px', textAlign: 'center', padding: '0 24px' }}>
               Select a service above to start chatting
             </p>
           </div>
@@ -162,13 +162,13 @@ export default function LifeAssistantPage() {
             <div style={s.chatHeader}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <div style={s.iconBox}>
-                  <activeService.Icon size={16} color="#1B4FD8" strokeWidth={1.5} />
+                  <activeService.Icon size={16} color="var(--accent)" strokeWidth={1.5} />
                 </div>
-                <span style={{ fontWeight: 600, fontSize: '15px', color: '#1A1A1A' }}>
+                <span style={{ fontWeight: 600, fontSize: '15px', color: 'var(--text-primary)' }}>
                   {activeService.label}
                 </span>
                 {isInitializing && (
-                  <span style={{ fontSize: '12px', color: '#A3A3A3' }}>Connecting…</span>
+                  <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Connecting…</span>
                 )}
               </div>
               <div style={s.langBar}>
@@ -179,8 +179,8 @@ export default function LifeAssistantPage() {
                     disabled={busy}
                     style={{
                       ...s.langBtn,
-                      background: selectedLang === lang.code ? '#1B4FD8' : 'transparent',
-                      color: selectedLang === lang.code ? '#FFFFFF' : '#374151',
+                      background: selectedLang === lang.code ? 'var(--accent)' : 'transparent',
+                      color: selectedLang === lang.code ? '#FFFFFF' : 'var(--text-secondary)',
                     }}
                   >
                     {lang.label}
@@ -192,7 +192,7 @@ export default function LifeAssistantPage() {
             {/* Messages */}
             <div className="chat-messages">
               {messages.length === 0 && !busy && (
-                <div style={{ textAlign: 'center', padding: '48px 24px', color: '#A3A3A3', fontSize: '14px' }}>
+                <div style={{ textAlign: 'center', padding: '48px 24px', color: 'var(--text-muted)', fontSize: '14px' }}>
                   Ask anything about {activeService.label.toLowerCase()} guidance.
                 </div>
               )}
@@ -260,9 +260,9 @@ function ServicePill({ svc, active, onClick }) {
         gap: '8px',
         padding: '8px 14px',
         borderRadius: '99px',
-        border: `1.5px solid ${active ? '#1B4FD8' : '#E8E8E4'}`,
-        background: active ? '#EEF2FF' : '#FFFFFF',
-        color: active ? '#1B4FD8' : '#374151',
+        border: `1.5px solid ${active ? 'var(--accent)' : 'var(--border)'}`,
+        background: active ? 'var(--accent-light)' : 'var(--bg-card)',
+        color: active ? 'var(--accent)' : 'var(--text-secondary)',
         fontSize: '14px',
         fontWeight: active ? 600 : 500,
         fontFamily: "'Inter', sans-serif",
@@ -294,8 +294,8 @@ const s = {
     alignItems: 'center',
     gap: '12px',
     padding: '12px 16px',
-    borderBottom: '1px solid #E8E8E4',
-    background: '#FFFFFF',
+    borderBottom: '1px solid var(--border)',
+    background: 'var(--bg-card)',
     flexShrink: 0,
   },
   backBtn: {
@@ -304,7 +304,7 @@ const s = {
     cursor: 'pointer',
     display: 'flex',
     alignItems: 'center',
-    color: '#374151',
+    color: 'var(--text-secondary)',
     padding: '4px',
     borderRadius: '6px',
   },
@@ -312,7 +312,7 @@ const s = {
     fontFamily: "'Inter', sans-serif",
     fontWeight: 700,
     fontSize: '16px',
-    color: '#1A1A1A',
+    color: 'var(--text-primary)',
     flex: 1,
   },
   cardsWrap: {
@@ -334,8 +334,8 @@ const s = {
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: '10px 16px',
-    borderBottom: '1px solid #E8E8E4',
-    background: '#FFFFFF',
+    borderBottom: '1px solid var(--border)',
+    background: 'var(--bg-card)',
     flexShrink: 0,
     flexWrap: 'wrap',
     gap: '8px',
@@ -344,7 +344,7 @@ const s = {
     width: '32px',
     height: '32px',
     borderRadius: '8px',
-    background: '#EEF2FF',
+    background: 'var(--accent-light)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -353,7 +353,7 @@ const s = {
   langBar: {
     display: 'flex',
     gap: '3px',
-    background: '#F0F0ED',
+    background: 'var(--icon-bg)',
     borderRadius: '8px',
     padding: '3px',
   },
@@ -369,7 +369,7 @@ const s = {
     fontFamily: "'Inter', sans-serif",
   },
   userBubble: {
-    background: '#1B4FD8',
+    background: 'var(--accent)',
     color: '#FFFFFF',
     padding: '10px 14px',
     borderRadius: '16px',
@@ -380,9 +380,9 @@ const s = {
     wordBreak: 'break-word',
   },
   assistantBubble: {
-    background: '#F7F7F5',
-    border: '1px solid #E8E8E4',
-    color: '#1A1A1A',
+    background: 'var(--bg-card)',
+    border: '1px solid var(--border)',
+    color: 'var(--text-primary)',
     padding: '10px 14px',
     borderRadius: '16px',
     borderBottomLeftRadius: '4px',

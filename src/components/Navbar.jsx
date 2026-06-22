@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Moon, Sun } from 'lucide-react';
 import AuthModal from './AuthModal';
+import { useTheme } from '../hooks/useTheme.jsx';
 
 const NAV_LINKS = [
   { label: 'Explore',        to: '/explore' },
@@ -16,6 +17,7 @@ export default function Navbar() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [authModal, setAuthModal] = useState({ open: false, tab: 'login' });
   const { pathname } = useLocation();
+  const { theme, toggle } = useTheme();
 
   const openLogin = () => { setDrawerOpen(false); setAuthModal({ open: true, tab: 'login' }); };
   const openSignup = () => { setDrawerOpen(false); setAuthModal({ open: true, tab: 'signup' }); };
@@ -44,18 +46,22 @@ export default function Navbar() {
           </div>
 
           <div className="nav-right-buttons" style={s.rightButtons}>
+            <ThemeToggle theme={theme} onToggle={toggle} />
             <button className="btn btn-ghost" style={{ padding: '8px 18px' }} onClick={openLogin}>Log In</button>
             <button className="btn btn-blue" style={{ padding: '8px 18px' }} onClick={openSignup}>Get Started</button>
           </div>
 
-          <button
-            className="nav-hamburger"
-            style={s.hamburger}
-            onClick={() => setDrawerOpen(true)}
-            aria-label="Open menu"
-          >
-            <Menu size={24} color="#1A1A1A" strokeWidth={1.5} />
-          </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginLeft: 'auto' }} className="nav-hamburger-group">
+            <ThemeToggle theme={theme} onToggle={toggle} />
+            <button
+              className="nav-hamburger"
+              style={s.hamburger}
+              onClick={() => setDrawerOpen(true)}
+              aria-label="Open menu"
+            >
+              <Menu size={24} color="var(--text-primary)" strokeWidth={1.5} />
+            </button>
+          </div>
         </div>
       </nav>
 
@@ -78,7 +84,7 @@ export default function Navbar() {
         <div style={s.drawerHeader}>
           <span style={s.logo}>Humix</span>
           <button onClick={() => setDrawerOpen(false)} style={s.closeBtn} aria-label="Close menu">
-            <X size={22} color="#1A1A1A" strokeWidth={1.5} />
+            <X size={22} color="var(--text-primary)" strokeWidth={1.5} />
           </button>
         </div>
 
@@ -90,7 +96,7 @@ export default function Navbar() {
               to={to}
               style={{
                 ...s.drawerLink,
-                color: active ? '#1B4FD8' : '#1A1A1A',
+                color: active ? 'var(--accent)' : 'var(--text-primary)',
                 fontWeight: active ? 600 : 400,
               }}
             >
@@ -99,9 +105,9 @@ export default function Navbar() {
           );
         })}
 
-        <button onClick={openLogin} style={{ ...s.drawerLink, color: '#737373', background: 'none', border: 'none', width: '100%', textAlign: 'left', cursor: 'pointer' }}>Log In</button>
+        <button onClick={openLogin} style={{ ...s.drawerLink, color: 'var(--text-secondary)', background: 'none', border: 'none', width: '100%', textAlign: 'left', cursor: 'pointer' }}>Log In</button>
 
-        <div style={{ padding: '16px 24px', marginTop: 'auto', borderTop: '1px solid #E8E8E4' }}>
+        <div style={{ padding: '16px 24px', marginTop: 'auto', borderTop: '1px solid var(--border)' }}>
           <button
             className="btn btn-blue"
             style={{ width: '100%', justifyContent: 'center', padding: '13px 16px', fontSize: '15px' }}
@@ -117,6 +123,34 @@ export default function Navbar() {
   );
 }
 
+function ThemeToggle({ theme, onToggle }) {
+  return (
+    <button
+      onClick={onToggle}
+      aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '36px',
+        height: '36px',
+        borderRadius: '8px',
+        border: '1.5px solid var(--border)',
+        background: 'transparent',
+        cursor: 'pointer',
+        color: 'var(--text-secondary)',
+        transition: 'border-color 0.18s ease, color 0.18s ease',
+        flexShrink: 0,
+      }}
+    >
+      {theme === 'dark'
+        ? <Sun size={16} strokeWidth={1.8} />
+        : <Moon size={16} strokeWidth={1.8} />
+      }
+    </button>
+  );
+}
+
 function NavLink({ to, label, active }) {
   const [hov, setHov] = useState(false);
   return (
@@ -127,8 +161,8 @@ function NavLink({ to, label, active }) {
         fontWeight: 500,
         fontSize: '15px',
         textDecoration: 'none',
-        color: active ? '#1B4FD8' : (hov ? '#1A1A1A' : '#737373'),
-        borderBottom: active ? '2px solid #1B4FD8' : '2px solid transparent',
+        color: active ? 'var(--accent)' : (hov ? 'var(--text-primary)' : 'var(--text-secondary)'),
+        borderBottom: active ? '2px solid var(--accent)' : '2px solid transparent',
         paddingBottom: '2px',
         transition: 'all 0.18s ease',
         display: 'inline-block',
@@ -146,8 +180,8 @@ const s = {
     position: 'sticky',
     top: 0,
     zIndex: 100,
-    background: '#F7F7F5',
-    borderBottom: '1px solid #E8E8E4',
+    background: 'var(--nav-bg)',
+    borderBottom: '1px solid var(--nav-border)',
     height: '64px',
     display: 'flex',
     alignItems: 'center',
@@ -166,7 +200,7 @@ const s = {
     fontWeight: 700,
     fontSize: '20px',
     letterSpacing: '-0.03em',
-    color: '#1A1A1A',
+    color: 'var(--text-primary)',
     textDecoration: 'none',
     flexShrink: 0,
   },
@@ -191,12 +225,11 @@ const s = {
     padding: '4px',
     alignItems: 'center',
     justifyContent: 'center',
-    marginLeft: 'auto',
   },
   overlay: {
     position: 'fixed',
     inset: 0,
-    background: 'rgba(0,0,0,0.3)',
+    background: 'rgba(0,0,0,0.4)',
     zIndex: 200,
   },
   drawer: {
@@ -205,8 +238,8 @@ const s = {
     right: 0,
     height: '100%',
     width: '280px',
-    background: '#FFFFFF',
-    boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
+    background: 'var(--bg-card)',
+    boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
     zIndex: 201,
     display: 'flex',
     flexDirection: 'column',
@@ -219,7 +252,7 @@ const s = {
     justifyContent: 'space-between',
     padding: '0 24px',
     height: '64px',
-    borderBottom: '1px solid #E8E8E4',
+    borderBottom: '1px solid var(--border)',
     flexShrink: 0,
   },
   closeBtn: {
@@ -236,7 +269,7 @@ const s = {
     alignItems: 'center',
     height: '48px',
     padding: '0 24px',
-    borderBottom: '1px solid #E8E8E4',
+    borderBottom: '1px solid var(--border)',
     fontFamily: "'Inter', sans-serif",
     fontSize: '15px',
     textDecoration: 'none',

@@ -23,7 +23,7 @@ export default function App() {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', background: '#F7F7F5' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', background: 'var(--bg-page)' }}>
       <Navbar />
       <div style={{ flex: 1 }}>
         <Routes>
