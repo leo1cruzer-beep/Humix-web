@@ -53,7 +53,7 @@ export default function CommunityPage() {
       <section style={s.header}>
         <div style={s.container}>
           <h1 className="page-title" style={{ marginBottom: '8px' }}>Connect with people like you</h1>
-          <p style={{ fontSize: '17px', color: '#737373', marginBottom: '28px' }}>
+          <p style={{ fontSize: '17px', color: 'var(--text-secondary)', marginBottom: '28px' }}>
             Forums, groups, and live discussions across every interest
           </p>
           <button className="btn btn-blue" style={{ padding: '12px 28px', fontSize: '15px' }}>
@@ -101,7 +101,7 @@ export default function CommunityPage() {
             {/* Trending sidebar */}
             <aside className="trending-sidebar" style={s.sidebar}>
               <div style={s.trendingBox}>
-                <h3 style={{ fontWeight: 600, fontSize: '15px', color: '#1A1A1A', marginBottom: '16px' }}>
+                <h3 style={{ fontWeight: 600, fontSize: '15px', color: 'var(--text-primary)', marginBottom: '16px' }}>
                   Trending Topics
                 </h3>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -116,8 +116,8 @@ export default function CommunityPage() {
                   ))}
                 </div>
 
-                <div style={{ marginTop: '24px', paddingTop: '24px', borderTop: '1px solid #E8E8E4' }}>
-                  <h3 style={{ fontWeight: 600, fontSize: '15px', color: '#1A1A1A', marginBottom: '12px' }}>
+                <div style={{ marginTop: '24px', paddingTop: '24px', borderTop: '1px solid var(--border)' }}>
+                  <h3 style={{ fontWeight: 600, fontSize: '15px', color: 'var(--text-primary)', marginBottom: '12px' }}>
                     Quick stats
                   </h3>
                   {[
@@ -126,8 +126,8 @@ export default function CommunityPage() {
                     { label: 'Communities', value: '8' },
                   ].map(({ label, value }) => (
                     <div key={label} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-                      <span style={{ fontSize: '13px', color: '#737373' }}>{label}</span>
-                      <span style={{ fontSize: '13px', fontWeight: 600, color: '#1A1A1A' }}>{value}</span>
+                      <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>{label}</span>
+                      <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)' }}>{value}</span>
                     </div>
                   ))}
                 </div>
@@ -146,7 +146,7 @@ function CatCard({ id, label, Icon, members, joined, onJoin }) {
     <div
       style={{
         ...s.catCard,
-        borderColor: hov ? '#1B4FD8' : '#E8E8E4',
+        borderColor: hov ? 'var(--accent)' : 'var(--border)',
         boxShadow: hov ? '0 4px 16px rgba(27,79,216,0.10)' : 'none',
         transform: hov ? 'translateY(-2px)' : 'translateY(0)',
       }}
@@ -154,10 +154,10 @@ function CatCard({ id, label, Icon, members, joined, onJoin }) {
       onMouseLeave={() => setHov(false)}
     >
       <div style={s.iconBox}>
-        <Icon size={22} color="#374151" strokeWidth={1.5} />
+        <Icon size={22} color="var(--text-secondary)" strokeWidth={1.5} />
       </div>
-      <h3 style={{ fontWeight: 600, fontSize: '16px', color: '#1A1A1A', margin: '14px 0 4px' }}>{label}</h3>
-      <p style={{ fontSize: '13px', color: '#A3A3A3', marginBottom: '14px' }}>{members} members</p>
+      <h3 style={{ fontWeight: 600, fontSize: '16px', color: 'var(--text-primary)', margin: '14px 0 4px' }}>{label}</h3>
+      <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '14px' }}>{members} members</p>
       <button
         className={joined ? 'btn btn-ghost' : 'btn btn-blue'}
         style={{ width: '100%', justifyContent: 'center', padding: '8px 12px', fontSize: '13px' }}
@@ -187,16 +187,16 @@ function PostRow({ post, hov, onHover, onLeave }) {
           >
             {post.category}
           </span>
-          <span style={{ fontSize: '12px', color: '#A3A3A3' }}>{post.author}</span>
-          <span style={{ fontSize: '12px', color: '#A3A3A3', display: 'flex', alignItems: 'center', gap: '3px' }}>
-            <Clock size={12} color="#A3A3A3" strokeWidth={1.5} /> {post.time}
+          <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{post.author}</span>
+          <span style={{ fontSize: '12px', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '3px' }}>
+            <Clock size={12} color="var(--text-muted)" strokeWidth={1.5} /> {post.time}
           </span>
         </div>
         <h3
           style={{
             fontSize: '15px',
             fontWeight: 500,
-            color: hov ? '#1B4FD8' : '#1A1A1A',
+            color: hov ? 'var(--accent)' : 'var(--text-primary)',
             lineHeight: 1.45,
             transition: 'color 0.18s ease',
             cursor: 'pointer',
@@ -205,8 +205,8 @@ function PostRow({ post, hov, onHover, onLeave }) {
           {post.title}
         </h3>
       </div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '4px', flexShrink: 0, color: '#A3A3A3', fontSize: '13px' }}>
-        <MessageSquare size={14} color="#A3A3A3" strokeWidth={1.5} />
+      <div style={{ display: 'flex', alignItems: 'center', gap: '4px', flexShrink: 0, color: 'var(--text-muted)', fontSize: '13px' }}>
+        <MessageSquare size={14} color="var(--text-muted)" strokeWidth={1.5} />
         {post.replies}
       </div>
     </div>

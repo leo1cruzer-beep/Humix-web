@@ -68,13 +68,13 @@ export default function PricingPage() {
           <h1 className="page-title" style={{ marginBottom: '8px', textAlign: 'center' }}>
             Simple, honest pricing.
           </h1>
-          <p style={{ fontSize: '17px', color: '#737373', textAlign: 'center', marginBottom: '32px' }}>
+          <p style={{ fontSize: '17px', color: 'var(--text-secondary)', textAlign: 'center', marginBottom: '32px' }}>
             No hidden fees. Cancel anytime.
           </p>
 
           {/* Toggle */}
           <div style={s.toggleRow}>
-            <span style={{ fontSize: '14px', color: yearly ? '#737373' : '#1A1A1A', fontWeight: yearly ? 400 : 600 }}>Monthly</span>
+            <span style={{ fontSize: '14px', color: yearly ? 'var(--text-secondary)' : 'var(--text-primary)', fontWeight: yearly ? 400 : 600 }}>Monthly</span>
             <button
               style={s.togglePill}
               onClick={() => setYearly(y => !y)}
@@ -82,9 +82,9 @@ export default function PricingPage() {
             >
               <div style={{ ...s.toggleKnob, transform: yearly ? 'translateX(22px)' : 'translateX(2px)' }} />
             </button>
-            <span style={{ fontSize: '14px', color: yearly ? '#1A1A1A' : '#737373', fontWeight: yearly ? 600 : 400 }}>
+            <span style={{ fontSize: '14px', color: yearly ? 'var(--text-primary)' : 'var(--text-secondary)', fontWeight: yearly ? 600 : 400 }}>
               Yearly
-              <span style={{ marginLeft: '6px', padding: '2px 8px', borderRadius: '99px', background: '#EEF2FF', color: '#1B4FD8', fontSize: '11px', fontWeight: 600 }}>
+              <span style={{ marginLeft: '6px', padding: '2px 8px', borderRadius: '99px', background: 'var(--accent-light)', color: 'var(--accent)', fontSize: '11px', fontWeight: 600 }}>
                 Save 20%
               </span>
             </span>
@@ -157,7 +157,7 @@ function PricingCard({ tier, price, priceSub, subtitle, features, cta, ctaVarian
   return (
     <div className="pricing-card" style={{
       ...s.card,
-      border: featured ? '2px solid #1B4FD8' : '1px solid #E8E8E4',
+      border: featured ? '2px solid var(--accent)' : '1px solid var(--border)',
       boxShadow: featured ? '0 8px 32px rgba(27,79,216,0.15)' : 'none',
       transform: featured ? 'scale(1.02)' : 'scale(1)',
       position: 'relative',
@@ -167,16 +167,16 @@ function PricingCard({ tier, price, priceSub, subtitle, features, cta, ctaVarian
       )}
 
       <div style={{ padding: '32px 28px' }}>
-        <p style={{ fontWeight: 700, fontSize: '24px', color: '#1A1A1A', marginBottom: '8px', fontFamily: "'Inter', sans-serif" }}>
+        <p style={{ fontWeight: 700, fontSize: '24px', color: 'var(--text-primary)', marginBottom: '8px', fontFamily: "'Inter', sans-serif" }}>
           {tier}
         </p>
-        <p style={{ fontWeight: 700, fontSize: '32px', color: '#1A1A1A', letterSpacing: '-0.03em', fontFamily: "'Inter', sans-serif", marginBottom: '4px' }}>
+        <p style={{ fontWeight: 700, fontSize: '32px', color: 'var(--text-primary)', letterSpacing: '-0.03em', fontFamily: "'Inter', sans-serif", marginBottom: '4px' }}>
           {price}
         </p>
         {priceSub && (
-          <p style={{ fontSize: '13px', color: '#737373', marginBottom: '4px' }}>{priceSub}</p>
+          <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '4px' }}>{priceSub}</p>
         )}
-        <p style={{ fontSize: '14px', color: '#737373', marginBottom: '28px' }}>{subtitle}</p>
+        <p style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '28px' }}>{subtitle}</p>
 
         <button
           className={ctaVariant === 'blue' ? 'btn btn-blue' : 'btn btn-ghost'}
@@ -189,7 +189,7 @@ function PricingCard({ tier, price, priceSub, subtitle, features, cta, ctaVarian
           {features.map((f, i) => (
             <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
               <Check size={16} color="#16A34A" strokeWidth={2.5} style={{ marginTop: '1px', flexShrink: 0 }} />
-              <span style={{ fontSize: '14px', color: '#1A1A1A', lineHeight: 1.4 }}>{f}</span>
+              <span style={{ fontSize: '14px', color: 'var(--text-primary)', lineHeight: 1.4 }}>{f}</span>
             </div>
           ))}
         </div>
@@ -202,16 +202,16 @@ function FaqItem({ faq, open, onToggle }) {
   return (
     <div style={s.faqItem}>
       <button style={s.faqToggle} onClick={onToggle}>
-        <span style={{ fontWeight: 600, fontSize: '16px', color: '#1A1A1A', textAlign: 'left', flex: 1 }}>
+        <span style={{ fontWeight: 600, fontSize: '16px', color: 'var(--text-primary)', textAlign: 'left', flex: 1 }}>
           {faq.q}
         </span>
         {open
-          ? <ChevronUp size={18} color="#737373" strokeWidth={1.5} style={{ flexShrink: 0 }} />
-          : <ChevronDown size={18} color="#737373" strokeWidth={1.5} style={{ flexShrink: 0 }} />
+          ? <ChevronUp size={18} color="var(--text-secondary)" strokeWidth={1.5} style={{ flexShrink: 0 }} />
+          : <ChevronDown size={18} color="var(--text-secondary)" strokeWidth={1.5} style={{ flexShrink: 0 }} />
         }
       </button>
       <div className={`accordion-content${open ? ' open' : ''}`}>
-        <p style={{ fontSize: '15px', color: '#737373', lineHeight: 1.65, paddingTop: '12px', paddingBottom: '16px' }}>
+        <p style={{ fontSize: '15px', color: 'var(--text-secondary)', lineHeight: 1.65, paddingTop: '12px', paddingBottom: '16px' }}>
           {faq.a}
         </p>
       </div>

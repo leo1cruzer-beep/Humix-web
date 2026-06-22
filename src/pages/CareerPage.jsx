@@ -59,7 +59,7 @@ export default function CareerPage() {
       <section style={s.header}>
         <div style={s.container}>
           <h1 className="page-title" style={{ marginBottom: '8px' }}>Find work or hire globally</h1>
-          <p style={{ fontSize: '17px', color: '#737373', marginBottom: '32px' }}>
+          <p style={{ fontSize: '17px', color: 'var(--text-secondary)', marginBottom: '32px' }}>
             AI-matched opportunities. Real results.
           </p>
 
@@ -69,9 +69,9 @@ export default function CareerPage() {
               onClick={() => setActiveView('find')}
               style={{
                 ...s.toggleBtn,
-                background: activeView === 'find' ? '#1A1A1A' : 'transparent',
-                color: activeView === 'find' ? '#FFFFFF' : '#737373',
-                border: activeView === 'find' ? '1px solid #1A1A1A' : '1px solid #E8E8E4',
+                background: activeView === 'find' ? 'var(--text-primary)' : 'transparent',
+                color: activeView === 'find' ? 'var(--bg-page)' : 'var(--text-secondary)',
+                border: activeView === 'find' ? '1px solid var(--text-primary)' : '1px solid var(--border)',
               }}
             >
               <Briefcase size={16} strokeWidth={1.5} /> Find Work
@@ -80,9 +80,9 @@ export default function CareerPage() {
               onClick={() => setActiveView('hire')}
               style={{
                 ...s.toggleBtn,
-                background: activeView === 'hire' ? '#1A1A1A' : 'transparent',
-                color: activeView === 'hire' ? '#FFFFFF' : '#737373',
-                border: activeView === 'hire' ? '1px solid #1A1A1A' : '1px solid #E8E8E4',
+                background: activeView === 'hire' ? 'var(--text-primary)' : 'transparent',
+                color: activeView === 'hire' ? 'var(--bg-page)' : 'var(--text-secondary)',
+                border: activeView === 'hire' ? '1px solid var(--text-primary)' : '1px solid var(--border)',
               }}
             >
               <Users size={16} strokeWidth={1.5} /> Hire Talent
@@ -157,7 +157,7 @@ function FindWorkView({ jobs, activeTypes, onToggleType, activeCategory, onCateg
       </div>
 
       <div style={{ marginTop: '32px' }}>
-        <p style={{ fontSize: '14px', color: '#737373', marginBottom: '16px' }}>
+        <p style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '16px' }}>
           {jobs.length} opportunities found
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -165,8 +165,8 @@ function FindWorkView({ jobs, activeTypes, onToggleType, activeCategory, onCateg
         </div>
         {jobs.length === 0 && (
           <div style={{ textAlign: 'center', padding: '60px 0' }}>
-            <h3 style={{ fontWeight: 600, color: '#1A1A1A', marginBottom: '8px' }}>No jobs match your filters</h3>
-            <p style={{ color: '#737373' }}>Try removing some filters to see more results</p>
+            <h3 style={{ fontWeight: 600, color: 'var(--text-primary)', marginBottom: '8px' }}>No jobs match your filters</h3>
+            <p style={{ color: 'var(--text-secondary)' }}>Try removing some filters to see more results</p>
           </div>
         )}
       </div>
@@ -180,8 +180,8 @@ function JobCard({ job }) {
     <div
       style={{
         ...s.jobCard,
-        borderColor: hov ? '#1B4FD8' : '#E8E8E4',
-        boxShadow: hov ? '0 4px 16px rgba(27,79,216,0.10)' : 'none',
+        borderColor: hov ? 'var(--accent)' : 'var(--border)',
+        boxShadow: hov ? 'var(--shadow-hover)' : 'none',
       }}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
@@ -190,7 +190,7 @@ function JobCard({ job }) {
         <div style={s.companyLogo}>{job.initial}</div>
         <div style={{ flex: 1 }}>
           <h3 className="card-title" style={{ marginBottom: '4px' }}>{job.title}</h3>
-          <p style={{ fontSize: '14px', color: '#737373', marginBottom: '10px' }}>{job.company}</p>
+          <p style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '10px' }}>{job.company}</p>
           <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' }}>
             <span style={s.metaChip}>
               <MapPin size={12} strokeWidth={1.5} /> {job.location}
@@ -213,9 +213,9 @@ function JobCard({ job }) {
         <button
           style={{
             ...s.applyBtn,
-            background: hov ? '#1B4FD8' : 'transparent',
-            color: hov ? '#FFFFFF' : '#1A1A1A',
-            borderColor: hov ? '#1B4FD8' : '#E8E8E4',
+            background: hov ? 'var(--accent)' : 'transparent',
+            color: hov ? '#FFFFFF' : 'var(--text-primary)',
+            borderColor: hov ? 'var(--accent)' : 'var(--border)',
           }}
         >
           Apply Now
@@ -308,9 +308,9 @@ function HireTalentView({ formData, onChange, submitted, onSubmit }) {
         </button>
       </div>
 
-      <p style={{ marginTop: '20px', fontSize: '14px', color: '#737373' }}>
+      <p style={{ marginTop: '20px', fontSize: '14px', color: 'var(--text-secondary)' }}>
         Or{' '}
-        <a href="#" style={{ color: '#1B4FD8', fontWeight: 600, textDecoration: 'none' }}>
+        <a href="#" style={{ color: 'var(--accent)', fontWeight: 600, textDecoration: 'none' }}>
           browse 2,400+ verified professionals →
         </a>
       </p>
