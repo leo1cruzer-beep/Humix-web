@@ -9,24 +9,24 @@ import {
 const CATEGORIES = ['All', 'Automate', 'Finance', 'Companion', 'Life Assistant', 'Community', 'Career', 'Business', 'Creative'];
 
 const TOOLS = [
-  { id: 1, category: 'Automate',       title: 'Workflow Automator',      desc: 'Connect apps and trigger AI actions without writing a single line of code.', type: 'AI Tool' },
-  { id: 2, category: 'Automate',       title: 'Smart Scheduler',         desc: 'AI-powered calendar that learns your priorities and blocks time automatically.', type: 'AI Tool' },
-  { id: 3, category: 'Finance',        title: 'Debt Repayment Planner',  desc: 'Enter your debts and get a custom payoff strategy based on your income.', type: 'AI Tool' },
-  { id: 4, category: 'Finance',        title: 'Budget Tracker Pro',      desc: 'Track spending, set goals, and get AI alerts before you overspend.', type: 'Hybrid' },
-  { id: 5, category: 'Finance',        title: 'Investment Advisor',      desc: 'Personalized investment suggestions based on your risk profile and goals.', type: 'Human Expert' },
-  { id: 6, category: 'Companion',      title: 'Memory AI',               desc: 'An AI that remembers your story, preferences, and goals across every conversation.', type: 'AI Tool' },
-  { id: 7, category: 'Companion',      title: 'Language Partner',        desc: 'Practice any language with an AI conversation partner that adapts to your level.', type: 'AI Tool' },
-  { id: 8, category: 'Life Assistant', title: 'Crop Disease Identifier', desc: 'Upload a photo of your plant and get instant diagnosis plus treatment advice.', type: 'AI Tool' },
-  { id: 9, category: 'Life Assistant', title: 'Legal Doc Simplifier',    desc: 'Paste any legal document and get a plain-English summary with key alerts.', type: 'AI Tool' },
-  { id: 10, category: 'Life Assistant', title: 'Health Symptom Checker', desc: 'Describe symptoms and get triage guidance, questions to ask your doctor.', type: 'Hybrid' },
-  { id: 11, category: 'Community',     title: 'Group Finder',            desc: 'Discover communities that match your interests, location, and goals.', type: 'AI Tool' },
-  { id: 12, category: 'Career',        title: 'Resume Builder',          desc: 'AI-crafted resumes tailored to specific job descriptions in seconds.', type: 'AI Tool' },
-  { id: 13, category: 'Career',        title: 'Interview Coach',         desc: 'Practice with an AI interviewer, get real-time feedback on your answers.', type: 'AI Tool' },
-  { id: 14, category: 'Business',      title: 'Business Plan Generator', desc: 'Answer a few questions and get a full business plan with financial projections.', type: 'AI Tool' },
-  { id: 15, category: 'Business',      title: 'Market Research AI',      desc: 'Instant competitive analysis, customer insights, and market sizing.', type: 'Hybrid' },
-  { id: 16, category: 'Creative',      title: 'AI Copywriter',           desc: 'Generate blog posts, ads, emails, and social content in your brand voice.', type: 'AI Tool' },
-  { id: 17, category: 'Creative',      title: 'Design Brief Generator',  desc: 'Turn a vague idea into a detailed creative brief ready for any designer.', type: 'AI Tool' },
-  { id: 18, category: 'Creative',      title: 'Professional Ghostwriter', desc: 'Work with a seasoned writer who brings your story or content to life.', type: 'Human Expert' },
+  { id: 1,  category: 'Automate',       title: 'Workflow Automator',       desc: 'Connect apps and trigger AI actions without writing a single line of code.',       type: 'AI Tool',      path: '/explore?category=Automate' },
+  { id: 2,  category: 'Automate',       title: 'Smart Scheduler',          desc: 'AI-powered calendar that learns your priorities and blocks time automatically.',    type: 'AI Tool',      path: '/explore?category=Automate' },
+  { id: 3,  category: 'Finance',        title: 'Debt Repayment Planner',   desc: 'Enter your debts and get a custom payoff strategy based on your income.',          type: 'AI Tool',      path: '/finance/debt' },
+  { id: 4,  category: 'Finance',        title: 'Budget Tracker Pro',       desc: 'Track spending, set goals, and get AI alerts before you overspend.',               type: 'Hybrid',       path: '/finance/budget' },
+  { id: 5,  category: 'Finance',        title: 'Investment Advisor',       desc: 'Personalized investment suggestions based on your risk profile and goals.',         type: 'Human Expert', path: '/finance' },
+  { id: 6,  category: 'Companion',      title: 'Memory AI',                desc: 'An AI that remembers your story, preferences, and goals across every conversation.', type: 'AI Tool',     path: '/life-assistant' },
+  { id: 7,  category: 'Companion',      title: 'Language Partner',         desc: 'Practice any language with an AI conversation partner that adapts to your level.',  type: 'AI Tool',      path: '/life-assistant' },
+  { id: 8,  category: 'Life Assistant', title: 'Crop Disease Identifier',  desc: 'Upload a photo of your plant and get instant diagnosis plus treatment advice.',     type: 'AI Tool',      path: '/life-assistant' },
+  { id: 9,  category: 'Life Assistant', title: 'Legal Doc Simplifier',     desc: 'Paste any legal document and get a plain-English summary with key alerts.',         type: 'AI Tool',      path: '/life-assistant' },
+  { id: 10, category: 'Life Assistant', title: 'Health Symptom Checker',   desc: 'Describe symptoms and get triage guidance, questions to ask your doctor.',          type: 'Hybrid',       path: '/life-assistant' },
+  { id: 11, category: 'Community',      title: 'Group Finder',             desc: 'Discover communities that match your interests, location, and goals.',               type: 'AI Tool',      path: '/community' },
+  { id: 12, category: 'Career',         title: 'Resume Builder',           desc: 'AI-crafted resumes tailored to specific job descriptions in seconds.',               type: 'AI Tool',      path: '/career/resume' },
+  { id: 13, category: 'Career',         title: 'Interview Coach',          desc: 'Practice with an AI interviewer, get real-time feedback on your answers.',          type: 'AI Tool',      path: '/career/interview' },
+  { id: 14, category: 'Business',       title: 'Business Plan Generator',  desc: 'Answer a few questions and get a full business plan with financial projections.',   type: 'AI Tool',      path: '/business/plan' },
+  { id: 15, category: 'Business',       title: 'Market Research AI',       desc: 'Instant competitive analysis, customer insights, and market sizing.',                type: 'Hybrid',       path: '/business/market' },
+  { id: 16, category: 'Creative',       title: 'AI Copywriter',            desc: 'Generate blog posts, ads, emails, and social content in your brand voice.',         type: 'AI Tool',      path: '/creative/content' },
+  { id: 17, category: 'Creative',       title: 'Design Brief Generator',   desc: 'Turn a vague idea into a detailed creative brief ready for any designer.',          type: 'AI Tool',      path: '/creative/brand' },
+  { id: 18, category: 'Creative',       title: 'Professional Ghostwriter',  desc: 'Work with a seasoned writer who brings your story or content to life.',             type: 'Human Expert', path: '/creative/content' },
 ];
 
 const FILTER_TYPES = ['AI Tool', 'Human Expert', 'Hybrid'];
@@ -225,15 +225,12 @@ function ToolCard({ tool }) {
   const navigate = useNavigate();
 
   const handleTryFree = () => {
-    if (tool.category === 'Life Assistant') {
-      navigate('/life-assistant');
-    } else {
-      navigate(`/explore?category=${encodeURIComponent(tool.category)}`);
-    }
+    navigate(tool.path);
   };
 
   return (
     <div
+      onClick={handleTryFree}
       style={{
         ...s.toolCard,
         borderColor: hov ? 'var(--accent)' : 'var(--border)',
@@ -374,6 +371,6 @@ const s = {
     transition: 'all 0.18s ease',
     display: 'flex',
     flexDirection: 'column',
-    cursor: 'default',
+    cursor: 'pointer',
   },
 };
