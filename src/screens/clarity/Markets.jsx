@@ -11,14 +11,21 @@ const INITIAL = {
 const HISTORY_LEN = 20
 
 async function callAI(content) {
-  const sessionId = `finance-markets-${Date.now()}`
-  const res = await fetch('/api/proxy/api/chat/message', {
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ sessionId, content }),
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': import.meta.env.VITE_ANTHROPIC_API_KEY,
+      'anthropic-version': '2023-06-01',
+    },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 200,
+      messages: [{ role: 'user', content }],
+    }),
   })
   const data = await res.json()
-  return data?.assistantMessage?.content || data?.message || data?.content || data?.response || 'AI advice temporarily unavailable'
+  return data.content[0].text
 }
 
 function Sparkline({ data, up }) {
@@ -98,7 +105,7 @@ export default function Markets() {
     return (
       <main className="page-enter" style={{ paddingBottom: '80px' }}>
         <div style={{ background: 'var(--bg-card)', borderBottom: '1px solid var(--border)', padding: '32px 0 28px', marginBottom: '40px' }}>
-          <div style={container}>
+          <div className="finance-container" style={container}>
             <div style={{ marginBottom: '10px' }}>
               <button onClick={() => setSelected(null)} style={{ fontSize: '13px', color: 'var(--text-secondary)', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>← Markets</button>
             </div>
@@ -113,8 +120,8 @@ export default function Markets() {
             </div>
           </div>
         </div>
-        <div style={container}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+        <div className="finance-container" style={container}>
+          <div className="finance-two-col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               <div style={{ ...card, textAlign: 'center', padding: '32px 24px', background: isUp ? '#F0FDF4' : '#FEF2F2', border: `1px solid ${isUp ? '#bbf7d0' : '#fecaca'}` }}>
                 <div style={{ fontSize: '42px', fontWeight: 900, color: isUp ? '#16A34A' : '#DC2626', letterSpacing: '-0.02em' }}>
@@ -170,7 +177,7 @@ export default function Markets() {
   return (
     <main className="page-enter" style={{ paddingBottom: '80px' }}>
       <div style={{ background: 'var(--bg-card)', borderBottom: '1px solid var(--border)', padding: '32px 0 28px', marginBottom: '40px' }}>
-        <div style={container}>
+        <div className="finance-container" style={container}>
           <div style={{ marginBottom: '10px' }}>
             <Link to="/finance" style={{ fontSize: '13px', color: 'var(--text-secondary)', textDecoration: 'none' }}>← Finance</Link>
           </div>
@@ -189,8 +196,8 @@ export default function Markets() {
         </div>
       </div>
 
-      <div style={container}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: '24px', alignItems: 'start' }}>
+      <div className="finance-container" style={container}>
+        <div className="finance-two-col" style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: '24px', alignItems: 'start' }}>
 
           {/* Coin list */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -297,5 +304,5 @@ export default function Markets() {
   )
 }
 
-const container = { maxWidth: '1200px', margin: '0 auto', padding: '0 48px' }
+const container = { width: '100%', maxWidth: '1200px', margin: '0 auto', padding: '0 24px', boxSizing: 'border-box' }
 const card = { background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '16px', padding: '24px' }

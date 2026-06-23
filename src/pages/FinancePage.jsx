@@ -62,7 +62,7 @@ function FinanceHome() {
         padding: '48px 0 40px',
         marginBottom: '48px',
       }}>
-        <div style={container}>
+        <div className="finance-container" style={container}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
             <span className="badge badge-blue">Finance</span>
           </div>
@@ -73,7 +73,7 @@ function FinanceHome() {
         </div>
       </div>
 
-      <div style={container}>
+      <div className="finance-container" style={container}>
         {/* Section label */}
         <p style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: '20px' }}>
           5 tools available
@@ -169,7 +169,9 @@ export default function FinancePage() {
 }
 
 const container = {
+  width: '100%',
   maxWidth: '1200px',
   margin: '0 auto',
-  padding: '0 48px',
+  padding: '0 24px',
+  boxSizing: 'border-box',
 }

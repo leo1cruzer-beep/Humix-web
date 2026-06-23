@@ -2,14 +2,21 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 async function callAI(content) {
-  const sessionId = `finance-budget-${Date.now()}`
-  const res = await fetch('/api/proxy/api/chat/message', {
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ sessionId, content }),
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': import.meta.env.VITE_ANTHROPIC_API_KEY,
+      'anthropic-version': '2023-06-01',
+    },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 200,
+      messages: [{ role: 'user', content }],
+    }),
   })
   const data = await res.json()
-  return data?.assistantMessage?.content || data?.message || data?.content || data?.response || 'AI advice temporarily unavailable'
+  return data.content[0].text
 }
 
 const DEFAULT_INCOME = [
@@ -100,7 +107,7 @@ export default function Budget() {
   return (
     <main className="page-enter" style={{ paddingBottom: '80px' }}>
       <div style={{ background: 'var(--bg-card)', borderBottom: '1px solid var(--border)', padding: '32px 0 28px', marginBottom: '40px' }}>
-        <div style={container}>
+        <div className="finance-container" style={container}>
           <div style={{ marginBottom: '10px' }}>
             <Link to="/finance" style={{ fontSize: '13px', color: 'var(--text-secondary)', textDecoration: 'none' }}>← Finance</Link>
           </div>
@@ -114,8 +121,8 @@ export default function Budget() {
         </div>
       </div>
 
-      <div style={container}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', alignItems: 'start' }}>
+      <div className="finance-container" style={container}>
+        <div className="finance-two-col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', alignItems: 'start' }}>
 
           {/* Income */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -226,7 +233,7 @@ export default function Budget() {
   )
 }
 
-const container = { maxWidth: '1200px', margin: '0 auto', padding: '0 48px' }
+const container = { width: '100%', maxWidth: '1200px', margin: '0 auto', padding: '0 24px', boxSizing: 'border-box' }
 const card = { background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '16px', padding: '24px' }
 const sectionLabel = { fontSize: '11px', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: '0' }
 const inputStyle = {
