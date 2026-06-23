@@ -114,7 +114,11 @@ function CategoriesSection({ navigate }) {
               label={label}
               desc={desc}
               Icon={Icon}
-              onClick={() => id === 'life-assistant' ? navigate('/life-assistant') : navigate(`/explore?category=${id}`)}
+              onClick={() => {
+              if (id === 'life-assistant') return navigate('/life-assistant')
+              if (id === 'finance') return navigate('/finance')
+              navigate(`/explore?category=${id}`)
+            }}
             />
           ))}
         </div>

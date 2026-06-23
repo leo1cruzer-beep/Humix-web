@@ -22,7 +22,7 @@ function useCountUp(target, duration = 1200) {
   return val
 }
 
-function ClarityHome({ onNav }) {
+export function ClarityHome({ onNav }) {
   const netWorth = useCountUp(47250)
 
   const MODULES = [
