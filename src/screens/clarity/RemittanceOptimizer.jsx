@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
+const REMITTANCE_API = 'http://localhost:3003'
+
 const SOURCE_CURRENCIES = {
   USD: { flag: '🇺🇸', name: 'US Dollar',    symbol: '$'   },
   QAR: { flag: '🇶🇦', name: 'Qatari Riyal', symbol: 'QR'  },
@@ -19,20 +21,48 @@ const DEST_CURRENCIES = {
   LKR: { flag: '🇱🇰', name: 'Sri Lankan Rupee',  country: 'Sri Lanka',    fallback: 302.00 },
 }
 
-const FALLBACK_SOURCE_RATES = { USD: 1, QAR: 3.64, AED: 3.67, SAR: 3.75, GBP: 0.79 }
+const EXCHANGE_NAMES = {
+  cbq:          'CBQ Bank',
+  alFardan:     'Al Fardan Exchange',
+  alAnsari:     'Al Ansari (Qatar)',
+  alAnsariUAE:  'Al Ansari (UAE)',
+  alMuzaini:    'Al Muzaini',
+  alRajhi:      'Al Rajhi Bank',
+  alRostamani:  'Al Rostamani',
+  bfc:          'BFC Exchange',
+  luluExchange: 'Lulu Exchange',
+  sharaf:       'Sharaf Exchange',
+  westernUnionSA: 'Western Union',
+}
 
-const SERVICES = [
+const EXCHANGE_LOGOS = {
+  cbq:          '🏦',
+  alFardan:     '🟡',
+  alAnsari:     '🟠',
+  alAnsariUAE:  '🟠',
+  alMuzaini:    '🔵',
+  alRajhi:      '🟢',
+  alRostamani:  '💚',
+  bfc:          '🔴',
+  luluExchange: '🟣',
+  sharaf:       '⭐',
+  westernUnionSA: '🟡',
+}
+
+// Fallback static services when API corridor not available
+const STATIC_SERVICES = [
   { id: 'wu',       name: 'Western Union',      feePct: 0.035, rateDeg: 0.012, time: 'Instant',    logo: '🟡' },
   { id: 'wise',     name: 'Wise',               feePct: 0.006, rateDeg: 0.001, time: '1–2 days',   logo: '🟢' },
   { id: 'remitly',  name: 'Remitly',            feePct: 0.029, rateDeg: 0.008, time: 'Instant',    logo: '🔵' },
   { id: 'alansari', name: 'Al Ansari Exchange', feePct: 0.020, rateDeg: 0.015, time: '1–2 hours',  logo: '🟠' },
   { id: 'bank',     name: 'Bank Transfer',      feePct: 0.040, rateDeg: 0.020, time: '3–5 days',   logo: '🏦' },
 ]
+const FALLBACK_SOURCE_RATES = { USD: 1, QAR: 3.64, AED: 3.67, SAR: 3.75, GBP: 0.79 }
 
-async function fetchRates() {
-  const res = await fetch('https://api.exchangerate-api.com/v4/latest/USD')
-  const data = await res.json()
-  return data.rates
+async function fetchCorridorRates(fromCurrency, toCurrency) {
+  const res = await fetch(`${REMITTANCE_API}/api/rates/${fromCurrency}/${toCurrency}`)
+  if (!res.ok) throw new Error(`API error ${res.status}`)
+  return res.json()
 }
 
 async function callAI(prompt) {
@@ -55,17 +85,35 @@ async function callAI(prompt) {
   return data.choices[0].message.content
 }
 
-function buildComparisons(sendAmount, fromCurrency, toCurrency, rates) {
-  const sourceRate = rates[fromCurrency] ?? FALLBACK_SOURCE_RATES[fromCurrency] ?? 1
-  const marketRate = rates[toCurrency] ?? DEST_CURRENCIES[toCurrency]?.fallback ?? 1
-  const amountUSD = sendAmount / sourceRate
+function buildComparisons(sendAmount, apiData) {
+  return apiData.corridor.map(entry => {
+    const feeInSource = entry.fee ?? 0
+    const netAmount = Math.max(0, sendAmount - feeInSource)
+    const recipientGets = netAmount * (entry.rate ?? 0)
+    return {
+      id: entry.exchange,
+      name: EXCHANGE_NAMES[entry.exchange] ?? entry.exchange,
+      logo: EXCHANGE_LOGOS[entry.exchange] ?? '💱',
+      time: entry.time ?? 'Unknown',
+      feeInSource,
+      effectiveRate: entry.rate ?? 0,
+      recipientGets,
+      available: entry.available ?? false,
+      fallback: entry.fallback ?? false,
+    }
+  })
+}
 
-  return SERVICES.map(svc => {
+function buildFallbackComparisons(sendAmount, fromCurrency, toCurrency) {
+  const sourceRate = FALLBACK_SOURCE_RATES[fromCurrency] ?? 1
+  const marketRate = DEST_CURRENCIES[toCurrency]?.fallback ?? 1
+  const amountUSD = sendAmount / sourceRate
+  return STATIC_SERVICES.map(svc => {
     const feeInSource = sendAmount * svc.feePct
     const netUSD = amountUSD - feeInSource / sourceRate
     const effectiveRate = marketRate * (1 - svc.rateDeg)
     const recipientGets = netUSD * effectiveRate
-    return { ...svc, feeInSource, effectiveRate, recipientGets, marketRate }
+    return { ...svc, feeInSource, effectiveRate, recipientGets, available: false, fallback: true }
   }).sort((a, b) => b.recipientGets - a.recipientGets)
 }
 
@@ -75,13 +123,14 @@ function fmt(n, decimals = 0) {
 
 export default function RemittanceOptimizer() {
   const [sendAmount, setSendAmount] = useState('500')
-  const [fromCurrency, setFromCurrency] = useState('USD')
+  const [fromCurrency, setFromCurrency] = useState('QAR')
   const [toCurrency, setToCurrency] = useState('PKR')
 
   const [loading, setLoading] = useState(false)
   const [comparisons, setComparisons] = useState([])
   const [hasCompared, setHasCompared] = useState(false)
   const [usedTo, setUsedTo] = useState('PKR')
+  const [dataSource, setDataSource] = useState(null) // { lastUpdated, isLive }
 
   const [aiTip, setAiTip] = useState('')
   const [aiLoading, setAiLoading] = useState(false)
@@ -103,34 +152,34 @@ export default function RemittanceOptimizer() {
     setLoading(true)
     setAiTip('')
     setHasCompared(false)
+
+    let results
+    let source = null
+
     try {
-      const rates = await fetchRates()
-      const results = buildComparisons(amount, fromCurrency, toCurrency, rates)
-      setComparisons(results)
-      setUsedTo(toCurrency)
-      setHasCompared(true)
-
-      const newCount = compareCount + 1
-      setCompareCount(newCount)
-      localStorage.setItem('humix_compare_count', String(newCount))
-
-      runAI(results, amount)
+      const apiData = await fetchCorridorRates(fromCurrency, toCurrency)
+      results = buildComparisons(amount, apiData)
+      source = { lastUpdated: apiData.lastUpdated, isLive: results.some(r => r.available && !r.fallback) }
     } catch {
-      const fallback = {
-        ...Object.fromEntries(Object.entries(DEST_CURRENCIES).map(([k, v]) => [k, v.fallback])),
-        ...FALLBACK_SOURCE_RATES,
-      }
-      const results = buildComparisons(amount, fromCurrency, toCurrency, fallback)
-      setComparisons(results)
-      setUsedTo(toCurrency)
-      setHasCompared(true)
-      runAI(results, amount)
-    } finally {
-      setLoading(false)
+      results = buildFallbackComparisons(amount, fromCurrency, toCurrency)
+      source = { lastUpdated: null, isLive: false }
     }
+
+    setComparisons(results)
+    setUsedTo(toCurrency)
+    setDataSource(source)
+    setHasCompared(true)
+
+    const newCount = compareCount + 1
+    setCompareCount(newCount)
+    localStorage.setItem('humix_compare_count', String(newCount))
+
+    runAI(results, amount)
+    setLoading(false)
   }
 
   async function runAI(results, amount) {
+    if (!results.length) return
     const best = results[0]
     const worst = results[results.length - 1]
     const savings = fmt(best.recipientGets - worst.recipientGets)
@@ -238,8 +287,19 @@ export default function RemittanceOptimizer() {
         {/* ── Step 2: Comparison Cards ── */}
         {hasCompared && (
           <div style={{ marginTop: '32px' }}>
-            <div style={sectionLabel}>
-              Step 2 — Comparison · {fromInfo?.flag} {sendAmount} {fromCurrency} → {destInfo?.flag} {usedTo}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px', flexWrap: 'wrap', gap: '8px' }}>
+              <div style={sectionLabel}>
+                Step 2 — Comparison · {fromInfo?.flag} {sendAmount} {fromCurrency} → {destInfo?.flag} {usedTo}
+              </div>
+              {dataSource && (
+                <div style={{ fontSize: '11px', color: dataSource.isLive ? '#16A34A' : 'var(--text-muted)', fontWeight: 600 }}>
+                  {dataSource.isLive
+                    ? '● Live rates'
+                    : dataSource.lastUpdated
+                      ? `Scraped ${new Date(dataSource.lastUpdated).toLocaleDateString()}`
+                      : 'Estimated rates'}
+                </div>
+              )}
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               {comparisons.map((svc, idx) => {
@@ -285,14 +345,17 @@ export default function RemittanceOptimizer() {
                       <div style={{ minWidth: '120px' }}>
                         <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginBottom: '3px' }}>Your fee</div>
                         <div style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text-primary)' }}>
-                          {fromInfo?.symbol}{svc.feeInSource.toFixed(2)}
+                          {svc.feeInSource === 0
+                            ? <span style={{ color: '#16A34A' }}>No fee</span>
+                            : `${fromInfo?.symbol}${svc.feeInSource.toFixed(2)}`}
                         </div>
                       </div>
                       {/* Rate */}
                       <div style={{ minWidth: '140px' }}>
                         <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginBottom: '3px' }}>Exchange rate</div>
                         <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)' }}>
-                          1 USD = {svc.effectiveRate.toFixed(usedTo === 'NGN' ? 0 : 2)} {usedTo}
+                          1 {fromCurrency} = {svc.effectiveRate.toFixed(usedTo === 'NGN' ? 0 : 2)} {usedTo}
+                          {svc.fallback && <span style={{ fontSize: '10px', color: 'var(--text-muted)', marginLeft: '4px' }}>est.</span>}
                         </div>
                       </div>
                     </div>
