@@ -1,22 +1,24 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
-async function callAI(content) {
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
+async function callAI(prompt) {
+  const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
     method: 'POST',
     headers: {
+      'Authorization': `Bearer ${import.meta.env.VITE_OPENROUTER_API_KEY}`,
       'Content-Type': 'application/json',
-      'x-api-key': import.meta.env.VITE_ANTHROPIC_API_KEY,
-      'anthropic-version': '2023-06-01',
     },
     body: JSON.stringify({
-      model: 'claude-sonnet-4-6',
+      model: 'deepseek/deepseek-chat-v3-0324',
       max_tokens: 200,
-      messages: [{ role: 'user', content }],
+      messages: [
+        { role: 'system', content: 'Respond in English only. Be concise. 2-3 sentences max.' },
+        { role: 'user', content: prompt },
+      ],
     }),
   })
-  const data = await res.json()
-  return data.content[0].text
+  const data = await response.json()
+  return data.choices[0].message.content
 }
 
 const DEFAULT_INCOME = [
@@ -105,7 +107,7 @@ export default function Budget() {
   const surplusColor = surplus >= 0 ? '#16A34A' : '#DC2626'
 
   return (
-    <main className="page-enter" style={{ paddingBottom: '80px' }}>
+    <main className="page-enter" style={{ paddingBottom: '80px', width: '100%', overflowX: 'hidden', boxSizing: 'border-box' }}>
       <div style={{ background: 'var(--bg-card)', borderBottom: '1px solid var(--border)', padding: '32px 0 28px', marginBottom: '40px' }}>
         <div className="finance-container" style={container}>
           <div style={{ marginBottom: '10px' }}>
@@ -237,9 +239,9 @@ const container = { width: '100%', maxWidth: '1200px', margin: '0 auto', padding
 const card = { background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '16px', padding: '24px' }
 const sectionLabel = { fontSize: '11px', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: '0' }
 const inputStyle = {
-  height: '38px', padding: '0 10px',
+  height: '40px', padding: '0 10px',
   border: '1px solid var(--border)', borderRadius: '8px',
-  fontSize: '14px', color: 'var(--text-primary)',
+  fontSize: '16px', color: 'var(--text-primary)',
   background: 'var(--input-bg)', fontFamily: 'Inter, sans-serif',
   outline: 'none',
 }

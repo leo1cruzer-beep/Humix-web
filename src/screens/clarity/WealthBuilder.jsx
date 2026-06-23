@@ -2,22 +2,24 @@ import { useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts'
 
-async function callAI(content) {
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
+async function callAI(prompt) {
+  const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
     method: 'POST',
     headers: {
+      'Authorization': `Bearer ${import.meta.env.VITE_OPENROUTER_API_KEY}`,
       'Content-Type': 'application/json',
-      'x-api-key': import.meta.env.VITE_ANTHROPIC_API_KEY,
-      'anthropic-version': '2023-06-01',
     },
     body: JSON.stringify({
-      model: 'claude-sonnet-4-6',
+      model: 'deepseek/deepseek-chat-v3-0324',
       max_tokens: 200,
-      messages: [{ role: 'user', content }],
+      messages: [
+        { role: 'system', content: 'Respond in English only. Be concise. 2-3 sentences max.' },
+        { role: 'user', content: prompt },
+      ],
     }),
   })
-  const data = await res.json()
-  return data.content[0].text
+  const data = await response.json()
+  return data.choices[0].message.content
 }
 
 function fmt(n) {
@@ -96,7 +98,7 @@ export default function WealthBuilder() {
   }
 
   return (
-    <main className="page-enter" style={{ paddingBottom: '80px' }}>
+    <main className="page-enter" style={{ paddingBottom: '80px', width: '100%', overflowX: 'hidden', boxSizing: 'border-box' }}>
       <div style={{ background: 'var(--bg-card)', borderBottom: '1px solid var(--border)', padding: '32px 0 28px', marginBottom: '40px' }}>
         <div className="finance-container" style={container}>
           <div style={{ marginBottom: '10px' }}>
@@ -138,7 +140,7 @@ export default function WealthBuilder() {
                           paddingLeft: suffix ? '12px' : '28px',
                           paddingRight: suffix ? '28px' : '12px',
                           border: '1px solid var(--border)', borderRadius: '8px',
-                          fontSize: '15px', fontWeight: 600, color: 'var(--text-primary)',
+                          fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)',
                           background: 'var(--input-bg)', fontFamily: 'Inter, sans-serif',
                         }}
                         onFocus={e => e.target.style.borderColor = '#1B4FD8'}

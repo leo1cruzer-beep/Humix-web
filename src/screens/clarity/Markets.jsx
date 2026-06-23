@@ -10,22 +10,24 @@ const INITIAL = {
 
 const HISTORY_LEN = 20
 
-async function callAI(content) {
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
+async function callAI(prompt) {
+  const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
     method: 'POST',
     headers: {
+      'Authorization': `Bearer ${import.meta.env.VITE_OPENROUTER_API_KEY}`,
       'Content-Type': 'application/json',
-      'x-api-key': import.meta.env.VITE_ANTHROPIC_API_KEY,
-      'anthropic-version': '2023-06-01',
     },
     body: JSON.stringify({
-      model: 'claude-sonnet-4-6',
+      model: 'deepseek/deepseek-chat-v3-0324',
       max_tokens: 200,
-      messages: [{ role: 'user', content }],
+      messages: [
+        { role: 'system', content: 'Respond in English only. Be concise. 2-3 sentences max.' },
+        { role: 'user', content: prompt },
+      ],
     }),
   })
-  const data = await res.json()
-  return data.content[0].text
+  const data = await response.json()
+  return data.choices[0].message.content
 }
 
 function Sparkline({ data, up }) {
@@ -56,7 +58,7 @@ export default function Markets() {
     Object.fromEntries(Object.entries(INITIAL).map(([k, v]) => [k, {
       ...v,
       history: Array(HISTORY_LEN).fill(v.price).map(p => p * (1 + (Math.random() - 0.5) * 0.015)),
-      change24h: (Math.random() - 0.4) * 6,
+      pctChange: 0,
     }]))
   )
   const [tick, setTick] = useState(0)
@@ -72,7 +74,7 @@ export default function Markets() {
         for (const [k, c] of Object.entries(prev)) {
           const pct = (Math.random() - 0.5) * 0.01
           const newPrice = +(c.price * (1 + pct)).toFixed(2)
-          next[k] = { ...c, price: newPrice, history: [...c.history.slice(1), newPrice], change24h: c.change24h + (Math.random() - 0.5) * 0.2 }
+          next[k] = { ...c, price: newPrice, history: [...c.history.slice(1), newPrice], pctChange: +(pct * 100).toFixed(3) }
         }
         return next
       })
@@ -101,9 +103,9 @@ export default function Markets() {
 
   if (selected) {
     const coin = coins[selected]
-    const isUp = coin.change24h >= 0
+    const isUp = coin.pctChange >= 0
     return (
-      <main className="page-enter" style={{ paddingBottom: '80px' }}>
+      <main className="page-enter" style={{ paddingBottom: '80px', width: '100%', overflowX: 'hidden', boxSizing: 'border-box' }}>
         <div style={{ background: 'var(--bg-card)', borderBottom: '1px solid var(--border)', padding: '32px 0 28px', marginBottom: '40px' }}>
           <div className="finance-container" style={container}>
             <div style={{ marginBottom: '10px' }}>
@@ -128,7 +130,7 @@ export default function Markets() {
                   ${coin.price.toLocaleString(undefined, { maximumFractionDigits: 2 })}
                 </div>
                 <div style={{ fontSize: '16px', fontWeight: 600, color: isUp ? '#16A34A' : '#DC2626', marginTop: '6px' }}>
-                  {isUp ? '↑' : '↓'} {Math.abs(coin.change24h).toFixed(2)}% (24h)
+                  {isUp ? '↑' : '↓'} {Math.abs(coin.pctChange).toFixed(3)}%
                 </div>
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
@@ -175,7 +177,7 @@ export default function Markets() {
   }
 
   return (
-    <main className="page-enter" style={{ paddingBottom: '80px' }}>
+    <main className="page-enter" style={{ paddingBottom: '80px', width: '100%', overflowX: 'hidden', boxSizing: 'border-box' }}>
       <div style={{ background: 'var(--bg-card)', borderBottom: '1px solid var(--border)', padding: '32px 0 28px', marginBottom: '40px' }}>
         <div className="finance-container" style={container}>
           <div style={{ marginBottom: '10px' }}>
@@ -207,7 +209,7 @@ export default function Markets() {
                 <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>±0.5% every 30s</span>
               </div>
               {Object.entries(coins).map(([sym, c], i, arr) => {
-                const isUp = c.change24h >= 0
+                const isUp = c.pctChange >= 0
                 return (
                   <button
                     key={sym}
@@ -236,7 +238,7 @@ export default function Markets() {
                         ${c.price.toLocaleString(undefined, { maximumFractionDigits: 2 })}
                       </div>
                       <div style={{ fontSize: '12px', fontWeight: 600, color: isUp ? '#16A34A' : '#DC2626', marginTop: '2px' }}>
-                        {isUp ? '↑' : '↓'} {Math.abs(c.change24h).toFixed(2)}%
+                        {isUp ? '↑' : '↓'} {Math.abs(c.pctChange).toFixed(3)}%
                       </div>
                     </div>
                   </button>
@@ -284,13 +286,13 @@ export default function Markets() {
               <div style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '10px' }}>Click a coin for details</div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                 {Object.entries(coins).map(([sym, c]) => {
-                  const isUp = c.change24h >= 0
+                  const isUp = c.pctChange >= 0
                   return (
                     <button key={sym} onClick={() => setSelected(sym)} style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'var(--bg-page)', border: '1px solid var(--border)', borderRadius: '8px', padding: '8px 12px', cursor: 'pointer', textAlign: 'left' }}>
                       <span style={{ fontSize: '16px', color: c.color }}>{c.symbol}</span>
                       <span style={{ flex: 1, fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)' }}>{sym}</span>
                       <span style={{ fontSize: '12px', fontWeight: 600, color: isUp ? '#16A34A' : '#DC2626' }}>
-                        {isUp ? '↑' : '↓'} {Math.abs(c.change24h).toFixed(2)}%
+                        {isUp ? '↑' : '↓'} {Math.abs(c.pctChange).toFixed(3)}%
                       </span>
                     </button>
                   )
