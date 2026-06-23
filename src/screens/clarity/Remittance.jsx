@@ -2,11 +2,21 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 const BASE_RATES = {
-  PKR: { rate: 278.50, flag: '🇵🇰', name: 'Pakistani Rupee',    country: 'Pakistan' },
-  INR: { rate: 83.25,  flag: '🇮🇳', name: 'Indian Rupee',       country: 'India' },
-  BDT: { rate: 110.15, flag: '🇧🇩', name: 'Bangladeshi Taka',   country: 'Bangladesh' },
-  NGN: { rate: 1582,   flag: '🇳🇬', name: 'Nigerian Naira',     country: 'Nigeria' },
-  PHP: { rate: 56.20,  flag: '🇵🇭', name: 'Philippine Peso',    country: 'Philippines' },
+  PKR: { flag: '🇵🇰', name: 'Pakistani Rupee',   country: 'Pakistan',     fallback: 278.50 },
+  INR: { flag: '🇮🇳', name: 'Indian Rupee',       country: 'India',        fallback: 83.25  },
+  BDT: { flag: '🇧🇩', name: 'Bangladeshi Taka',   country: 'Bangladesh',   fallback: 110.15 },
+  NGN: { flag: '🇳🇬', name: 'Nigerian Naira',     country: 'Nigeria',      fallback: 1582   },
+  PHP: { flag: '🇵🇭', name: 'Philippine Peso',    country: 'Philippines',  fallback: 56.20  },
+  EGP: { flag: '🇪🇬', name: 'Egyptian Pound',     country: 'Egypt',        fallback: 50.90  },
+  LKR: { flag: '🇱🇰', name: 'Sri Lankan Rupee',   country: 'Sri Lanka',    fallback: 302.00 },
+}
+
+const KEYS = ['PKR', 'INR', 'BDT', 'NGN', 'PHP', 'EGP', 'LKR']
+
+async function fetchRates() {
+  const res = await fetch('https://api.exchangerate-api.com/v4/latest/USD')
+  const data = await res.json()
+  return Object.fromEntries(KEYS.map(k => [k, data.rates[k]]))
 }
 
 async function callAI(prompt) {
@@ -29,71 +39,64 @@ async function callAI(prompt) {
   return data.choices[0].message.content
 }
 
-function useSimulatedRates() {
-  const [rates, setRates] = useState(() => {
-    const out = {}
-    for (const [cur, info] of Object.entries(BASE_RATES)) {
-      out[cur] = { ...info, currentRate: info.rate, change: 0 }
-    }
-    return out
-  })
-
-  useEffect(() => {
-    const tick = () => {
-      setRates(prev => {
-        const next = {}
-        for (const [cur, info] of Object.entries(prev)) {
-          const drift = (Math.random() - 0.5) * 0.003
-          const newRate = +(info.currentRate * (1 + drift)).toFixed(cur === 'NGN' ? 1 : 4)
-          const change = +((newRate - BASE_RATES[cur].rate) / BASE_RATES[cur].rate * 100).toFixed(3)
-          next[cur] = { ...info, currentRate: newRate, change }
-        }
-        return next
-      })
-    }
-    const id = setInterval(tick, 30000)
-    return () => clearInterval(id)
-  }, [])
-
-  return rates
-}
-
-function Countdown() {
-  const [secs, setSecs] = useState(30)
-  useEffect(() => {
-    const id = setInterval(() => setSecs(s => s <= 1 ? 30 : s - 1), 1000)
-    return () => clearInterval(id)
-  }, [])
-  return <span style={{ fontSize: '12px', color: 'var(--text-muted)', fontVariantNumeric: 'tabular-nums' }}>Updates in {secs}s</span>
+function timeAgo(ts) {
+  if (!ts) return null
+  const mins = Math.floor((Date.now() - ts) / 60000)
+  if (mins < 1) return 'just now'
+  if (mins === 1) return '1 min ago'
+  return `${mins} min ago`
 }
 
 export default function Remittance() {
-  const rates = useSimulatedRates()
+  const [rates, setRates] = useState(() =>
+    Object.fromEntries(KEYS.map(k => [k, { ...BASE_RATES[k], currentRate: BASE_RATES[k].fallback }]))
+  )
+  const [lastUpdated, setLastUpdated] = useState(null)
+  const [stale, setStale] = useState(false)
+  const [, tick] = useState(0)
+
   const [amount, setAmount] = useState('200')
   const [selected, setSelected] = useState('PKR')
   const [aiTip, setAiTip] = useState('')
   const [aiLoading, setAiLoading] = useState(false)
   const [tipLoaded, setTipLoaded] = useState(false)
 
+  useEffect(() => {
+    async function load() {
+      try {
+        const fresh = await fetchRates()
+        setRates(prev =>
+          Object.fromEntries(KEYS.map(k => [k, { ...prev[k], currentRate: fresh[k] }]))
+        )
+        setLastUpdated(Date.now())
+        setStale(false)
+      } catch {
+        setStale(true)
+      }
+    }
+    load()
+    const apiId = setInterval(load, 60 * 60 * 1000)
+    const clockId = setInterval(() => tick(n => n + 1), 60000)
+    return () => { clearInterval(apiId); clearInterval(clockId) }
+  }, [])
+
   const amountNum = parseFloat(amount) || 0
+  const cur = rates[selected]
 
   async function getAiTip() {
     if (tipLoaded) return
     setTipLoaded(true)
     setAiLoading(true)
-    const currentRate = rates[selected]?.currentRate?.toFixed(selected === 'NGN' ? 1 : 2)
-    const prompt = `I want to send money home. Current USD/${selected} rate is ${currentRate}. Give me remittance timing advice in 2-3 sentences.`
+    const rate = cur?.currentRate?.toFixed(selected === 'NGN' ? 0 : 2)
+    const prompt = `I want to send money home. Current USD/${selected} rate is ${rate}. Give me remittance timing advice in 2-3 sentences.`
     try {
-      const tip = await callAI(prompt)
-      setAiTip(tip)
+      setAiTip(await callAI(prompt))
     } catch {
       setAiTip('AI advice temporarily unavailable')
     } finally {
       setAiLoading(false)
     }
   }
-
-  const cur = rates[selected]
 
   return (
     <main className="page-enter" style={{ paddingBottom: '80px', width: '100%', overflowX: 'hidden', boxSizing: 'border-box' }}>
@@ -102,22 +105,34 @@ export default function Remittance() {
           <div style={{ marginBottom: '10px' }}>
             <Link to="/finance" style={{ fontSize: '13px', color: 'var(--text-secondary)', textDecoration: 'none' }}>← Finance</Link>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
+          <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
                 <span style={{ fontSize: '28px' }}>💸</span>
                 <h1 style={{ fontSize: '28px', fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>Remittance Calculator</h1>
               </div>
               <p style={{ fontSize: '15px', color: 'var(--text-secondary)' }}>
-                Live USD rates to PKR, INR, BDT, NGN, PHP — updated every 30 seconds.
+                Live USD rates to PKR, INR, BDT, NGN, PHP, EGP, LKR — from ExchangeRate-API.
               </p>
             </div>
-            <Countdown />
+            <div style={{ textAlign: 'right', flexShrink: 0 }}>
+              {lastUpdated
+                ? <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Updated {timeAgo(lastUpdated)}</div>
+                : <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Loading rates…</div>}
+              <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '2px' }}>ExchangeRate-API</div>
+            </div>
           </div>
         </div>
       </div>
 
       <div className="finance-container" style={container}>
+        {stale && (
+          <div style={{ background: '#FEF3C7', border: '1px solid #FCD34D', borderRadius: '10px', padding: '10px 16px', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{ fontSize: '16px' }}>⚠️</span>
+            <span style={{ fontSize: '13px', color: '#92400E', fontWeight: 500 }}>Rates may be outdated — could not reach ExchangeRate-API. Showing last known rates.</span>
+          </div>
+        )}
+
         <div className="finance-two-col" style={{ display: 'grid', gridTemplateColumns: '340px 1fr', gap: '24px', alignItems: 'start' }}>
 
           {/* Left: Input */}
@@ -137,6 +152,7 @@ export default function Remittance() {
                       border: '1px solid var(--border)', borderRadius: '10px',
                       fontSize: '24px', fontWeight: 800, color: 'var(--text-primary)',
                       background: 'var(--input-bg)', fontFamily: 'Inter, sans-serif',
+                      boxSizing: 'border-box',
                     }}
                     onFocus={e => e.target.style.borderColor = '#1B4FD8'}
                     onBlur={e => e.target.style.borderColor = 'var(--border)'}
@@ -157,17 +173,17 @@ export default function Remittance() {
               </div>
             </div>
 
-            {/* Currency tabs */}
+            {/* Currency selector */}
             <div style={card}>
               <div style={sectionLabel}>Send to</div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                {Object.entries(rates).map(([cur, info]) => {
+                {Object.entries(rates).map(([code, info]) => {
                   const received = (amountNum * info.currentRate).toLocaleString(undefined, { maximumFractionDigits: 0 })
-                  const isSelected = selected === cur
+                  const isSelected = selected === code
                   return (
                     <button
-                      key={cur}
-                      onClick={() => { setSelected(cur); setTipLoaded(false); setAiTip('') }}
+                      key={code}
+                      onClick={() => { setSelected(code); setTipLoaded(false); setAiTip('') }}
                       style={{
                         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                         padding: '10px 12px', borderRadius: '10px', border: 'none', cursor: 'pointer',
@@ -178,14 +194,14 @@ export default function Remittance() {
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                         <span style={{ fontSize: '20px' }}>{info.flag}</span>
                         <div style={{ textAlign: 'left' }}>
-                          <div style={{ fontSize: '14px', fontWeight: 600, color: isSelected ? 'var(--accent)' : 'var(--text-primary)' }}>{cur}</div>
+                          <div style={{ fontSize: '14px', fontWeight: 600, color: isSelected ? 'var(--accent)' : 'var(--text-primary)' }}>{code}</div>
                           <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>{info.country}</div>
                         </div>
                       </div>
                       <div style={{ textAlign: 'right' }}>
                         <div style={{ fontSize: '14px', fontWeight: 700, color: isSelected ? 'var(--accent)' : 'var(--text-primary)' }}>{received}</div>
-                        <div style={{ fontSize: '11px', color: info.change >= 0 ? '#16A34A' : '#DC2626' }}>
-                          {info.change >= 0 ? '▲' : '▼'} {Math.abs(info.change).toFixed(3)}%
+                        <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
+                          {info.currentRate.toFixed(code === 'NGN' ? 0 : 2)} / USD
                         </div>
                       </div>
                     </button>
@@ -195,7 +211,7 @@ export default function Remittance() {
             </div>
           </div>
 
-          {/* Right: Result + AI */}
+          {/* Right: Result + table + AI */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             {/* Hero result */}
             <div style={{ ...card, background: 'var(--accent-light)', border: '1px solid rgba(27,79,216,0.15)', textAlign: 'center', padding: '36px 24px' }}>
@@ -209,7 +225,7 @@ export default function Remittance() {
                 {rates[selected]?.flag} {selected} · {rates[selected]?.name}
               </div>
               <div style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
-                Rate: 1 USD = {cur?.currentRate?.toFixed(selected === 'NGN' ? 1 : 2)} {selected}
+                1 USD = {cur?.currentRate?.toFixed(selected === 'NGN' ? 0 : 4)} {selected}
               </div>
             </div>
 
@@ -217,29 +233,33 @@ export default function Remittance() {
             <div style={{ ...card, padding: 0, overflow: 'hidden' }}>
               <div style={{ padding: '16px 20px', borderBottom: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)' }}>All Currencies · ${amountNum} USD</span>
-                <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Live simulated rates</span>
+                <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
+                  {lastUpdated ? `Updated ${timeAgo(lastUpdated)}` : 'Loading…'}
+                </span>
               </div>
-              {Object.entries(rates).map(([cur, info], i, arr) => {
+              {Object.entries(rates).map(([code, info], i, arr) => {
                 const received = (amountNum * info.currentRate).toLocaleString(undefined, { maximumFractionDigits: 0 })
                 return (
                   <div
-                    key={cur}
+                    key={code}
                     style={{
                       display: 'flex', alignItems: 'center', padding: '14px 20px',
                       borderBottom: i < arr.length - 1 ? '1px solid var(--border)' : 'none',
-                      background: selected === cur ? 'var(--accent-light)' : 'transparent',
+                      background: selected === code ? 'var(--accent-light)' : 'transparent',
                     }}
                   >
-                    <span style={{ fontSize: '20px', marginRight: '12px' }}>{info.flag}</span>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)' }}>{cur} <span style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: 400 }}>· {info.name}</span></div>
-                      <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Rate: {info.currentRate.toFixed(cur === 'NGN' ? 1 : 2)}</div>
-                    </div>
-                    <div style={{ textAlign: 'right' }}>
-                      <div style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-primary)' }}>{received}</div>
-                      <div style={{ fontSize: '11px', color: info.change >= 0 ? '#16A34A' : '#DC2626', fontWeight: 500 }}>
-                        {info.change >= 0 ? '▲' : '▼'} {Math.abs(info.change).toFixed(3)}%
+                    <span style={{ fontSize: '20px', marginRight: '12px', flexShrink: 0 }}>{info.flag}</span>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        {code} <span style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: 400 }}>· {info.name}</span>
                       </div>
+                      <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
+                        1 USD = {info.currentRate.toFixed(code === 'NGN' ? 0 : 4)}
+                      </div>
+                    </div>
+                    <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                      <div style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-primary)' }}>{received}</div>
+                      <div style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 500 }}>{code}</div>
                     </div>
                   </div>
                 )
