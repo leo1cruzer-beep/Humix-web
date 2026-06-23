@@ -1,9 +1,5 @@
 import { useState } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
-import ContentWriter from '../screens/creative/ContentWriter.jsx'
-import SocialMediaPack from '../screens/creative/SocialMediaPack.jsx'
-import EmailCampaign from '../screens/creative/EmailCampaign.jsx'
-import BrandVoice from '../screens/creative/BrandVoice.jsx'
+import { useNavigate } from 'react-router-dom'
 
 const TOOLS = [
   {
@@ -15,7 +11,7 @@ const TOOLS = [
     badgeClass: 'badge-blue',
   },
   {
-    id: 'social-pack',
+    id: 'social',
     title: 'Social Media Pack',
     desc: 'One product, 5 platforms. Get a complete content pack for Twitter, LinkedIn, Instagram, Facebook, and TikTok in one shot.',
     icon: '📱',
@@ -31,16 +27,16 @@ const TOOLS = [
     badgeClass: 'badge-amber',
   },
   {
-    id: 'brand-voice',
+    id: 'brand',
     title: 'Brand Voice Creator',
-    desc: 'Personality traits, taglines, vocabulary guide, and messaging do\'s and don\'ts. Give your brand a consistent voice.',
+    desc: "Personality traits, taglines, vocabulary guide, and messaging do's and don'ts. Give your brand a consistent voice.",
     icon: '🎙️',
     badge: 'Branding',
     badgeClass: 'badge-blue',
   },
 ]
 
-function CreativeHome() {
+export default function CreativePage() {
   const navigate = useNavigate()
   const [hov, setHov] = useState(null)
 
@@ -63,31 +59,31 @@ function CreativeHome() {
           4 tools available
         </p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '16px' }}>
-          {TOOLS.map(tool => (
+          {TOOLS.map(t => (
             <button
-              key={tool.id}
-              onClick={() => navigate(`/creative/${tool.id}`)}
-              onMouseEnter={() => setHov(tool.id)}
+              key={t.id}
+              onClick={() => navigate(`/creative/${t.id}`)}
+              onMouseEnter={() => setHov(t.id)}
               onMouseLeave={() => setHov(null)}
               style={{
                 background: 'var(--bg-card)',
-                border: `1px solid ${hov === tool.id ? 'var(--accent)' : 'var(--border)'}`,
+                border: `1px solid ${hov === t.id ? 'var(--accent)' : 'var(--border)'}`,
                 borderRadius: '16px', padding: '24px', cursor: 'pointer',
                 textAlign: 'left', transition: 'all 0.18s ease',
-                boxShadow: hov === tool.id ? 'var(--shadow-hover)' : 'none',
-                transform: hov === tool.id ? 'translateY(-2px)' : 'none',
+                boxShadow: hov === t.id ? 'var(--shadow-hover)' : 'none',
+                transform: hov === t.id ? 'translateY(-2px)' : 'none',
                 display: 'flex', flexDirection: 'column', gap: '12px',
               }}
             >
               <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '12px' }}>
                 <div style={{ width: '44px', height: '44px', borderRadius: '12px', background: 'var(--accent-light)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '22px', flexShrink: 0 }}>
-                  {tool.icon}
+                  {t.icon}
                 </div>
-                <span className={`badge ${tool.badgeClass}`} style={{ fontSize: '11px', flexShrink: 0 }}>{tool.badge}</span>
+                <span className={`badge ${t.badgeClass}`} style={{ fontSize: '11px', flexShrink: 0 }}>{t.badge}</span>
               </div>
               <div>
-                <div className="card-title" style={{ marginBottom: '6px' }}>{tool.title}</div>
-                <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: 1.55 }}>{tool.desc}</p>
+                <div className="card-title" style={{ marginBottom: '6px' }}>{t.title}</div>
+                <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: 1.55 }}>{t.desc}</p>
               </div>
               <div style={{ marginTop: 'auto', paddingTop: '4px' }}>
                 <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--accent)' }}>Open tool →</span>
@@ -108,17 +104,6 @@ function CreativeHome() {
       </div>
     </main>
   )
-}
-
-export default function CreativePage() {
-  const { tool } = useParams()
-  switch (tool) {
-    case 'content':     return <ContentWriter />
-    case 'social-pack': return <SocialMediaPack />
-    case 'email':       return <EmailCampaign />
-    case 'brand-voice': return <BrandVoice />
-    default:            return <CreativeHome />
-  }
 }
 
 const container = { width: '100%', maxWidth: '1200px', margin: '0 auto', padding: '0 24px', boxSizing: 'border-box' }

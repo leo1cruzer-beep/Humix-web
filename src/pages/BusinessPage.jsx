@@ -1,9 +1,5 @@
 import { useState } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
-import BusinessPlan from '../screens/business/BusinessPlan.jsx'
-import PitchDeck from '../screens/business/PitchDeck.jsx'
-import NameGenerator from '../screens/business/NameGenerator.jsx'
-import MarketResearch from '../screens/business/MarketResearch.jsx'
+import { useNavigate } from 'react-router-dom'
 
 const TOOLS = [
   {
@@ -23,7 +19,7 @@ const TOOLS = [
     badgeClass: 'badge-green',
   },
   {
-    id: 'name',
+    id: 'names',
     title: 'Business Name Generator',
     desc: '10 unique name ideas with domain availability assessment, trademark risk, and a top recommendation from the AI.',
     icon: '💡',
@@ -31,7 +27,7 @@ const TOOLS = [
     badgeClass: 'badge-amber',
   },
   {
-    id: 'research',
+    id: 'market',
     title: 'Market Research Assistant',
     desc: 'Market size, top competitors, customer segments, key opportunities, and a tailored entry strategy for any industry and country.',
     icon: '🔍',
@@ -40,7 +36,7 @@ const TOOLS = [
   },
 ]
 
-function BusinessHome() {
+export default function BusinessPage() {
   const navigate = useNavigate()
   const [hov, setHov] = useState(null)
 
@@ -63,31 +59,31 @@ function BusinessHome() {
           4 tools available
         </p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '16px' }}>
-          {TOOLS.map(tool => (
+          {TOOLS.map(t => (
             <button
-              key={tool.id}
-              onClick={() => navigate(`/business/${tool.id}`)}
-              onMouseEnter={() => setHov(tool.id)}
+              key={t.id}
+              onClick={() => navigate(`/business/${t.id}`)}
+              onMouseEnter={() => setHov(t.id)}
               onMouseLeave={() => setHov(null)}
               style={{
                 background: 'var(--bg-card)',
-                border: `1px solid ${hov === tool.id ? 'var(--accent)' : 'var(--border)'}`,
+                border: `1px solid ${hov === t.id ? 'var(--accent)' : 'var(--border)'}`,
                 borderRadius: '16px', padding: '24px', cursor: 'pointer',
                 textAlign: 'left', transition: 'all 0.18s ease',
-                boxShadow: hov === tool.id ? 'var(--shadow-hover)' : 'none',
-                transform: hov === tool.id ? 'translateY(-2px)' : 'none',
+                boxShadow: hov === t.id ? 'var(--shadow-hover)' : 'none',
+                transform: hov === t.id ? 'translateY(-2px)' : 'none',
                 display: 'flex', flexDirection: 'column', gap: '12px',
               }}
             >
               <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '12px' }}>
                 <div style={{ width: '44px', height: '44px', borderRadius: '12px', background: 'var(--accent-light)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '22px', flexShrink: 0 }}>
-                  {tool.icon}
+                  {t.icon}
                 </div>
-                <span className={`badge ${tool.badgeClass}`} style={{ fontSize: '11px', flexShrink: 0 }}>{tool.badge}</span>
+                <span className={`badge ${t.badgeClass}`} style={{ fontSize: '11px', flexShrink: 0 }}>{t.badge}</span>
               </div>
               <div>
-                <div className="card-title" style={{ marginBottom: '6px' }}>{tool.title}</div>
-                <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: 1.55 }}>{tool.desc}</p>
+                <div className="card-title" style={{ marginBottom: '6px' }}>{t.title}</div>
+                <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: 1.55 }}>{t.desc}</p>
               </div>
               <div style={{ marginTop: 'auto', paddingTop: '4px' }}>
                 <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--accent)' }}>Open tool →</span>
@@ -108,17 +104,6 @@ function BusinessHome() {
       </div>
     </main>
   )
-}
-
-export default function BusinessPage() {
-  const { tool } = useParams()
-  switch (tool) {
-    case 'plan':     return <BusinessPlan />
-    case 'pitch':    return <PitchDeck />
-    case 'name':     return <NameGenerator />
-    case 'research': return <MarketResearch />
-    default:         return <BusinessHome />
-  }
 }
 
 const container = { width: '100%', maxWidth: '1200px', margin: '0 auto', padding: '0 24px', boxSizing: 'border-box' }
