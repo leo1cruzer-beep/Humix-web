@@ -54,7 +54,7 @@ function LineItems({ items, setItems, color, addLabel }) {
               placeholder="Label"
               style={{ ...inputStyle, flex: 1 }}
             />
-            <div style={{ position: 'relative', width: '120px' }}>
+            <div style={{ position: 'relative', width: '120px', flexShrink: 0 }}>
               <span style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', fontSize: '13px', color: 'var(--text-secondary)', fontWeight: 600 }}>$</span>
               <input
                 value={item.amount}
@@ -243,5 +243,5 @@ const inputStyle = {
   border: '1px solid var(--border)', borderRadius: '8px',
   fontSize: '16px', color: 'var(--text-primary)',
   background: 'var(--input-bg)', fontFamily: 'Inter, sans-serif',
-  outline: 'none',
+  outline: 'none', minWidth: '0',
 }

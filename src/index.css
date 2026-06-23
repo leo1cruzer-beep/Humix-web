@@ -16,7 +16,7 @@ body {
 }
 a { text-decoration: none; color: inherit; }
 button { font-family: inherit; cursor: pointer; border: none; outline: none; background: none; }
-input, textarea, select { font-family: inherit; outline: none; font-size: 16px; }
+input, textarea, select { font-family: inherit; outline: none; font-size: 16px !important; touch-action: manipulation; }
 img { max-width: 100%; display: block; }
 ul { list-style: none; }
 
