@@ -1,46 +1,46 @@
 import { useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import Resume from '../screens/career/Resume.jsx'
-import CoverLetter from '../screens/career/CoverLetter.jsx'
-import InterviewPrep from '../screens/career/InterviewPrep.jsx'
-import SalaryInsights from '../screens/career/SalaryInsights.jsx'
+import BusinessPlan from '../screens/business/BusinessPlan.jsx'
+import PitchDeck from '../screens/business/PitchDeck.jsx'
+import NameGenerator from '../screens/business/NameGenerator.jsx'
+import MarketResearch from '../screens/business/MarketResearch.jsx'
 
 const TOOLS = [
   {
-    id: 'resume',
-    title: 'AI Resume Builder',
-    desc: 'Enter your job title, skills, experience, and target country — get a complete professional resume with tailored sections in seconds.',
-    icon: '📄',
-    badge: 'Most popular',
+    id: 'plan',
+    title: 'Business Plan Generator',
+    desc: 'Full business plan with executive summary, market analysis, revenue model, 3-year financials, and a 90-day launch roadmap.',
+    icon: '📋',
+    badge: 'Investor-ready',
     badgeClass: 'badge-blue',
   },
   {
-    id: 'cover-letter',
-    title: 'Cover Letter Generator',
-    desc: 'Company-specific cover letters that hook hiring managers. Enter the job title, company name, and your background.',
-    icon: '✉️',
-    badge: 'AI-powered',
+    id: 'pitch',
+    title: 'Pitch Deck Outline',
+    desc: '10-slide pitch deck with specific content suggestions for every slide, plus the 5 hardest investor questions with answers.',
+    icon: '🎨',
+    badge: 'Fundraising',
     badgeClass: 'badge-green',
   },
   {
-    id: 'interview',
-    title: 'Interview Prep',
-    desc: 'Get the top 10 most likely interview questions for any role with strong sample answers using the STAR method.',
-    icon: '🎯',
-    badge: 'Walk in ready',
+    id: 'name',
+    title: 'Business Name Generator',
+    desc: '10 unique name ideas with domain availability assessment, trademark risk, and a top recommendation from the AI.',
+    icon: '💡',
+    badge: 'Branding',
     badgeClass: 'badge-amber',
   },
   {
-    id: 'salary',
-    title: 'Salary Insights',
-    desc: 'Realistic salary ranges by level, top-paying companies, and negotiation scripts tailored to your role and country.',
-    icon: '💰',
-    badge: 'Negotiate better',
+    id: 'research',
+    title: 'Market Research Assistant',
+    desc: 'Market size, top competitors, customer segments, key opportunities, and a tailored entry strategy for any industry and country.',
+    icon: '🔍',
+    badge: 'Data-driven',
     badgeClass: 'badge-blue',
   },
 ]
 
-function CareerHome() {
+function BusinessHome() {
   const navigate = useNavigate()
   const [hov, setHov] = useState(null)
 
@@ -49,11 +49,11 @@ function CareerHome() {
       <div style={{ background: 'var(--bg-card)', borderBottom: '1px solid var(--border)', padding: '48px 0 40px', marginBottom: '48px' }}>
         <div style={container}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
-            <span className="badge badge-blue">Career</span>
+            <span className="badge badge-blue">Business</span>
           </div>
-          <h1 className="page-title" style={{ marginBottom: '10px' }}>Career Tools</h1>
+          <h1 className="page-title" style={{ marginBottom: '10px' }}>Business Tools</h1>
           <p style={{ fontSize: '17px', color: 'var(--text-secondary)', maxWidth: '520px' }}>
-            AI tools for every stage of your job search — resume, cover letter, interview prep, and salary negotiation.
+            From idea to investor pitch — AI tools for business planning, naming, market research, and fundraising.
           </p>
         </div>
       </div>
@@ -66,7 +66,7 @@ function CareerHome() {
           {TOOLS.map(tool => (
             <button
               key={tool.id}
-              onClick={() => navigate(`/career/${tool.id}`)}
+              onClick={() => navigate(`/business/${tool.id}`)}
               onMouseEnter={() => setHov(tool.id)}
               onMouseLeave={() => setHov(null)}
               style={{
@@ -101,7 +101,7 @@ function CareerHome() {
           <div>
             <div style={{ fontWeight: 600, fontSize: '14px', color: 'var(--accent)', marginBottom: '4px' }}>Powered by DeepSeek AI</div>
             <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
-              Every tool generates role-specific, personalized output — not generic templates. Your data stays in your browser session only.
+              All outputs are specific to your business, market, and country — not generic templates. Great starting point for real planning.
             </p>
           </div>
         </div>
@@ -110,14 +110,14 @@ function CareerHome() {
   )
 }
 
-export default function CareerPage() {
+export default function BusinessPage() {
   const { tool } = useParams()
   switch (tool) {
-    case 'resume':       return <Resume />
-    case 'cover-letter': return <CoverLetter />
-    case 'interview':    return <InterviewPrep />
-    case 'salary':       return <SalaryInsights />
-    default:             return <CareerHome />
+    case 'plan':     return <BusinessPlan />
+    case 'pitch':    return <PitchDeck />
+    case 'name':     return <NameGenerator />
+    case 'research': return <MarketResearch />
+    default:         return <BusinessHome />
   }
 }
 

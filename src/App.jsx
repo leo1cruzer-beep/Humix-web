@@ -10,6 +10,8 @@ import CommunityPage from './pages/CommunityPage.jsx';
 import CareerPage from './pages/CareerPage.jsx';
 import LifeAssistantPage from './pages/LifeAssistantPage.jsx';
 import FinancePage from './pages/FinancePage.jsx';
+import BusinessPage from './pages/BusinessPage.jsx';
+import CreativePage from './pages/CreativePage.jsx';
 import NotFoundPage from './pages/NotFoundPage.jsx';
 
 const scrollCache = new Map();
@@ -66,9 +68,14 @@ export default function App() {
             <Route path="/services"       element={<ServicesPage />} />
             <Route path="/pricing"        element={<PricingPage />} />
             <Route path="/community"      element={<CommunityPage />} />
-            <Route path="/career"         element={<CareerPage />} />
+            <Route path="/career"           element={<CareerPage />} />
+            <Route path="/career/:tool"   element={<CareerPage />} />
             <Route path="/finance"        element={<FinancePage />} />
             <Route path="/finance/:tool"  element={<FinancePage />} />
+            <Route path="/business"       element={<BusinessPage />} />
+            <Route path="/business/:tool" element={<BusinessPage />} />
+            <Route path="/creative"       element={<CreativePage />} />
+            <Route path="/creative/:tool" element={<CreativePage />} />
             <Route path="*"               element={<NotFoundPage />} />
           </Routes>
         </div>
