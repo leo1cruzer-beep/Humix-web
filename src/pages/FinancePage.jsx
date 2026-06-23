@@ -3,7 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom'
 import DebtFreedom from '../screens/clarity/DebtFreedom.jsx'
 import WealthBuilder from '../screens/clarity/WealthBuilder.jsx'
 import Budget from '../screens/clarity/Budget.jsx'
-import Remittance from '../screens/clarity/Remittance.jsx'
+import RemittanceOptimizer from '../screens/clarity/RemittanceOptimizer.jsx'
 import Markets from '../screens/clarity/Markets.jsx'
 
 const TOOLS = [
@@ -33,8 +33,8 @@ const TOOLS = [
   },
   {
     id: 'remittance',
-    title: 'Remittance Calculator',
-    desc: 'Live rates for USD → PKR, INR, BDT, NGN, PHP. Compare providers and get AI timing advice.',
+    title: 'Remittance Optimizer',
+    desc: 'Compare Western Union, Wise, Remitly and more with live rates. AI picks the best service and shows exact savings.',
     icon: '💸',
     badge: 'Live rates',
     badgeClass: 'badge-blue',
@@ -162,7 +162,7 @@ export default function FinancePage() {
     case 'debt':       return <DebtFreedom />
     case 'wealth':     return <WealthBuilder />
     case 'budget':     return <Budget />
-    case 'remittance': return <Remittance />
+    case 'remittance': return <RemittanceOptimizer />
     case 'markets':    return <Markets />
     default:           return <FinanceHome />
   }
