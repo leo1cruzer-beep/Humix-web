@@ -574,3 +574,17 @@ ul { list-style: none; }
 [data-theme="dark"] .legal-modal h2 {
   color: var(--text-primary) !important;
 }
+
+/* ─── Finance pages responsive ──────────────────────────────── */
+@media (max-width: 900px) {
+  .finance-two-col { grid-template-columns: 1fr !important; }
+}
+@media (max-width: 768px) {
+  .finance-container { padding: 0 16px !important; }
+  .finance-header { padding: 24px 16px 20px !important; }
+  .finance-card-grid { grid-template-columns: 1fr !important; }
+  .finance-stats-row { grid-template-columns: repeat(2, 1fr) !important; }
+  .finance-snap-row { grid-template-columns: repeat(2, 1fr) !important; }
+  .finance-market-stats { grid-template-columns: repeat(2, 1fr) !important; }
+  .finance-market-layout { grid-template-columns: 1fr !important; }
+}

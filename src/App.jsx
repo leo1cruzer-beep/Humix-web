@@ -43,16 +43,12 @@ function ScrollRestorer() {
 
 export default function App() {
   const { pathname } = useLocation();
-  const isStandalone = pathname === '/life-assistant' || pathname.startsWith('/finance');
-
-  if (isStandalone) {
+  if (pathname === '/life-assistant') {
     return (
       <>
         <ScrollRestorer />
         <Routes>
           <Route path="/life-assistant" element={<LifeAssistantPage />} />
-          <Route path="/finance" element={<FinancePage />} />
-          <Route path="/finance/:tool" element={<FinancePage />} />
         </Routes>
       </>
     );
@@ -65,13 +61,15 @@ export default function App() {
         <Navbar />
         <div style={{ flex: 1 }}>
           <Routes>
-            <Route path="/"          element={<HomePage />} />
-            <Route path="/explore"   element={<ExplorePage />} />
-            <Route path="/services"  element={<ServicesPage />} />
-            <Route path="/pricing"   element={<PricingPage />} />
-            <Route path="/community" element={<CommunityPage />} />
-            <Route path="/career"    element={<CareerPage />} />
-            <Route path="*"          element={<NotFoundPage />} />
+            <Route path="/"               element={<HomePage />} />
+            <Route path="/explore"        element={<ExplorePage />} />
+            <Route path="/services"       element={<ServicesPage />} />
+            <Route path="/pricing"        element={<PricingPage />} />
+            <Route path="/community"      element={<CommunityPage />} />
+            <Route path="/career"         element={<CareerPage />} />
+            <Route path="/finance"        element={<FinancePage />} />
+            <Route path="/finance/:tool"  element={<FinancePage />} />
+            <Route path="*"               element={<NotFoundPage />} />
           </Routes>
         </div>
         <Footer />

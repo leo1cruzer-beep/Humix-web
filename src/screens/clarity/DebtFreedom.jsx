@@ -1,356 +1,291 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 const CURRENCIES = {
-  QAR: { code: 'QAR', symbol: 'QAR', name: 'Qatari Riyal', flag: '🇶🇦' },
-  AED: { code: 'AED', symbol: 'AED', name: 'UAE Dirham', flag: '🇦🇪' },
-  SAR: { code: 'SAR', symbol: 'SAR', name: 'Saudi Riyal', flag: '🇸🇦' },
-  USD: { code: 'USD', symbol: '$', name: 'US Dollar', flag: '🇺🇸' },
-  PKR: { code: 'PKR', symbol: 'PKR', name: 'Pakistani Rupee', flag: '🇵🇰' },
+  USD: { code: 'USD', symbol: '$',   name: 'US Dollar',        flag: '🇺🇸' },
+  QAR: { code: 'QAR', symbol: 'QAR', name: 'Qatari Riyal',     flag: '🇶🇦' },
+  AED: { code: 'AED', symbol: 'AED', name: 'UAE Dirham',        flag: '🇦🇪' },
+  SAR: { code: 'SAR', symbol: 'SAR', name: 'Saudi Riyal',       flag: '🇸🇦' },
+  PKR: { code: 'PKR', symbol: 'PKR', name: 'Pakistani Rupee',   flag: '🇵🇰' },
 }
 
-const COLOR = '#ef4444'
-const GREEN = '#059669'
-const PURPLE = '#7C3AED'
-
-function useCountUp(target, duration = 900) {
-  const [val, setVal] = useState(0)
-  useEffect(() => {
-    const start = Date.now()
-    const tick = () => {
-      const p = Math.min((Date.now() - start) / duration, 1)
-      setVal(Math.round(target * (1 - Math.pow(1 - p, 3))))
-      if (p < 1) requestAnimationFrame(tick)
-    }
-    requestAnimationFrame(tick)
-  }, [target, duration])
-  return val
+async function callAI(content) {
+  const sessionId = `finance-debt-${Date.now()}`
+  const res = await fetch('/api/proxy/api/chat/message', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ sessionId, content }),
+  })
+  const data = await res.json()
+  return data?.message || data?.content || data?.response || JSON.stringify(data)
 }
 
-function AnimatedBar({ pct, color, delay = 0 }) {
-  const [width, setWidth] = useState(0)
-  useEffect(() => {
-    const t = setTimeout(() => setWidth(Math.min(pct, 100)), delay + 100)
-    return () => clearTimeout(t)
-  }, [pct, delay])
+function fmt(sym, n) {
+  const num = Math.round(n).toLocaleString()
+  return sym === '$' ? `$${num}` : `${sym} ${num}`
+}
+
+function freeDate(months) {
+  const d = new Date()
+  d.setMonth(d.getMonth() + months)
+  return d.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+}
+
+function ProgressBar({ pct }) {
   return (
-    <div style={{ background: 'var(--border)', borderRadius: 99, height: 8, overflow: 'hidden' }}>
+    <div style={{ background: 'var(--border)', borderRadius: 99, height: 8, overflow: 'hidden', marginTop: 8 }}>
       <div style={{
-        height: '100%', background: color, borderRadius: 99,
-        width: `${width}%`, transition: 'width 1.1s cubic-bezier(0.4,0,0.2,1)'
+        height: '100%', borderRadius: 99,
+        background: 'var(--accent)',
+        width: `${Math.min(pct, 100)}%`,
+        transition: 'width 0.8s ease',
       }} />
     </div>
   )
 }
 
-function Countdown({ targetDate }) {
-  const [timeLeft, setTimeLeft] = useState({})
-  useEffect(() => {
-    const calc = () => {
-      const diff = new Date(targetDate) - new Date()
-      if (diff <= 0) return setTimeLeft({ years: 0, months: 0, days: 0 })
-      const years = Math.floor(diff / (365.25 * 24 * 3600 * 1000))
-      const months = Math.floor((diff % (365.25 * 24 * 3600 * 1000)) / (30.44 * 24 * 3600 * 1000))
-      const days = Math.floor((diff % (30.44 * 24 * 3600 * 1000)) / (24 * 3600 * 1000))
-      setTimeLeft({ years, months, days })
-    }
-    calc()
-    const id = setInterval(calc, 60000)
-    return () => clearInterval(id)
-  }, [targetDate])
-  return (
-    <div style={{ display: 'flex', gap: 10, justifyContent: 'center', marginTop: 18 }}>
-      {[
-        { val: timeLeft.years, label: 'Years' },
-        { val: timeLeft.months, label: 'Months' },
-        { val: timeLeft.days, label: 'Days' },
-      ].map(({ val, label }) => (
-        <div key={label} style={{
-          flex: 1, textAlign: 'center',
-          background: 'rgba(255,255,255,0.15)',
-          borderRadius: 12, padding: '12px 6px',
-          border: '1px solid rgba(255,255,255,0.25)'
-        }}>
-          <div style={{ fontSize: 26, fontWeight: 800, color: '#fff', fontVariantNumeric: 'tabular-nums' }}>
-            {val ?? '--'}
-          </div>
-          <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.75)', marginTop: 2, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-            {label}
-          </div>
-        </div>
-      ))}
-    </div>
-  )
-}
-
-function calcFajr(salary, expenses, extraIncome, debt) {
-  const savings = salary - expenses + extraIncome
-  if (savings <= 0 || debt <= 0) return null
-  const months = Math.ceil(debt / savings)
-  const d = new Date()
-  d.setMonth(d.getMonth() + months)
-  return { date: d, months, savings }
-}
-
-export default function DebtFreedom({ onBack }) {
+export default function DebtFreedom() {
   const [currency, setCurrency] = useState('USD')
-  const [salary, setSalary] = useState('5000')
-  const [expenses, setExpenses] = useState('3500')
-  const [extraIncome, setExtraIncome] = useState('0')
-  const [debt, setDebt] = useState('23500')
+  const [salary, setSalary] = useState('')
+  const [expenses, setExpenses] = useState('')
+  const [debt, setDebt] = useState('')
+  const [result, setResult] = useState(null)
+  const [aiAdvice, setAiAdvice] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [aiLoading, setAiLoading] = useState(false)
+  const [error, setError] = useState('')
 
   const cur = CURRENCIES[currency]
-  const salaryNum = parseFloat(salary) || 0
-  const expensesNum = parseFloat(expenses) || 0
-  const extraNum = parseFloat(extraIncome) || 0
-  const debtNum = parseFloat(debt) || 0
 
-  const result = calcFajr(salaryNum, expensesNum, extraNum, debtNum)
-  const monthlySavings = result?.savings ?? Math.max(salaryNum - expensesNum + extraNum, 0)
-  const expensesExceed = salaryNum > 0 && (salaryNum - expensesNum + extraNum) <= 0
+  async function calculate() {
+    setError('')
+    const s = parseFloat(salary) || 0
+    const e = parseFloat(expenses) || 0
+    const d = parseFloat(debt) || 0
 
-  const freedomDateStr = result?.date
-    ? result.date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
-    : null
+    if (!s || !d) { setError('Please enter salary and total debt.'); return }
+    if (s <= e) { setError('Salary must be greater than expenses.'); return }
 
-  const animSavings = useCountUp(monthlySavings)
-  const animDebt = useCountUp(debtNum)
+    const monthlySavings = s - e
+    const months = Math.ceil(d / monthlySavings)
+    const freedomDate = freeDate(months)
+    const pct = Math.min((monthlySavings / d) * 100 * 12, 100)
 
-  const sym = cur.symbol
+    setResult({ s, e, d, monthlySavings, months, freedomDate, pct })
+    setAiAdvice('')
+    setLoading(false)
 
-  function fmt(n) {
-    return sym === '$'
-      ? `$${n.toLocaleString()}`
-      : `${sym} ${n.toLocaleString()}`
+    // AI call
+    setAiLoading(true)
+    const prompt = `I earn ${cur.symbol} ${s.toLocaleString()} per month. My monthly expenses are ${cur.symbol} ${e.toLocaleString()}. My total debt is ${cur.symbol} ${d.toLocaleString()}. My monthly savings are ${cur.symbol} ${monthlySavings.toLocaleString()}. At this rate I will be debt free in ${months} months (${freedomDate}). Give me 3 specific, actionable tips to become debt-free faster. Be concise and practical. Currency: ${currency}.`
+
+    try {
+      const advice = await callAI(prompt)
+      setAiAdvice(advice)
+    } catch {
+      setAiAdvice('Could not load AI advice. Your calculation above is still accurate.')
+    } finally {
+      setAiLoading(false)
+    }
   }
 
-  const whatIfExtra = 500
-  const whatIfMonths = result
-    ? Math.ceil(debtNum / (monthlySavings + whatIfExtra))
-    : null
-  const monthsSaved = result && whatIfMonths ? result.months - whatIfMonths : null
-
   return (
-    <div style={{ paddingBottom: 40 }}>
-      {/* Header */}
-      <div style={{ padding: '20px 20px 12px', borderBottom: '1px solid var(--border)' }}>
-        <button onClick={onBack} style={{
-          background: 'none', border: 'none', cursor: 'pointer',
-          color: 'var(--text-secondary)', fontSize: 14, fontWeight: 500,
-          display: 'flex', alignItems: 'center', gap: 6, marginBottom: 12
-        }}>
-          ← Back
-        </button>
-        <h1 style={{ fontSize: 22, fontWeight: 700, color: 'var(--text-primary)' }}>Debt Freedom</h1>
-        <p style={{ fontSize: 13, color: 'var(--text-secondary)', marginTop: 2 }}>
-          Find your Fajr date — the day you become free
-        </p>
+    <main className="page-enter" style={{ paddingBottom: '80px' }}>
+      {/* Page header */}
+      <div style={{ background: 'var(--bg-card)', borderBottom: '1px solid var(--border)', padding: '32px 0 28px', marginBottom: '40px' }}>
+        <div style={container}>
+          <div style={{ marginBottom: '10px' }}>
+            <Link to="/finance" style={{ fontSize: '13px', color: 'var(--text-secondary)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+              ← Finance
+            </Link>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
+            <span style={{ fontSize: '28px' }}>🎯</span>
+            <h1 style={{ fontSize: '28px', fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
+              Debt Freedom Calculator
+            </h1>
+          </div>
+          <p style={{ fontSize: '15px', color: 'var(--text-secondary)' }}>
+            Enter your numbers to find your exact debt-free date and get AI-powered advice.
+          </p>
+        </div>
       </div>
 
-      <div style={{ padding: '20px 20px 0' }}>
+      <div style={container}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', alignItems: 'start' }}>
 
-        {/* Currency selector */}
-        <div style={{ display: 'flex', gap: 6, marginBottom: 16, overflowX: 'auto', paddingBottom: 2 }}>
-          {Object.values(CURRENCIES).map(c => (
-            <button
-              key={c.code}
-              onClick={() => setCurrency(c.code)}
-              style={{
-                padding: '6px 14px', borderRadius: 99, flexShrink: 0,
-                border: `1.5px solid ${currency === c.code ? COLOR : 'var(--border)'}`,
-                background: currency === c.code ? '#FEF2F2' : 'var(--bg-card)',
-                color: currency === c.code ? COLOR : 'var(--text-secondary)',
-                fontSize: 13, fontWeight: 700, cursor: 'pointer',
-                display: 'flex', alignItems: 'center', gap: 5,
-                transition: 'all 0.15s'
-              }}
-            >
-              {c.flag} {c.code}
-            </button>
-          ))}
-        </div>
+          {/* Left: Form */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
 
-        {/* Inputs */}
-        <div style={{
-          background: 'var(--bg-card)', borderRadius: 16, border: '1px solid var(--border)',
-          padding: 16, marginBottom: 16
-        }}>
-          <div style={{
-            fontSize: 11, fontWeight: 700, color: 'var(--text-secondary)',
-            textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 12
-          }}>
-            Your Numbers
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            {[
-              { label: `Monthly Salary`, val: salary, set: setSalary, icon: '💼', hint: `in ${cur.name}` },
-              { label: `Monthly Expenses`, val: expenses, set: setExpenses, icon: '🏠', hint: 'rent + food + bills + remittance' },
-              { label: `Extra Income`, val: extraIncome, set: setExtraIncome, icon: '✨', hint: 'freelance / side gigs — enter 0 if none' },
-              { label: `Total Debt`, val: debt, set: setDebt, icon: '💳', hint: 'all loans + credit cards combined' },
-            ].map(({ label, val, set, icon, hint }) => (
-              <div key={label} style={{
-                background: 'var(--bg-page)', borderRadius: 10, padding: '10px 12px',
-                border: '1px solid var(--border)'
-              }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <span style={{ fontSize: 18, flexShrink: 0 }}>{icon}</span>
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontSize: 10, color: 'var(--text-secondary)', fontWeight: 600, marginBottom: 1, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+            {/* Currency */}
+            <div style={card}>
+              <div style={sectionLabel}>Currency</div>
+              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                {Object.values(CURRENCIES).map(c => (
+                  <button
+                    key={c.code}
+                    onClick={() => setCurrency(c.code)}
+                    className={currency === c.code ? 'filter-pill active' : 'filter-pill'}
+                    style={{ fontSize: '13px' }}
+                  >
+                    {c.flag} {c.code}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Inputs */}
+            <div style={card}>
+              <div style={sectionLabel}>Your Numbers</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                {[
+                  { label: 'Monthly Salary', val: salary, set: setSalary, placeholder: '5,000', hint: 'Take-home pay after tax' },
+                  { label: 'Monthly Expenses', val: expenses, set: setExpenses, placeholder: '3,500', hint: 'Rent, food, bills, transport' },
+                  { label: 'Total Debt', val: debt, set: setDebt, placeholder: '23,500', hint: 'All loans + credit cards combined' },
+                ].map(({ label, val, set, placeholder, hint }) => (
+                  <div key={label}>
+                    <label style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)', display: 'block', marginBottom: '6px' }}>
                       {label}
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'baseline', gap: 4 }}>
-                      <span style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-secondary)' }}>{sym}</span>
+                    </label>
+                    <div style={{ position: 'relative' }}>
+                      <span style={{
+                        position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)',
+                        fontSize: '14px', fontWeight: 600, color: 'var(--text-secondary)',
+                      }}>
+                        {cur.symbol}
+                      </span>
                       <input
                         value={val}
                         onChange={e => set(e.target.value.replace(/[^0-9.]/g, ''))}
                         inputMode="decimal"
+                        placeholder={placeholder}
                         style={{
-                          border: 'none', background: 'transparent', fontSize: 20, fontWeight: 700,
-                          color: 'var(--text-primary)', width: '100%', outline: 'none'
+                          width: '100%', height: '44px',
+                          paddingLeft: cur.symbol === '$' ? '28px' : '52px',
+                          paddingRight: '12px',
+                          border: '1px solid var(--border)',
+                          borderRadius: '8px',
+                          fontSize: '16px', fontWeight: 600,
+                          color: 'var(--text-primary)',
+                          background: 'var(--input-bg)',
+                          fontFamily: 'Inter, sans-serif',
+                          transition: 'border-color 0.18s',
                         }}
+                        onFocus={e => e.target.style.borderColor = '#1B4FD8'}
+                        onBlur={e => e.target.style.borderColor = 'var(--border)'}
                       />
                     </div>
-                    <div style={{ fontSize: 10, color: 'var(--text-secondary)', marginTop: 1 }}>{hint}</div>
+                    <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '4px' }}>{hint}</p>
+                  </div>
+                ))}
+              </div>
+
+              {error && (
+                <div style={{ marginTop: '12px', padding: '10px 14px', background: '#FEF2F2', border: '1px solid #fecaca', borderRadius: '8px', fontSize: '13px', color: '#DC2626' }}>
+                  {error}
+                </div>
+              )}
+
+              <button
+                className="btn btn-blue"
+                onClick={calculate}
+                style={{ width: '100%', marginTop: '16px', padding: '12px', fontSize: '15px' }}
+              >
+                Calculate my freedom date
+              </button>
+            </div>
+          </div>
+
+          {/* Right: Results */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            {result ? (
+              <>
+                {/* Freedom date hero */}
+                <div style={{
+                  ...card,
+                  border: '1px solid var(--accent)',
+                  background: 'var(--accent-light)',
+                  textAlign: 'center',
+                  padding: '32px 24px',
+                }}>
+                  <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '8px' }}>
+                    Your Fajr Date
+                  </div>
+                  <div style={{ fontSize: '36px', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.03em', marginBottom: '4px' }}>
+                    {result.freedomDate}
+                  </div>
+                  <div style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
+                    {result.months} months from today
                   </div>
                 </div>
+
+                {/* Stats */}
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                  {[
+                    { label: 'Monthly Savings', val: fmt(cur.symbol, result.monthlySavings), color: '#16A34A' },
+                    { label: 'Total Debt', val: fmt(cur.symbol, result.d), color: '#DC2626' },
+                    { label: 'Months Remaining', val: result.months, color: 'var(--accent)' },
+                    { label: 'Annual Payoff', val: fmt(cur.symbol, result.monthlySavings * 12), color: 'var(--text-primary)' },
+                  ].map(({ label, val, color }) => (
+                    <div key={label} style={{ ...card, textAlign: 'center', padding: '16px 12px' }}>
+                      <div style={{ fontSize: '11px', color: 'var(--text-secondary)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '6px' }}>{label}</div>
+                      <div style={{ fontSize: '20px', fontWeight: 800, color }}>{val}</div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Progress */}
+                <div style={card}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+                    <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)' }}>Payoff Progress</span>
+                    <span style={{ fontSize: '13px', fontWeight: 700, color: 'var(--accent)' }}>0% → 100%</span>
+                  </div>
+                  <ProgressBar pct={0} />
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '6px', fontSize: '12px', color: 'var(--text-muted)' }}>
+                    <span>Today · {fmt(cur.symbol, result.d)} owed</span>
+                    <span>{result.freedomDate} · debt free</span>
+                  </div>
+                </div>
+
+                {/* AI Advice */}
+                <div style={card}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+                    <span style={{ fontSize: '16px' }}>🤖</span>
+                    <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)' }}>AI Advice</span>
+                    <span className="badge badge-blue" style={{ fontSize: '10px', marginLeft: 'auto' }}>DeepSeek</span>
+                  </div>
+                  {aiLoading ? (
+                    <div style={{ display: 'flex', gap: '6px', alignItems: 'center', padding: '8px 0' }}>
+                      {[0, 1, 2].map(i => (
+                        <span key={i} className="typing-dot" style={{ animationDelay: `${i * 0.2}s` }} />
+                      ))}
+                      <span style={{ fontSize: '13px', color: 'var(--text-secondary)', marginLeft: '4px' }}>Analyzing your finances…</span>
+                    </div>
+                  ) : (
+                    <div style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: 1.65, whiteSpace: 'pre-wrap' }}>
+                      {aiAdvice}
+                    </div>
+                  )}
+                </div>
+              </>
+            ) : (
+              <div style={{ ...card, padding: '48px 24px', textAlign: 'center', border: '1px dashed var(--border)' }}>
+                <div style={{ fontSize: '40px', marginBottom: '16px' }}>🎯</div>
+                <div style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '8px' }}>
+                  Your results will appear here
+                </div>
+                <p style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
+                  Fill in your numbers and click "Calculate" to see your debt-free date and AI advice.
+                </p>
               </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Warning */}
-        {expensesExceed && (
-          <div style={{
-            background: '#FEF2F2', border: '1px solid #fecaca', borderRadius: 14,
-            padding: '14px 16px', marginBottom: 16, display: 'flex', gap: 10, alignItems: 'flex-start'
-          }}>
-            <span style={{ fontSize: 20 }}>⚠️</span>
-            <div>
-              <div style={{ fontWeight: 700, color: COLOR, fontSize: 14 }}>Expenses exceed income</div>
-              <div style={{ fontSize: 12, color: '#dc2626', marginTop: 3 }}>
-                Your expenses ({fmt(expensesNum)}) are greater than salary + extra income ({fmt(salaryNum + extraNum)}).
-                Cut expenses or add extra income before we can calculate your freedom date.
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Freedom Date Hero */}
-        {freedomDateStr ? (
-          <div style={{
-            background: `linear-gradient(135deg, ${PURPLE} 0%, #a855f7 100%)`,
-            borderRadius: 20, padding: '24px 20px', marginBottom: 16
-          }}>
-            <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.75)', fontWeight: 500, textAlign: 'center' }}>
-              Your debt-free date is
-            </div>
-            <div style={{
-              fontSize: 34, fontWeight: 900, color: '#fff',
-              textAlign: 'center', margin: '6px 0', letterSpacing: '-0.5px', lineHeight: 1.1
-            }}>
-              {freedomDateStr}
-            </div>
-            <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.8)', textAlign: 'center', marginTop: 2 }}>
-              {result.months} months · saving {fmt(monthlySavings)}/mo
-            </div>
-            <Countdown targetDate={result.date} />
-          </div>
-        ) : !expensesExceed && (
-          <div style={{
-            background: 'var(--bg-card)', border: '1px solid var(--border)',
-            borderRadius: 20, padding: '28px 20px', marginBottom: 16, textAlign: 'center'
-          }}>
-            <div style={{ fontSize: 36 }}>🌙</div>
-            <div style={{ fontSize: 15, fontWeight: 600, color: 'var(--text-primary)', marginTop: 10 }}>
-              Every dawn begins in darkness
-            </div>
-            <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginTop: 4 }}>
-              Enter your numbers to find your freedom date
-            </div>
-          </div>
-        )}
-
-        {/* Stats */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 16 }}>
-          <div style={{
-            background: 'var(--bg-card)', borderRadius: 16, border: '1px solid var(--border)',
-            padding: '14px 12px', textAlign: 'center'
-          }}>
-            <div style={{ fontSize: 10, color: 'var(--text-secondary)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 6 }}>
-              Monthly Savings
-            </div>
-            <div style={{ fontSize: 20, fontWeight: 800, color: monthlySavings > 0 ? GREEN : COLOR }}>
-              {fmt(animSavings)}
-            </div>
-            <div style={{ fontSize: 11, color: 'var(--text-secondary)', marginTop: 3 }}>salary − expenses + extra</div>
-          </div>
-          <div style={{
-            background: 'var(--bg-card)', borderRadius: 16, border: '1px solid var(--border)',
-            padding: '14px 12px', textAlign: 'center'
-          }}>
-            <div style={{ fontSize: 10, color: 'var(--text-secondary)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 6 }}>
-              Total Debt
-            </div>
-            <div style={{ fontSize: 20, fontWeight: 800, color: COLOR }}>
-              {fmt(animDebt)}
-            </div>
-            <div style={{ fontSize: 11, color: 'var(--text-secondary)', marginTop: 3 }}>
-              {result ? `${result.months} months to zero` : 'all loans combined'}
-            </div>
-          </div>
-        </div>
-
-        {/* Progress */}
-        {debtNum > 0 && !expensesExceed && (
-          <div style={{
-            background: 'var(--bg-card)', borderRadius: 16, border: '1px solid var(--border)',
-            padding: 16, marginBottom: 16
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
-              <span style={{ fontWeight: 600, fontSize: 14, color: 'var(--text-primary)' }}>Progress to Zero</span>
-              <span style={{ fontWeight: 700, fontSize: 14, color: GREEN }}>0%</span>
-            </div>
-            <AnimatedBar pct={0} color={PURPLE} />
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 8, fontSize: 11, color: 'var(--text-secondary)' }}>
-              <span>Today</span>
-              <span>{freedomDateStr ?? '—'}</span>
-            </div>
-          </div>
-        )}
-
-        {/* What-if scenario */}
-        {result && monthsSaved !== null && monthsSaved > 0 && (
-          <div style={{
-            background: '#EFF6FF', border: '1px solid #bfdbfe', borderRadius: 14,
-            padding: '14px 16px', marginBottom: 16, display: 'flex', gap: 10, alignItems: 'flex-start'
-          }}>
-            <span style={{ fontSize: 18 }}>💡</span>
-            <div>
-              <div style={{ fontWeight: 700, color: '#2563EB', fontSize: 13 }}>What if scenario</div>
-              <div style={{ fontSize: 12, color: '#1d4ed8', marginTop: 3 }}>
-                Save {fmt(whatIfExtra)} more per month → free{' '}
-                <strong>{monthsSaved} months earlier</strong> in{' '}
-                {new Date(new Date().setMonth(new Date().getMonth() + whatIfMonths))
-                  .toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}.
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Motivational tip */}
-        <div style={{
-          padding: '14px 16px', background: '#F5F3FF', borderRadius: 14,
-          border: `1px solid ${PURPLE}30`, display: 'flex', gap: 10, alignItems: 'flex-start'
-        }}>
-          <span style={{ fontSize: 16 }}>🌙</span>
-          <div>
-            <div style={{ fontWeight: 600, fontSize: 13, color: PURPLE }}>Fajr principle</div>
-            <div style={{ fontSize: 12, color: 'var(--text-secondary)', marginTop: 2 }}>
-              Every sunrise begins with Fajr. Every debt-free life begins with this number.
-              Keep going — every payment brings your freedom closer.
-            </div>
+            )}
           </div>
         </div>
       </div>
-    </div>
+    </main>
   )
 }
+
+const container = { maxWidth: '1200px', margin: '0 auto', padding: '0 48px' }
+const card = { background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '16px', padding: '24px' }
+const sectionLabel = { fontSize: '11px', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: '14px' }
