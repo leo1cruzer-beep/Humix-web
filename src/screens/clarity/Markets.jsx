@@ -226,11 +226,11 @@ export default function Markets() {
                     <div style={{ width: '42px', height: '42px', borderRadius: '12px', background: c.color + '1A', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', color: c.color, fontWeight: 700, flexShrink: 0 }}>
                       {c.symbol}
                     </div>
-                    <div style={{ flex: 1, marginLeft: '14px' }}>
-                      <div style={{ fontWeight: 700, fontSize: '15px', color: 'var(--text-primary)' }}>{c.name}</div>
-                      <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '1px' }}>{sym} · {c.mktCap} cap</div>
+                    <div style={{ flex: 1, marginLeft: '14px', minWidth: 0, overflow: 'hidden' }}>
+                      <div style={{ fontWeight: 700, fontSize: '15px', color: 'var(--text-primary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{c.name}</div>
+                      <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '1px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{sym} · {c.mktCap} cap</div>
                     </div>
-                    <div style={{ marginRight: '14px' }}>
+                    <div className="coin-sparkline" style={{ marginRight: '14px', flexShrink: 0 }}>
                       <Sparkline data={c.history} up={isUp} />
                     </div>
                     <div style={{ textAlign: 'right', flexShrink: 0 }}>
@@ -247,7 +247,7 @@ export default function Markets() {
             </div>
 
             {/* Market stats */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px' }}>
+            <div className="finance-market-stats" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px' }}>
               {[
                 { label: 'Total Market Cap', val: '$2.41T', color: '#16A34A' },
                 { label: '24h Volume', val: '$89.4B', color: 'var(--text-primary)' },

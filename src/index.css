@@ -16,7 +16,7 @@ body {
 }
 a { text-decoration: none; color: inherit; }
 button { font-family: inherit; cursor: pointer; border: none; outline: none; background: none; }
-input, textarea, select { font-family: inherit; outline: none; }
+input, textarea, select { font-family: inherit; outline: none; font-size: 16px; }
 img { max-width: 100%; display: block; }
 ul { list-style: none; }
 
@@ -269,7 +269,7 @@ ul { list-style: none; }
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-.page-enter { animation: pageFadeIn 0.2s ease; }
+.page-enter { animation: pageFadeIn 0.2s ease; overflow-x: hidden; width: 100%; }
 
 /* ─── Homepage responsive ───────────────────────────────────── */
 @media (max-width: 1024px) {
@@ -587,4 +587,5 @@ ul { list-style: none; }
   .finance-snap-row { grid-template-columns: repeat(2, 1fr) !important; }
   .finance-market-stats { grid-template-columns: repeat(2, 1fr) !important; }
   .finance-market-layout { grid-template-columns: 1fr !important; }
+  .coin-sparkline { display: none !important; }
 }

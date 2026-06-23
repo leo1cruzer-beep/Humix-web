@@ -178,7 +178,7 @@ export default function WealthBuilder() {
           {/* Results */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             {/* Hero */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
+            <div className="finance-stats-row" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
               {[
                 { label: `In ${years} years`, val: fmt(finalVal), color: 'var(--accent)', big: true },
                 { label: 'You invest', val: fmt(totalContrib), color: 'var(--text-primary)' },
@@ -194,7 +194,7 @@ export default function WealthBuilder() {
             {/* Year snapshots */}
             <div style={card}>
               <div style={sectionLabel}>Projections</div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '8px' }}>
+              <div className="finance-snap-row" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '8px' }}>
                 {snapshots.map(({ year, value, contrib }) => (
                   <div key={year} style={{ textAlign: 'center', padding: '14px 8px', background: 'var(--bg-page)', borderRadius: '10px', border: '1px solid var(--border)' }}>
                     <div style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 600, marginBottom: '6px' }}>Year {year}</div>
