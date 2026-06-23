@@ -47,14 +47,14 @@ function LineItems({ items, setItems, color, addLabel }) {
     <div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '10px' }}>
         {items.map(item => (
-          <div key={item.id} style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+          <div key={item.id} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', alignItems: 'center' }}>
             <input
               value={item.label}
               onChange={e => update(item.id, 'label', e.target.value)}
               placeholder="Label"
-              style={{ ...inputStyle, flex: 1 }}
+              style={{ ...inputStyle, flex: '1 1 100px' }}
             />
-            <div style={{ position: 'relative', width: '120px', flexShrink: 0 }}>
+            <div style={{ position: 'relative', flex: '0 0 110px' }}>
               <span style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', fontSize: '13px', color: 'var(--text-secondary)', fontWeight: 600 }}>$</span>
               <input
                 value={item.amount}
@@ -124,10 +124,10 @@ export default function Budget() {
       </div>
 
       <div className="finance-container" style={container}>
-        <div className="finance-two-col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', alignItems: 'start' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '24px', alignItems: 'start' }}>
 
           {/* Income */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <div style={{ flex: '1 1 300px', minWidth: '0', display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <div style={card}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
                 <div style={sectionLabel}>Income Sources</div>
@@ -150,7 +150,7 @@ export default function Budget() {
           </div>
 
           {/* Summary & AI */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <div style={{ flex: '1 1 300px', minWidth: '0', display: 'flex', flexDirection: 'column', gap: '16px' }}>
             {/* Summary */}
             <div style={card}>
               <div style={sectionLabel}>Monthly Summary</div>
@@ -235,7 +235,7 @@ export default function Budget() {
   )
 }
 
-const container = { width: '100%', maxWidth: '1200px', margin: '0 auto', padding: '0 24px', boxSizing: 'border-box' }
+const container = { width: '100%', maxWidth: '100%', overflowX: 'hidden', padding: '0 24px', boxSizing: 'border-box' }
 const card = { background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '16px', padding: '24px' }
 const sectionLabel = { fontSize: '11px', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: '0' }
 const inputStyle = {
@@ -243,5 +243,5 @@ const inputStyle = {
   border: '1px solid var(--border)', borderRadius: '8px',
   fontSize: '16px', color: 'var(--text-primary)',
   background: 'var(--input-bg)', fontFamily: 'Inter, sans-serif',
-  outline: 'none', minWidth: '0',
+  outline: 'none', minWidth: '0', width: '100%', boxSizing: 'border-box',
 }
