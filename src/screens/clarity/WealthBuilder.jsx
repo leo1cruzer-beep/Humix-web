@@ -10,7 +10,7 @@ async function callAI(content) {
     body: JSON.stringify({ sessionId, content }),
   })
   const data = await res.json()
-  return data?.message || data?.content || data?.response || JSON.stringify(data)
+  return data?.assistantMessage?.content || data?.message || data?.content || data?.response || 'AI advice temporarily unavailable'
 }
 
 function fmt(n) {
@@ -77,12 +77,12 @@ export default function WealthBuilder() {
     setCalculated(true)
     setAiAdvice('')
     setAiLoading(true)
-    const prompt = `I'm investing $${monthlyNum}/month with $${initialNum} initial investment at ${rateNum}% annual return for ${years} years. My projected portfolio value is ${fmt(finalVal)} with ${fmt(totalContrib)} invested and ${fmt(gains)} in compound gains. Give me 3 specific tips to maximize this wealth-building strategy. Be concise and actionable.`
+    const prompt = `I can invest ${monthlyNum} per month for ${years} years at ${rateNum}% return. Give me wealth building advice in 3-4 sentences.`
     try {
       const advice = await callAI(prompt)
       setAiAdvice(advice)
     } catch {
-      setAiAdvice('Could not load AI advice. Your projections above are accurate.')
+      setAiAdvice('AI advice temporarily unavailable')
     } finally {
       setAiLoading(false)
     }

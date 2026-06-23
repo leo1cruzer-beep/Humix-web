@@ -9,7 +9,7 @@ async function callAI(content) {
     body: JSON.stringify({ sessionId, content }),
   })
   const data = await res.json()
-  return data?.message || data?.content || data?.response || JSON.stringify(data)
+  return data?.assistantMessage?.content || data?.message || data?.content || data?.response || 'AI advice temporarily unavailable'
 }
 
 const DEFAULT_INCOME = [
@@ -83,21 +83,13 @@ export default function Budget() {
     setAiAdvice('')
     setAiLoading(true)
 
-    const incomeList = income.filter(i => i.label && i.amount).map(i => `${i.label}: $${i.amount}`).join(', ')
-    const expenseList = expenses.filter(e => e.label && e.amount).map(e => `${e.label}: $${e.amount}`).join(', ')
-    const prompt = `My monthly budget summary:
-Income sources: ${incomeList} (Total: $${totalIncome.toLocaleString()})
-Expenses: ${expenseList} (Total: $${totalExpenses.toLocaleString()})
-Monthly surplus/deficit: ${surplus >= 0 ? '+' : ''}$${surplus.toLocaleString()}
-Savings rate: ${savingsRate}%
-
-Based on this budget, what are 3 specific things I should optimize? Be direct and practical.`
+    const prompt = `My monthly income is $${totalIncome.toLocaleString()} and expenses are $${totalExpenses.toLocaleString()}. Surplus/deficit is ${surplus >= 0 ? '+' : ''}$${surplus.toLocaleString()}. Give me budget optimization advice in 3-4 sentences.`
 
     try {
       const advice = await callAI(prompt)
       setAiAdvice(advice)
     } catch {
-      setAiAdvice('Could not load AI advice. Your budget summary above is accurate.')
+      setAiAdvice('AI advice temporarily unavailable')
     } finally {
       setAiLoading(false)
     }

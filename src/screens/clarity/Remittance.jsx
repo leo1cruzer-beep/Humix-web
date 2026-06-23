@@ -17,7 +17,7 @@ async function callAI(content) {
     body: JSON.stringify({ sessionId, content }),
   })
   const data = await res.json()
-  return data?.message || data?.content || data?.response || JSON.stringify(data)
+  return data?.assistantMessage?.content || data?.message || data?.content || data?.response || 'AI advice temporarily unavailable'
 }
 
 function useSimulatedRates() {
@@ -72,15 +72,13 @@ export default function Remittance() {
     if (tipLoaded) return
     setTipLoaded(true)
     setAiLoading(true)
-    const rateList = Object.entries(rates).map(([cur, r]) =>
-      `USD/${cur}: ${r.currentRate.toFixed(cur === 'NGN' ? 1 : 2)} (${r.change >= 0 ? '+' : ''}${r.change.toFixed(3)}%)`
-    ).join(', ')
-    const prompt = `Current remittance rates: ${rateList}. Someone wants to send $${amountNum} USD. What's one practical tip about the best time or method to send money internationally based on these rates? Be brief and specific.`
+    const currentRate = rates[selected]?.currentRate?.toFixed(selected === 'NGN' ? 1 : 2)
+    const prompt = `I want to send money home. Current USD/${selected} rate is ${currentRate}. Give me remittance timing advice in 2-3 sentences.`
     try {
       const tip = await callAI(prompt)
       setAiTip(tip)
     } catch {
-      setAiTip('Tip: Send on weekdays when rates tend to be more stable. Compare Wise and Remitly for best rates.')
+      setAiTip('AI advice temporarily unavailable')
     } finally {
       setAiLoading(false)
     }

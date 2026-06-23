@@ -18,7 +18,7 @@ async function callAI(content) {
     body: JSON.stringify({ sessionId, content }),
   })
   const data = await res.json()
-  return data?.message || data?.content || data?.response || JSON.stringify(data)
+  return data?.assistantMessage?.content || data?.message || data?.content || data?.response || 'AI advice temporarily unavailable'
 }
 
 function Sparkline({ data, up }) {
@@ -54,7 +54,8 @@ export default function Markets() {
   )
   const [tick, setTick] = useState(0)
   const [aiSummary, setAiSummary] = useState('')
-  const [aiLoading, setAiLoading] = useState(true)
+  const [aiLoading, setAiLoading] = useState(false)
+  const [aiLoaded, setAiLoaded] = useState(false)
   const [selected, setSelected] = useState(null)
 
   useEffect(() => {
@@ -73,14 +74,23 @@ export default function Markets() {
     return () => clearInterval(id)
   }, [])
 
-  // Fetch AI summary on load
-  useEffect(() => {
-    const prompt = `Crypto market prices today: BTC $97,450 ETH $1,756 SOL $142 BNB $605. Write a brief (3-4 sentence) daily market summary for a general audience. Include what's driving prices and one key thing to watch. Be factual and neutral.`
-    callAI(prompt)
-      .then(s => setAiSummary(s))
-      .catch(() => setAiSummary('Market data loaded. BTC leading the market with strong volume. Monitor ETH for upcoming network activity.'))
-      .finally(() => setAiLoading(false))
-  }, [])
+  async function getAiInsight() {
+    setAiLoaded(true)
+    setAiLoading(true)
+    setAiSummary('')
+    const btc = coins.BTC.price.toLocaleString(undefined, { maximumFractionDigits: 2 })
+    const eth = coins.ETH.price.toLocaleString(undefined, { maximumFractionDigits: 2 })
+    const sol = coins.SOL.price.toLocaleString(undefined, { maximumFractionDigits: 2 })
+    const content = `BTC is $${btc}, ETH is $${eth}, SOL is $${sol}. Give me a brief market outlook in 2-3 sentences.`
+    try {
+      const s = await callAI(content)
+      setAiSummary(s)
+    } catch {
+      setAiSummary('AI advice temporarily unavailable')
+    } finally {
+      setAiLoading(false)
+    }
+  }
 
   if (selected) {
     const coin = coins[selected]
@@ -111,7 +121,7 @@ export default function Markets() {
                   ${coin.price.toLocaleString(undefined, { maximumFractionDigits: 2 })}
                 </div>
                 <div style={{ fontSize: '16px', fontWeight: 600, color: isUp ? '#16A34A' : '#DC2626', marginTop: '6px' }}>
-                  {isUp ? '▲' : '▼'} {Math.abs(coin.change24h).toFixed(2)}% (24h)
+                  {isUp ? '↑' : '↓'} {Math.abs(coin.change24h).toFixed(2)}% (24h)
                 </div>
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
@@ -219,7 +229,7 @@ export default function Markets() {
                         ${c.price.toLocaleString(undefined, { maximumFractionDigits: 2 })}
                       </div>
                       <div style={{ fontSize: '12px', fontWeight: 600, color: isUp ? '#16A34A' : '#DC2626', marginTop: '2px' }}>
-                        {isUp ? '▲' : '▼'} {Math.abs(c.change24h).toFixed(2)}%
+                        {isUp ? '↑' : '↓'} {Math.abs(c.change24h).toFixed(2)}%
                       </div>
                     </div>
                   </button>
@@ -250,7 +260,11 @@ export default function Markets() {
               <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)' }}>AI Daily Summary</span>
               <span className="badge badge-blue" style={{ fontSize: '10px', marginLeft: 'auto' }}>DeepSeek</span>
             </div>
-            {aiLoading ? (
+            {!aiLoaded ? (
+              <button className="btn btn-ghost" onClick={getAiInsight} style={{ padding: '10px 16px', fontSize: '13px' }}>
+                Get AI Insight →
+              </button>
+            ) : aiLoading ? (
               <div style={{ display: 'flex', gap: '6px', alignItems: 'center', padding: '8px 0' }}>
                 {[0,1,2].map(i => <span key={i} className="typing-dot" style={{ animationDelay: `${i*0.2}s` }} />)}
                 <span style={{ fontSize: '13px', color: 'var(--text-secondary)', marginLeft: '4px' }}>Loading summary…</span>
@@ -269,7 +283,7 @@ export default function Markets() {
                       <span style={{ fontSize: '16px', color: c.color }}>{c.symbol}</span>
                       <span style={{ flex: 1, fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)' }}>{sym}</span>
                       <span style={{ fontSize: '12px', fontWeight: 600, color: isUp ? '#16A34A' : '#DC2626' }}>
-                        {isUp ? '▲' : '▼'} {Math.abs(c.change24h).toFixed(2)}%
+                        {isUp ? '↑' : '↓'} {Math.abs(c.change24h).toFixed(2)}%
                       </span>
                     </button>
                   )

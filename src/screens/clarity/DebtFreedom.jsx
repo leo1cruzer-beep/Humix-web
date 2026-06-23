@@ -17,7 +17,7 @@ async function callAI(content) {
     body: JSON.stringify({ sessionId, content }),
   })
   const data = await res.json()
-  return data?.message || data?.content || data?.response || JSON.stringify(data)
+  return data?.assistantMessage?.content || data?.message || data?.content || data?.response || 'AI advice temporarily unavailable'
 }
 
 function fmt(sym, n) {
@@ -77,13 +77,13 @@ export default function DebtFreedom() {
 
     // AI call
     setAiLoading(true)
-    const prompt = `I earn ${cur.symbol} ${s.toLocaleString()} per month. My monthly expenses are ${cur.symbol} ${e.toLocaleString()}. My total debt is ${cur.symbol} ${d.toLocaleString()}. My monthly savings are ${cur.symbol} ${monthlySavings.toLocaleString()}. At this rate I will be debt free in ${months} months (${freedomDate}). Give me 3 specific, actionable tips to become debt-free faster. Be concise and practical. Currency: ${currency}.`
+    const prompt = `I earn ${s.toLocaleString()} ${currency} per month, my expenses are ${e.toLocaleString()}, total debt is ${d.toLocaleString()}. Give me a debt freedom plan and advice in 3-4 sentences.`
 
     try {
       const advice = await callAI(prompt)
       setAiAdvice(advice)
     } catch {
-      setAiAdvice('Could not load AI advice. Your calculation above is still accurate.')
+      setAiAdvice('AI advice temporarily unavailable')
     } finally {
       setAiLoading(false)
     }
