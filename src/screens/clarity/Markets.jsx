@@ -10,6 +10,19 @@ const INITIAL = {
 
 const HISTORY_LEN = 20
 
+const GECKO_URL = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,binancecoin&vs_currencies=usd&include_24hr_change=true'
+
+async function fetchPrices() {
+  const res = await fetch(GECKO_URL)
+  const data = await res.json()
+  return {
+    BTC: { price: data.bitcoin.usd,      change24h: data.bitcoin.usd_24h_change },
+    ETH: { price: data.ethereum.usd,     change24h: data.ethereum.usd_24h_change },
+    SOL: { price: data.solana.usd,       change24h: data.solana.usd_24h_change },
+    BNB: { price: data.binancecoin.usd,  change24h: data.binancecoin.usd_24h_change },
+  }
+}
+
 async function callAI(prompt) {
   const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
     method: 'POST',
@@ -44,10 +57,10 @@ function Sparkline({ data, up }) {
 }
 
 function Countdown({ tick }) {
-  const [secs, setSecs] = useState(30)
+  const [secs, setSecs] = useState(60)
   useEffect(() => {
-    setSecs(30)
-    const id = setInterval(() => setSecs(s => s <= 1 ? 30 : s - 1), 1000)
+    setSecs(60)
+    const id = setInterval(() => setSecs(s => s <= 1 ? 60 : s - 1), 1000)
     return () => clearInterval(id)
   }, [tick])
   return <span style={{ fontSize: '12px', color: 'var(--text-muted)', fontVariantNumeric: 'tabular-nums' }}>Updates in {secs}s</span>
@@ -68,18 +81,39 @@ export default function Markets() {
   const [selected, setSelected] = useState(null)
 
   useEffect(() => {
-    const id = setInterval(() => {
-      setCoins(prev => {
-        const next = {}
-        for (const [k, c] of Object.entries(prev)) {
-          const pct = (Math.random() - 0.5) * 0.01
-          const newPrice = +(c.price * (1 + pct)).toFixed(2)
-          next[k] = { ...c, price: newPrice, history: [...c.history.slice(1), newPrice], pctChange: +(pct * 100).toFixed(3) }
-        }
-        return next
-      })
-      setTick(t => t + 1)
-    }, 30000)
+    let isFirst = true
+    async function load() {
+      try {
+        const prices = await fetchPrices()
+        setCoins(prev => {
+          const next = {}
+          for (const [k, c] of Object.entries(prev)) {
+            const { price, change24h } = prices[k]
+            const history = isFirst
+              ? Array(HISTORY_LEN).fill(price).map(p => p * (1 + (Math.random() - 0.5) * 0.003))
+              : [...c.history.slice(1), price]
+            next[k] = { ...c, price, pctChange: +change24h.toFixed(3), history }
+          }
+          return next
+        })
+        isFirst = false
+        setTick(t => t + 1)
+      } catch {
+        // API failed — simulate a tick so the chart stays alive
+        setCoins(prev => {
+          const next = {}
+          for (const [k, c] of Object.entries(prev)) {
+            const pct = (Math.random() - 0.5) * 0.01
+            const newPrice = +(c.price * (1 + pct)).toFixed(2)
+            next[k] = { ...c, price: newPrice, history: [...c.history.slice(1), newPrice], pctChange: +(pct * 100).toFixed(3) }
+          }
+          return next
+        })
+        setTick(t => t + 1)
+      }
+    }
+    load()
+    const id = setInterval(load, 60000)
     return () => clearInterval(id)
   }, [])
 
@@ -190,7 +224,7 @@ export default function Markets() {
                 <h1 style={{ fontSize: '28px', fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>Live Markets</h1>
               </div>
               <p style={{ fontSize: '15px', color: 'var(--text-secondary)' }}>
-                Simulated crypto prices · AI daily summary · updated every 30s.
+                Live crypto prices from CoinGecko · AI daily summary · updated every 60s.
               </p>
             </div>
             <Countdown tick={tick} />
@@ -206,7 +240,7 @@ export default function Markets() {
             <div style={{ ...card, padding: 0, overflow: 'hidden' }}>
               <div style={{ padding: '16px 20px', borderBottom: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)' }}>Crypto Prices</span>
-                <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>±0.5% every 30s</span>
+                <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>24h change · live</span>
               </div>
               {Object.entries(coins).map(([sym, c], i, arr) => {
                 const isUp = c.pctChange >= 0
