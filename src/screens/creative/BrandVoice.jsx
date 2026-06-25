@@ -98,11 +98,11 @@ On-brand: [rewritten in this brand's voice]`
               <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 <div>
                   <label style={labelStyle}>Describe Your Business</label>
-                  <textarea value={description} onChange={e => setDescription(e.target.value)} placeholder="e.g. A sustainable clothing brand for young professionals who care about the environment but still want to look sharp at work" rows={4} style={{ ...inputStyle, resize: 'vertical', lineHeight: 1.6, paddingTop: '10px' }} onFocus={e => e.target.style.borderColor='#1B4FD8'} onBlur={e => e.target.style.borderColor='var(--border)'} />
+                  <textarea value={description} onChange={e => setDescription(e.target.value)} placeholder="e.g. A sustainable clothing brand for young professionals who care about the environment but still want to look sharp at work" rows={4} style={{ ...inputStyle, resize: 'vertical', lineHeight: 1.6, paddingTop: '10px' }} onFocus={e => e.target.style.borderColor='#6366F1'} onBlur={e => e.target.style.borderColor='var(--border)'} />
                 </div>
                 <div>
                   <label style={labelStyle}>Target Audience (optional)</label>
-                  <input value={audience} onChange={e => setAudience(e.target.value)} placeholder="e.g. Millennial women aged 25-35, career-focused, eco-conscious" style={inputStyle} onFocus={e => e.target.style.borderColor='#1B4FD8'} onBlur={e => e.target.style.borderColor='var(--border)'} />
+                  <input value={audience} onChange={e => setAudience(e.target.value)} placeholder="e.g. Millennial women aged 25-35, career-focused, eco-conscious" style={inputStyle} onFocus={e => e.target.style.borderColor='#6366F1'} onBlur={e => e.target.style.borderColor='var(--border)'} />
                 </div>
                 <button className="btn btn-blue" onClick={generate} disabled={!description.trim() || loading} style={{ padding: '13px', fontSize: '15px', opacity: !description.trim() ? 0.6 : 1 }}>
                   {loading ? 'Building Guide…' : 'Create Brand Voice Guide →'}

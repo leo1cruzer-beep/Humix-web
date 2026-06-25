@@ -88,11 +88,11 @@ Use real currency values. Be direct — no vague ranges.`
               <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 <div>
                   <label style={labelStyle}>Job Title</label>
-                  <input value={title} onChange={e => setTitle(e.target.value)} placeholder="e.g. DevOps Engineer, Marketing Manager" style={inputStyle} onFocus={e => e.target.style.borderColor='#1B4FD8'} onBlur={e => e.target.style.borderColor='var(--border)'} />
+                  <input value={title} onChange={e => setTitle(e.target.value)} placeholder="e.g. DevOps Engineer, Marketing Manager" style={inputStyle} onFocus={e => e.target.style.borderColor='#6366F1'} onBlur={e => e.target.style.borderColor='var(--border)'} />
                 </div>
                 <div>
                   <label style={labelStyle}>Country / Market</label>
-                  <input value={country} onChange={e => setCountry(e.target.value)} placeholder="e.g. Canada, Nigeria, Germany" style={inputStyle} onFocus={e => e.target.style.borderColor='#1B4FD8'} onBlur={e => e.target.style.borderColor='var(--border)'} />
+                  <input value={country} onChange={e => setCountry(e.target.value)} placeholder="e.g. Canada, Nigeria, Germany" style={inputStyle} onFocus={e => e.target.style.borderColor='#6366F1'} onBlur={e => e.target.style.borderColor='var(--border)'} />
                 </div>
                 <div>
                   <label style={labelStyle}>Your Years of Experience</label>

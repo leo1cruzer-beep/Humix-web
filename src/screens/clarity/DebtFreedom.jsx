@@ -180,7 +180,7 @@ export default function DebtFreedom() {
                           fontFamily: 'Inter, sans-serif',
                           transition: 'border-color 0.18s',
                         }}
-                        onFocus={e => e.target.style.borderColor = '#1B4FD8'}
+                        onFocus={e => e.target.style.borderColor = '#6366F1'}
                         onBlur={e => e.target.style.borderColor = 'var(--border)'}
                       />
                     </div>

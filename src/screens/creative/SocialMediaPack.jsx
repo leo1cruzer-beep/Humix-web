@@ -88,7 +88,7 @@ Make each piece feel native to its platform. No placeholders.`
               <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 <div>
                   <label style={labelStyle}>What are you promoting?</label>
-                  <textarea value={description} onChange={e => setDescription(e.target.value)} placeholder="e.g. Our new AI-powered meal planning app that generates weekly recipes based on your budget and nutrition goals — launching next week" rows={4} style={{ ...inputStyle, resize: 'vertical', lineHeight: 1.6, paddingTop: '10px' }} onFocus={e => e.target.style.borderColor='#1B4FD8'} onBlur={e => e.target.style.borderColor='var(--border)'} />
+                  <textarea value={description} onChange={e => setDescription(e.target.value)} placeholder="e.g. Our new AI-powered meal planning app that generates weekly recipes based on your budget and nutrition goals — launching next week" rows={4} style={{ ...inputStyle, resize: 'vertical', lineHeight: 1.6, paddingTop: '10px' }} onFocus={e => e.target.style.borderColor='#6366F1'} onBlur={e => e.target.style.borderColor='var(--border)'} />
                 </div>
                 <div>
                   <label style={labelStyle}>Campaign Goal</label>

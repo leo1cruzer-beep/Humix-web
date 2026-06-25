@@ -74,15 +74,15 @@ STRICT: Do NOT start with "I am writing to apply" or "Please find my resume atta
               <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 <div>
                   <label style={labelStyle}>Job Title</label>
-                  <input value={title} onChange={e => setTitle(e.target.value)} placeholder="e.g. Product Manager" style={inputStyle} onFocus={e => e.target.style.borderColor='#1B4FD8'} onBlur={e => e.target.style.borderColor='var(--border)'} />
+                  <input value={title} onChange={e => setTitle(e.target.value)} placeholder="e.g. Product Manager" style={inputStyle} onFocus={e => e.target.style.borderColor='#6366F1'} onBlur={e => e.target.style.borderColor='var(--border)'} />
                 </div>
                 <div>
                   <label style={labelStyle}>Company Name</label>
-                  <input value={company} onChange={e => setCompany(e.target.value)} placeholder="e.g. Stripe, Netflix, local startup" style={inputStyle} onFocus={e => e.target.style.borderColor='#1B4FD8'} onBlur={e => e.target.style.borderColor='var(--border)'} />
+                  <input value={company} onChange={e => setCompany(e.target.value)} placeholder="e.g. Stripe, Netflix, local startup" style={inputStyle} onFocus={e => e.target.style.borderColor='#6366F1'} onBlur={e => e.target.style.borderColor='var(--border)'} />
                 </div>
                 <div>
                   <label style={labelStyle}>Your Background & Key Achievements</label>
-                  <textarea value={background} onChange={e => setBackground(e.target.value)} placeholder="e.g. 5 years in product management, launched 3 apps with 100K+ users, expertise in B2B SaaS, previously at Shopify" rows={5} style={{ ...inputStyle, resize: 'vertical', lineHeight: 1.6, paddingTop: '10px' }} onFocus={e => e.target.style.borderColor='#1B4FD8'} onBlur={e => e.target.style.borderColor='var(--border)'} />
+                  <textarea value={background} onChange={e => setBackground(e.target.value)} placeholder="e.g. 5 years in product management, launched 3 apps with 100K+ users, expertise in B2B SaaS, previously at Shopify" rows={5} style={{ ...inputStyle, resize: 'vertical', lineHeight: 1.6, paddingTop: '10px' }} onFocus={e => e.target.style.borderColor='#6366F1'} onBlur={e => e.target.style.borderColor='var(--border)'} />
                 </div>
                 <button className="btn btn-blue" onClick={generate} disabled={!canGenerate || loading} style={{ padding: '13px', fontSize: '15px', opacity: !canGenerate ? 0.6 : 1 }}>
                   {loading ? 'Writing Letter…' : 'Generate Cover Letter →'}

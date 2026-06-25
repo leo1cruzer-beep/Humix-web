@@ -188,7 +188,7 @@ export default function Budget() {
                 <div style={{ background: 'var(--border)', borderRadius: 99, height: '8px', overflow: 'hidden' }}>
                   <div style={{
                     height: '100%', borderRadius: 99,
-                    background: totalExpenses > totalIncome ? '#DC2626' : '#1B4FD8',
+                    background: totalExpenses > totalIncome ? '#DC2626' : '#6366F1',
                     width: `${Math.min((totalExpenses / totalIncome) * 100, 100)}%`,
                     transition: 'width 0.5s ease',
                   }} />

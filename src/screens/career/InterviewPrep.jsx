@@ -78,7 +78,7 @@ All answers must be specific to a ${level}-level ${role}. No generic answers.`
               <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 <div>
                   <label style={labelStyle}>Job Role</label>
-                  <input value={role} onChange={e => setRole(e.target.value)} placeholder="e.g. Data Analyst, UX Designer, Sales Manager" style={inputStyle} onFocus={e => e.target.style.borderColor='#1B4FD8'} onBlur={e => e.target.style.borderColor='var(--border)'} />
+                  <input value={role} onChange={e => setRole(e.target.value)} placeholder="e.g. Data Analyst, UX Designer, Sales Manager" style={inputStyle} onFocus={e => e.target.style.borderColor='#6366F1'} onBlur={e => e.target.style.borderColor='var(--border)'} />
                 </div>
                 <div>
                   <label style={labelStyle}>Experience Level</label>

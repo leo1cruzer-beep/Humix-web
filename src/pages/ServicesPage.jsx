@@ -116,8 +116,8 @@ export default function ServicesPage() {
                 onClick={() => setActiveTab(tab)}
                 style={{
                   ...s.tab,
-                  color: activeTab === tab ? '#1B4FD8' : '#737373',
-                  borderBottom: activeTab === tab ? '2px solid #1B4FD8' : '2px solid transparent',
+                  color: activeTab === tab ? '#818CF8' : '#64748B',
+                  borderBottom: activeTab === tab ? '2px solid #6366F1' : '2px solid transparent',
                   fontWeight: activeTab === tab ? 600 : 400,
                 }}
               >
@@ -136,8 +136,8 @@ export default function ServicesPage() {
 
         {filtered.length === 0 && (
           <div style={{ textAlign: 'center', padding: '80px 0' }}>
-            <h3 style={{ fontWeight: 600, fontSize: '18px', color: '#1A1A1A', marginBottom: '8px' }}>No services found</h3>
-            <p style={{ color: '#737373' }}>Try a different category or search term</p>
+            <h3 style={{ fontWeight: 700, fontSize: '18px', color: 'var(--text-primary)', marginBottom: '8px' }}>No services found</h3>
+            <p style={{ color: 'var(--text-secondary)' }}>Try a different category or search term</p>
           </div>
         )}
 
@@ -159,7 +159,8 @@ function ServiceCard({ svc }) {
     <div
       style={{
         ...s.card,
-        boxShadow: hov ? '0 4px 16px rgba(27,79,216,0.10)' : 'none',
+        transform: hov ? 'translateY(-4px)' : 'none',
+        boxShadow: hov ? '0 8px 32px rgba(99,102,241,0.18)' : 'none',
       }}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
@@ -172,10 +173,10 @@ function ServiceCard({ svc }) {
         <div style={s.providerRow}>
           <div style={s.avatar}>{svc.initial}</div>
           <div>
-            <span style={{ fontSize: '13px', fontWeight: 600, color: '#1A1A1A' }}>{svc.provider}</span>
+            <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)' }}>{svc.provider}</span>
             <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginTop: '2px' }}>
-              <Star size={12} fill="#D97706" color="#D97706" />
-              <span style={{ fontSize: '12px', color: '#737373' }}>{svc.rating} ({svc.reviews})</span>
+              <Star size={12} fill="#F59E0B" color="#F59E0B" />
+              <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{svc.rating} ({svc.reviews})</span>
             </div>
           </div>
         </div>
@@ -191,16 +192,16 @@ function ServiceCard({ svc }) {
 
         {/* Price row */}
         <div style={s.priceRow}>
-          <span style={{ fontSize: '13px', color: '#737373' }}>Starting at</span>
-          <span style={{ fontWeight: 700, fontSize: '18px', color: '#1A1A1A' }}>{svc.price}</span>
+          <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>Starting at</span>
+          <span style={{ fontWeight: 700, fontSize: '18px', color: 'var(--text-primary)' }}>{svc.price}</span>
         </div>
 
         <button
           style={{
             ...s.viewBtn,
-            background: hov ? '#1B4FD8' : 'transparent',
-            color: hov ? '#FFFFFF' : '#1A1A1A',
-            borderColor: hov ? '#1B4FD8' : '#E8E8E4',
+            background: hov ? '#6366F1' : 'rgba(255,255,255,0.04)',
+            color: hov ? '#FFFFFF' : 'var(--text-secondary)',
+            borderColor: hov ? '#6366F1' : 'var(--border)',
           }}
         >
           View Service
@@ -216,18 +217,18 @@ function ExpertCard({ expert }) {
     <div
       style={{
         ...s.expertCard,
-        borderColor: hov ? '#1B4FD8' : '#E8E8E4',
-        boxShadow: hov ? '0 4px 16px rgba(27,79,216,0.10)' : 'none',
+        borderColor: hov ? '#6366F1' : 'var(--border)',
+        boxShadow: hov ? '0 8px 32px rgba(99,102,241,0.18)' : 'none',
       }}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
     >
       <div style={s.expertAvatar}>{expert.initial}</div>
-      <p style={{ fontWeight: 600, fontSize: '14px', color: '#1A1A1A', marginTop: '12px' }}>{expert.name}</p>
-      <p style={{ fontSize: '12px', color: '#737373', marginTop: '2px' }}>{expert.specialty}</p>
+      <p style={{ fontWeight: 700, fontSize: '14px', color: 'var(--text-primary)', marginTop: '12px' }}>{expert.name}</p>
+      <p style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '2px' }}>{expert.specialty}</p>
       <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginTop: '6px', justifyContent: 'center' }}>
-        <Star size={12} fill="#D97706" color="#D97706" />
-        <span style={{ fontSize: '12px', color: '#737373' }}>{expert.rating}</span>
+        <Star size={12} fill="#F59E0B" color="#F59E0B" />
+        <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{expert.rating}</span>
       </div>
       <button
         className="btn btn-blue"
@@ -241,7 +242,8 @@ function ExpertCard({ expert }) {
 
 const s = {
   heroBanner: {
-    background: '#1A1A1A',
+    background: '#080808',
+    borderBottom: '1px solid #1A1A1A',
     padding: '64px 48px',
   },
   heroInner: {
@@ -267,18 +269,19 @@ const s = {
   darkInput: {
     width: '100%',
     height: '48px',
-    padding: '0 16px',
-    background: '#2A2A2A',
-    border: '1px solid #3A3A3A',
-    borderRadius: '8px',
+    padding: '0 20px',
+    background: 'rgba(255,255,255,0.05)',
+    border: '1px solid rgba(255,255,255,0.1)',
+    borderRadius: '50px',
     fontSize: '15px',
-    color: '#FFFFFF',
+    color: '#F8FAFC',
     fontFamily: "'Inter', sans-serif",
     outline: 'none',
   },
   tabStrip: {
-    background: 'var(--bg-card)',
-    borderBottom: '1px solid var(--border)',
+    background: 'rgba(10,10,10,0.9)',
+    backdropFilter: 'blur(20px)',
+    borderBottom: '1px solid rgba(255,255,255,0.06)',
     position: 'sticky',
     top: '64px',
     zIndex: 50,
@@ -311,11 +314,13 @@ const s = {
     gap: '24px',
   },
   card: {
-    background: 'var(--bg-card)',
-    border: '1px solid var(--border)',
-    borderRadius: '16px',
+    background: 'rgba(255,255,255,0.03)',
+    backdropFilter: 'blur(10px)',
+    WebkitBackdropFilter: 'blur(10px)',
+    border: '1px solid rgba(255,255,255,0.07)',
+    borderRadius: '20px',
     overflow: 'hidden',
-    transition: 'all 0.18s ease',
+    transition: 'all 0.2s ease',
   },
   cardImg: {
     height: '160px',
@@ -335,7 +340,7 @@ const s = {
     width: '32px',
     height: '32px',
     borderRadius: '50%',
-    background: '#1B4FD8',
+    background: '#6366F1',
     color: '#FFFFFF',
     display: 'flex',
     alignItems: 'center',
@@ -365,7 +370,7 @@ const s = {
   viewBtn: {
     width: '100%',
     padding: '10px',
-    borderRadius: '8px',
+    borderRadius: '50px',
     border: '1.5px solid',
     fontFamily: "'Inter', sans-serif",
     fontSize: '14px',
@@ -380,9 +385,10 @@ const s = {
     paddingBottom: '8px',
   },
   expertCard: {
-    background: 'var(--bg-card)',
-    border: '1px solid var(--border)',
-    borderRadius: '16px',
+    background: 'rgba(255,255,255,0.03)',
+    backdropFilter: 'blur(10px)',
+    border: '1px solid rgba(255,255,255,0.07)',
+    borderRadius: '20px',
     padding: '20px 24px',
     textAlign: 'center',
     minWidth: '160px',
@@ -394,7 +400,7 @@ const s = {
     width: '64px',
     height: '64px',
     borderRadius: '50%',
-    background: '#1B4FD8',
+    background: '#6366F1',
     color: '#FFFFFF',
     display: 'flex',
     alignItems: 'center',

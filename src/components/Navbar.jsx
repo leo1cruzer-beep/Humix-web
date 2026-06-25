@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Moon, Sun } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import AuthModal from './AuthModal';
-import { useTheme } from '../hooks/useTheme.jsx';
 
 const NAV_LINKS = [
   { label: 'Explore',        to: '/explore' },
@@ -17,11 +16,10 @@ export default function Navbar() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [authModal, setAuthModal] = useState({ open: false, tab: 'login' });
   const { pathname } = useLocation();
-  const { theme, toggle } = useTheme();
 
-  const openLogin = () => { setDrawerOpen(false); setAuthModal({ open: true, tab: 'login' }); };
+  const openLogin  = () => { setDrawerOpen(false); setAuthModal({ open: true, tab: 'login' }); };
   const openSignup = () => { setDrawerOpen(false); setAuthModal({ open: true, tab: 'signup' }); };
-  const closeAuth = () => setAuthModal((prev) => ({ ...prev, open: false }));
+  const closeAuth  = () => setAuthModal(prev => ({ ...prev, open: false }));
 
   useEffect(() => {
     document.body.style.overflow = drawerOpen ? 'hidden' : '';
@@ -37,29 +35,28 @@ export default function Navbar() {
           <Link to="/" style={s.logo}>Humix</Link>
 
           <div className="nav-center-links" style={s.centerLinks}>
-            {NAV_LINKS.map(({ label, to }) => {
-              const active = pathname === to;
-              return (
-                <NavLink key={to} to={to} label={label} active={active} />
-              );
-            })}
+            {NAV_LINKS.map(({ label, to }) => (
+              <NavLink key={to} to={to} label={label} active={pathname === to} />
+            ))}
           </div>
 
           <div className="nav-right-buttons" style={s.rightButtons}>
-            <ThemeToggle theme={theme} onToggle={toggle} />
-            <button className="btn btn-ghost" style={{ padding: '8px 18px' }} onClick={openLogin}>Log In</button>
-            <button className="btn btn-blue" style={{ padding: '8px 18px' }} onClick={openSignup}>Get Started</button>
+            <button className="btn btn-ghost" style={{ padding: '8px 20px' }} onClick={openLogin}>
+              Log In
+            </button>
+            <button className="btn btn-blue" style={{ padding: '8px 20px' }} onClick={openSignup}>
+              Get Started
+            </button>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginLeft: 'auto' }} className="nav-hamburger-group">
-            <ThemeToggle theme={theme} onToggle={toggle} />
             <button
               className="nav-hamburger"
               style={s.hamburger}
               onClick={() => setDrawerOpen(true)}
               aria-label="Open menu"
             >
-              <Menu size={24} color="var(--text-primary)" strokeWidth={1.5} />
+              <Menu size={24} color="#94A3B8" strokeWidth={1.5} />
             </button>
           </div>
         </div>
@@ -84,7 +81,7 @@ export default function Navbar() {
         <div style={s.drawerHeader}>
           <span style={s.logo}>Humix</span>
           <button onClick={() => setDrawerOpen(false)} style={s.closeBtn} aria-label="Close menu">
-            <X size={22} color="var(--text-primary)" strokeWidth={1.5} />
+            <X size={22} color="#94A3B8" strokeWidth={1.5} />
           </button>
         </div>
 
@@ -96,8 +93,8 @@ export default function Navbar() {
               to={to}
               style={{
                 ...s.drawerLink,
-                color: active ? 'var(--accent)' : 'var(--text-primary)',
-                fontWeight: active ? 600 : 400,
+                color: active ? '#818CF8' : '#94A3B8',
+                fontWeight: active ? 700 : 500,
               }}
             >
               {label}
@@ -105,9 +102,14 @@ export default function Navbar() {
           );
         })}
 
-        <button onClick={openLogin} style={{ ...s.drawerLink, color: 'var(--text-secondary)', background: 'none', border: 'none', width: '100%', textAlign: 'left', cursor: 'pointer' }}>Log In</button>
+        <button
+          onClick={openLogin}
+          style={{ ...s.drawerLink, color: '#64748B', background: 'none', border: 'none', width: '100%', textAlign: 'left', cursor: 'pointer' }}
+        >
+          Log In
+        </button>
 
-        <div style={{ padding: '16px 24px', marginTop: 'auto', borderTop: '1px solid var(--border)' }}>
+        <div style={{ padding: '16px 24px', marginTop: 'auto', borderTop: '1px solid #1A1A1A' }}>
           <button
             className="btn btn-blue"
             style={{ width: '100%', justifyContent: 'center', padding: '13px 16px', fontSize: '15px' }}
@@ -123,34 +125,6 @@ export default function Navbar() {
   );
 }
 
-function ThemeToggle({ theme, onToggle }) {
-  return (
-    <button
-      onClick={onToggle}
-      aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '36px',
-        height: '36px',
-        borderRadius: '8px',
-        border: '1.5px solid var(--border)',
-        background: 'transparent',
-        cursor: 'pointer',
-        color: 'var(--text-secondary)',
-        transition: 'border-color 0.18s ease, color 0.18s ease',
-        flexShrink: 0,
-      }}
-    >
-      {theme === 'dark'
-        ? <Sun size={16} strokeWidth={1.8} />
-        : <Moon size={16} strokeWidth={1.8} />
-      }
-    </button>
-  );
-}
-
 function NavLink({ to, label, active }) {
   const [hov, setHov] = useState(false);
   return (
@@ -158,11 +132,11 @@ function NavLink({ to, label, active }) {
       to={to}
       style={{
         fontFamily: "'Inter', sans-serif",
-        fontWeight: 500,
-        fontSize: '15px',
+        fontWeight: 600,
+        fontSize: '14px',
         textDecoration: 'none',
-        color: active ? 'var(--accent)' : (hov ? 'var(--text-primary)' : 'var(--text-secondary)'),
-        borderBottom: active ? '2px solid var(--accent)' : '2px solid transparent',
+        color: active ? '#818CF8' : (hov ? '#F8FAFC' : '#64748B'),
+        borderBottom: active ? '2px solid #6366F1' : '2px solid transparent',
         paddingBottom: '2px',
         transition: 'all 0.18s ease',
         display: 'inline-block',
@@ -180,8 +154,10 @@ const s = {
     position: 'sticky',
     top: 0,
     zIndex: 100,
-    background: 'var(--nav-bg)',
-    borderBottom: '1px solid var(--nav-border)',
+    background: 'rgba(10,10,10,0.9)',
+    backdropFilter: 'blur(20px)',
+    WebkitBackdropFilter: 'blur(20px)',
+    borderBottom: '1px solid rgba(255,255,255,0.06)',
     height: '64px',
     display: 'flex',
     alignItems: 'center',
@@ -193,14 +169,14 @@ const s = {
     width: '100%',
     display: 'flex',
     alignItems: 'center',
-    gap: '24px',
+    gap: '32px',
   },
   logo: {
     fontFamily: "'Inter', sans-serif",
-    fontWeight: 700,
+    fontWeight: 900,
     fontSize: '20px',
-    letterSpacing: '-0.03em',
-    color: 'var(--text-primary)',
+    letterSpacing: '-0.04em',
+    color: '#6366F1',
     textDecoration: 'none',
     flexShrink: 0,
   },
@@ -229,7 +205,7 @@ const s = {
   overlay: {
     position: 'fixed',
     inset: 0,
-    background: 'rgba(0,0,0,0.4)',
+    background: 'rgba(0,0,0,0.7)',
     zIndex: 200,
   },
   drawer: {
@@ -238,8 +214,9 @@ const s = {
     right: 0,
     height: '100%',
     width: '280px',
-    background: 'var(--bg-card)',
-    boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
+    background: '#0A0A0A',
+    border: '1px solid #1A1A1A',
+    boxShadow: '0 0 80px rgba(0,0,0,0.9)',
     zIndex: 201,
     display: 'flex',
     flexDirection: 'column',
@@ -252,7 +229,7 @@ const s = {
     justifyContent: 'space-between',
     padding: '0 24px',
     height: '64px',
-    borderBottom: '1px solid var(--border)',
+    borderBottom: '1px solid #1A1A1A',
     flexShrink: 0,
   },
   closeBtn: {
@@ -269,10 +246,10 @@ const s = {
     alignItems: 'center',
     height: '48px',
     padding: '0 24px',
-    borderBottom: '1px solid var(--border)',
+    borderBottom: '1px solid #1A1A1A',
     fontFamily: "'Inter', sans-serif",
     fontSize: '15px',
     textDecoration: 'none',
-    transition: 'background 0.15s ease',
+    transition: 'color 0.15s ease',
   },
 };

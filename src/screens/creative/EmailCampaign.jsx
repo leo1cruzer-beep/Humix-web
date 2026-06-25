@@ -92,15 +92,15 @@ Keep the copy feeling like it's from a real human, not a marketing department.`
               <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 <div>
                   <label style={labelStyle}>Product / Service</label>
-                  <input value={product} onChange={e => setProduct(e.target.value)} placeholder="e.g. Online bookkeeping course for freelancers" style={inputStyle} onFocus={e => e.target.style.borderColor='#1B4FD8'} onBlur={e => e.target.style.borderColor='var(--border)'} />
+                  <input value={product} onChange={e => setProduct(e.target.value)} placeholder="e.g. Online bookkeeping course for freelancers" style={inputStyle} onFocus={e => e.target.style.borderColor='#6366F1'} onBlur={e => e.target.style.borderColor='var(--border)'} />
                 </div>
                 <div>
                   <label style={labelStyle}>Offer / Promotion</label>
-                  <input value={offer} onChange={e => setOffer(e.target.value)} placeholder="e.g. 50% off this weekend only, or free 7-day trial" style={inputStyle} onFocus={e => e.target.style.borderColor='#1B4FD8'} onBlur={e => e.target.style.borderColor='var(--border)'} />
+                  <input value={offer} onChange={e => setOffer(e.target.value)} placeholder="e.g. 50% off this weekend only, or free 7-day trial" style={inputStyle} onFocus={e => e.target.style.borderColor='#6366F1'} onBlur={e => e.target.style.borderColor='var(--border)'} />
                 </div>
                 <div>
                   <label style={labelStyle}>Target Audience</label>
-                  <input value={audience} onChange={e => setAudience(e.target.value)} placeholder="e.g. Freelance designers earning $3K–$8K/month who hate doing taxes" style={inputStyle} onFocus={e => e.target.style.borderColor='#1B4FD8'} onBlur={e => e.target.style.borderColor='var(--border)'} />
+                  <input value={audience} onChange={e => setAudience(e.target.value)} placeholder="e.g. Freelance designers earning $3K–$8K/month who hate doing taxes" style={inputStyle} onFocus={e => e.target.style.borderColor='#6366F1'} onBlur={e => e.target.style.borderColor='var(--border)'} />
                 </div>
                 <button className="btn btn-blue" onClick={generate} disabled={!canGenerate || loading} style={{ padding: '13px', fontSize: '15px', opacity: !canGenerate ? 0.6 : 1 }}>
                   {loading ? 'Writing Campaign…' : 'Write Email Campaign →'}

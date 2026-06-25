@@ -154,7 +154,7 @@ export default function Remittance() {
                       background: 'var(--input-bg)', fontFamily: 'Inter, sans-serif',
                       boxSizing: 'border-box',
                     }}
-                    onFocus={e => e.target.style.borderColor = '#1B4FD8'}
+                    onFocus={e => e.target.style.borderColor = '#6366F1'}
                     onBlur={e => e.target.style.borderColor = 'var(--border)'}
                   />
                 </div>

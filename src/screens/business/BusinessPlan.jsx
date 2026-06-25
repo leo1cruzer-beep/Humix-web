@@ -95,15 +95,15 @@ Make all numbers specific and realistic for the ${country} market.`
               <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 <div>
                   <label style={labelStyle}>Business Idea</label>
-                  <textarea value={idea} onChange={e => setIdea(e.target.value)} placeholder="e.g. A mobile app that connects freelance nurses with clinics for short-term shifts in rural areas" rows={4} style={{ ...inputStyle, resize: 'vertical', lineHeight: 1.6, paddingTop: '10px' }} onFocus={e => e.target.style.borderColor='#1B4FD8'} onBlur={e => e.target.style.borderColor='var(--border)'} />
+                  <textarea value={idea} onChange={e => setIdea(e.target.value)} placeholder="e.g. A mobile app that connects freelance nurses with clinics for short-term shifts in rural areas" rows={4} style={{ ...inputStyle, resize: 'vertical', lineHeight: 1.6, paddingTop: '10px' }} onFocus={e => e.target.style.borderColor='#6366F1'} onBlur={e => e.target.style.borderColor='var(--border)'} />
                 </div>
                 <div>
                   <label style={labelStyle}>Target Market</label>
-                  <input value={market} onChange={e => setMarket(e.target.value)} placeholder="e.g. Small clinics, rural hospitals, healthcare staffing agencies" style={inputStyle} onFocus={e => e.target.style.borderColor='#1B4FD8'} onBlur={e => e.target.style.borderColor='var(--border)'} />
+                  <input value={market} onChange={e => setMarket(e.target.value)} placeholder="e.g. Small clinics, rural hospitals, healthcare staffing agencies" style={inputStyle} onFocus={e => e.target.style.borderColor='#6366F1'} onBlur={e => e.target.style.borderColor='var(--border)'} />
                 </div>
                 <div>
                   <label style={labelStyle}>Country / Region</label>
-                  <input value={country} onChange={e => setCountry(e.target.value)} placeholder="e.g. Nigeria, Southeast Asia, United Kingdom" style={inputStyle} onFocus={e => e.target.style.borderColor='#1B4FD8'} onBlur={e => e.target.style.borderColor='var(--border)'} />
+                  <input value={country} onChange={e => setCountry(e.target.value)} placeholder="e.g. Nigeria, Southeast Asia, United Kingdom" style={inputStyle} onFocus={e => e.target.style.borderColor='#6366F1'} onBlur={e => e.target.style.borderColor='var(--border)'} />
                 </div>
                 <button className="btn btn-blue" onClick={generate} disabled={!canGenerate || loading} style={{ padding: '13px', fontSize: '15px', opacity: !canGenerate ? 0.6 : 1 }}>
                   {loading ? 'Building Plan…' : 'Generate Business Plan →'}

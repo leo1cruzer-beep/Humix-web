@@ -90,7 +90,7 @@ TOP PICK: [your recommendation and why]`
               <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 <div>
                   <label style={labelStyle}>Describe Your Business</label>
-                  <textarea value={description} onChange={e => setDescription(e.target.value)} placeholder="e.g. An online marketplace where African artisans sell handmade crafts directly to global buyers, with no middlemen" rows={4} style={{ ...inputStyle, resize: 'vertical', lineHeight: 1.6, paddingTop: '10px' }} onFocus={e => e.target.style.borderColor='#1B4FD8'} onBlur={e => e.target.style.borderColor='var(--border)'} />
+                  <textarea value={description} onChange={e => setDescription(e.target.value)} placeholder="e.g. An online marketplace where African artisans sell handmade crafts directly to global buyers, with no middlemen" rows={4} style={{ ...inputStyle, resize: 'vertical', lineHeight: 1.6, paddingTop: '10px' }} onFocus={e => e.target.style.borderColor='#6366F1'} onBlur={e => e.target.style.borderColor='var(--border)'} />
                 </div>
                 <div>
                   <label style={labelStyle}>Name Style Preference</label>

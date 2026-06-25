@@ -77,7 +77,7 @@ export default function ExplorePage() {
       <div style={s.pageHeader}>
         <div style={s.container}>
           <h1 className="page-title" style={{ marginBottom: '8px' }}>Explore Humix</h1>
-          <p style={{ fontSize: '17px', color: '#737373', marginBottom: '32px' }}>
+          <p style={{ fontSize: '17px', color: 'var(--text-secondary)', marginBottom: '32px' }}>
             Browse all tools, services, and AI features
           </p>
 
@@ -114,7 +114,7 @@ export default function ExplorePage() {
           {/* Sidebar */}
           <aside className="explore-sidebar" style={s.sidebar}>
             <div style={s.sidebarHeader}>
-              <span style={{ fontWeight: 600, fontSize: '14px', color: '#1A1A1A', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ fontWeight: 700, fontSize: '14px', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <SlidersHorizontal size={16} color="#374151" strokeWidth={1.5} />
                 Filters
               </span>
@@ -130,7 +130,7 @@ export default function ExplorePage() {
                     onChange={() => { setActiveCategory(activeCategory === cat ? 'All' : cat); setVisibleCount(12); }}
                     style={s.checkbox}
                   />
-                  <span style={{ fontSize: '14px', color: '#1A1A1A' }}>{cat}</span>
+                  <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>{cat}</span>
                 </label>
               ))}
             </FilterSection>
@@ -144,7 +144,7 @@ export default function ExplorePage() {
                     onChange={() => toggleType(type)}
                     style={s.checkbox}
                   />
-                  <span style={{ fontSize: '14px', color: '#1A1A1A' }}>{type}</span>
+                  <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>{type}</span>
                 </label>
               ))}
             </FilterSection>
@@ -153,7 +153,7 @@ export default function ExplorePage() {
               {FILTER_RATINGS.map(r => (
                 <label key={r} style={s.filterLabel}>
                   <input type="radio" name="rating" style={s.checkbox} />
-                  <span style={{ fontSize: '14px', color: '#1A1A1A', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <span style={{ fontSize: '14px', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '4px' }}>
                     <Star size={13} color="#D97706" fill="#D97706" /> {r}
                   </span>
                 </label>
@@ -164,7 +164,7 @@ export default function ExplorePage() {
               {['Free', 'Under $10/mo', '$10–$30/mo', '$30+/mo'].map(p => (
                 <label key={p} style={s.filterLabel}>
                   <input type="checkbox" style={s.checkbox} />
-                  <span style={{ fontSize: '14px', color: '#1A1A1A' }}>{p}</span>
+                  <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>{p}</span>
                 </label>
               ))}
             </FilterSection>
@@ -233,9 +233,9 @@ function ToolCard({ tool }) {
       onClick={handleTryFree}
       style={{
         ...s.toolCard,
-        borderColor: hov ? 'var(--accent)' : 'var(--border)',
-        boxShadow: hov ? 'var(--shadow-hover)' : 'none',
-        transform: hov ? 'translateY(-2px)' : 'translateY(0)',
+        borderColor: hov ? 'rgba(99,102,241,0.4)' : 'rgba(255,255,255,0.07)',
+        boxShadow: hov ? '0 8px 32px rgba(99,102,241,0.18)' : 'none',
+        transform: hov ? 'translateY(-4px)' : 'none',
       }}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
@@ -352,7 +352,7 @@ const s = {
     cursor: 'pointer',
   },
   checkbox: {
-    accentColor: '#1B4FD8',
+    accentColor: '#6366F1',
     width: '16px',
     height: '16px',
     cursor: 'pointer',
@@ -364,11 +364,13 @@ const s = {
     gap: '16px',
   },
   toolCard: {
-    background: 'var(--bg-card)',
-    border: '1px solid var(--border)',
-    borderRadius: '16px',
+    background: 'rgba(255,255,255,0.03)',
+    backdropFilter: 'blur(10px)',
+    WebkitBackdropFilter: 'blur(10px)',
+    border: '1px solid rgba(255,255,255,0.07)',
+    borderRadius: '20px',
     padding: '24px',
-    transition: 'all 0.18s ease',
+    transition: 'all 0.2s ease',
     display: 'flex',
     flexDirection: 'column',
     cursor: 'pointer',

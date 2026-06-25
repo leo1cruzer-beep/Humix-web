@@ -36,8 +36,8 @@ const TRENDING_TOPICS = [
 ];
 
 const CATEGORY_COLORS = {
-  Finance: '#16A34A', Freelancers: '#1B4FD8', Farmers: '#D97706',
-  Health: '#DC2626', Tech: '#7C3AED', Entrepreneurs: '#1B4FD8',
+  Finance: '#16A34A', Freelancers: '#6366F1', Farmers: '#D97706',
+  Health: '#DC2626', Tech: '#7C3AED', Entrepreneurs: '#6366F1',
   Students: '#0891B2', Creatives: '#DB2777',
 };
 
@@ -146,9 +146,9 @@ function CatCard({ id, label, Icon, members, joined, onJoin }) {
     <div
       style={{
         ...s.catCard,
-        borderColor: hov ? 'var(--accent)' : 'var(--border)',
-        boxShadow: hov ? '0 4px 16px rgba(27,79,216,0.10)' : 'none',
-        transform: hov ? 'translateY(-2px)' : 'translateY(0)',
+        borderColor: hov ? 'rgba(99,102,241,0.4)' : 'rgba(255,255,255,0.07)',
+        boxShadow: hov ? '0 8px 32px rgba(99,102,241,0.15)' : 'none',
+        transform: hov ? 'translateY(-4px)' : 'none',
       }}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
@@ -170,7 +170,7 @@ function CatCard({ id, label, Icon, members, joined, onJoin }) {
 }
 
 function PostRow({ post, hov, onHover, onLeave }) {
-  const color = CATEGORY_COLORS[post.category] || '#1B4FD8';
+  const color = CATEGORY_COLORS[post.category] || '#6366F1';
   return (
     <div
       style={{
@@ -230,9 +230,10 @@ const s = {
     gap: '16px',
   },
   catCard: {
-    background: 'var(--bg-card)',
-    border: '1px solid var(--border)',
-    borderRadius: '16px',
+    background: 'rgba(255,255,255,0.03)',
+    backdropFilter: 'blur(10px)',
+    border: '1px solid rgba(255,255,255,0.07)',
+    borderRadius: '20px',
     padding: '24px',
     transition: 'all 0.18s ease',
   },

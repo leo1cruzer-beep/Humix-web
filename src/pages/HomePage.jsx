@@ -1,54 +1,30 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  Zap, TrendingUp, MessageCircle, Heart,
-  Users, Briefcase, Gem, Pencil,
+  TrendingUp, Briefcase, Gem, Pencil, Heart, Users,
 } from 'lucide-react';
 
-const CATEGORIES = [
-  { id: 'automate',       label: 'Automate',        desc: 'Connect your workflow to AI',         Icon: Zap },
-  { id: 'finance',        label: 'Finance',          desc: 'From debt to wealth',                 Icon: TrendingUp },
-  { id: 'companion',      label: 'Companion',        desc: 'AI that never forgets',               Icon: MessageCircle },
-  { id: 'life-assistant', label: 'Life Assistant',   desc: 'Health, legal, farming, education',   Icon: Heart },
-  { id: 'community',      label: 'Community',        desc: 'Connect with people like you',        Icon: Users },
-  { id: 'career',         label: 'Career',           desc: 'Find work or hire globally',          Icon: Briefcase },
-  { id: 'business',       label: 'Business',         desc: 'Tools for entrepreneurs',             Icon: Gem },
-  { id: 'creative',       label: 'Creative',         desc: 'Design, write, and create',           Icon: Pencil },
-];
-
-const STATS = [
-  { value: '10K+',  label: 'Users' },
-  { value: '8',     label: 'Categories' },
-  { value: '20',    label: 'Countries' },
-  { value: '98%',   label: 'Satisfaction' },
+const SERVICE_CARDS = [
+  { id: 'finance',        label: 'Finance',        desc: 'Smart budgeting, debt payoff & wealth tools',      Icon: TrendingUp, to: '/finance',        color: '#10B981' },
+  { id: 'career',         label: 'Career',          desc: 'AI résumés, interview prep & salary insights',      Icon: Briefcase,  to: '/career',         color: '#6366F1' },
+  { id: 'business',       label: 'Business',        desc: 'Business plans, pitch decks & market research',    Icon: Gem,        to: '/business',       color: '#8B5CF6' },
+  { id: 'creative',       label: 'Creative',        desc: 'Content writing, social media & brand voice',      Icon: Pencil,     to: '/creative',       color: '#F59E0B' },
+  { id: 'life-assistant', label: 'Life Assistant',  desc: 'Health checks, legal docs & daily guidance',       Icon: Heart,      to: '/life-assistant', color: '#EF4444' },
+  { id: 'community',      label: 'Community',       desc: 'Connect with 24K+ members worldwide',              Icon: Users,      to: '/community',      color: '#06B6D4' },
 ];
 
 const STEPS = [
-  {
-    n: '1',
-    title: 'Choose a category',
-    desc: 'Browse 8 service areas built for every real-world need — from finance to farming to creative work.',
-  },
-  {
-    n: '2',
-    title: 'Get AI-powered help',
-    desc: 'Use 50+ intelligent tools that work in plain language — no setup, no learning curve.',
-  },
-  {
-    n: '3',
-    title: 'Take action',
-    desc: 'Implement plans, hire experts, or join your community. Humix turns insight into results.',
-  },
+  { n: '1', title: 'Scan your face once', desc: 'Your biometric profile is created instantly — no documents, no wait, no bureaucracy.' },
+  { n: '2', title: 'Access everything',   desc: 'Finance, career, health, business — your identity unlocks every service on the platform.' },
+  { n: '3', title: 'Take action',         desc: 'AI tools that turn insight into results. In your language, at your pace.' },
 ];
 
 export default function HomePage() {
   const navigate = useNavigate();
-
   return (
     <main className="page-enter">
       <HeroSection navigate={navigate} />
-      <CategoriesSection navigate={navigate} />
-      <SocialProofStrip />
+      <ServiceCardsSection navigate={navigate} />
       <HowItWorksSection />
     </main>
   );
@@ -56,70 +32,78 @@ export default function HomePage() {
 
 function HeroSection({ navigate }) {
   return (
-    <section style={s.heroWrap}>
-      {/* Dot grid background */}
+    <section style={s.hero}>
+      {/* Gradient orbs — CSS animation only */}
+      <div className="orb-wrap">
+        <div className="orb orb-1" />
+        <div className="orb orb-2" />
+        <div className="orb orb-3" />
+      </div>
+
+      {/* Dot grid */}
       <div className="dot-grid-bg" style={s.dotGrid} />
 
       <div style={s.heroInner}>
-        {/* Eyebrow */}
-        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '24px' }}>
-          <span className="badge badge-blue label-tag">AI-Powered Platform</span>
+        {/* Eyebrow badge */}
+        <div style={s.eyebrowWrap}>
+          <div style={s.eyebrow}>
+            <span style={s.eyebrowDot} />
+            Biometric Identity Platform · 150+ Countries
+          </div>
         </div>
 
+        {/* Headline */}
         <h1 style={s.headline}>
-          Everything you need.<br />One platform.
+          Your Identity.<br />Your World.
         </h1>
 
-        <p style={s.subheadline}>
-          From freelancing to farming, finance to creativity — Humix is built for real people.
+        {/* Subtitle */}
+        <p style={s.sub}>
+          One face. Access everything. No documents needed.
         </p>
 
-        <div style={s.ctaRow}>
-          <button
-            className="btn btn-blue"
-            style={{ padding: '12px 28px', fontSize: '15px' }}
-            onClick={() => navigate('/explore')}
-          >
-            Get Started
-          </button>
-          <button
-            className="btn btn-ghost"
-            style={{ padding: '12px 28px', fontSize: '15px' }}
-            onClick={() => navigate('/explore')}
-          >
-            Explore Tools
-          </button>
+        {/* Primary CTA */}
+        <button
+          className="btn-cta"
+          onClick={() => navigate('/explore')}
+          style={{ marginBottom: '56px' }}
+        >
+          Scan Your Face to Begin
+        </button>
+
+        {/* Stats row */}
+        <div style={s.statsRow}>
+          <StatItem value="4B+" label="People" />
+          <div style={s.statDivider} />
+          <StatItem value="150+" label="Countries" />
+          <div style={s.statDivider} />
+          <StatItem value="0" label="Documents" />
         </div>
-
-        <p style={{ fontSize: '13px', color: '#A3A3A3', marginTop: '16px' }}>
-          Trusted by 10,000+ users across 20 countries
-        </p>
       </div>
     </section>
   );
 }
 
-function CategoriesSection({ navigate }) {
+function StatItem({ value, label }) {
   return (
-    <section style={s.section}>
-      <div className="container" style={s.container}>
-        <h2 className="section-heading" style={{ marginBottom: '32px', textAlign: 'center' }}>
-          What do you need today?
-        </h2>
-        <div className="cat-grid" style={s.catGrid}>
-          {CATEGORIES.map(({ id, label, desc, Icon }) => (
-            <CategoryCard
-              key={id}
-              id={id}
-              label={label}
-              desc={desc}
-              Icon={Icon}
-              onClick={() => {
-              if (id === 'life-assistant') return navigate('/life-assistant')
-              if (id === 'finance') return navigate('/finance')
-              navigate(`/explore?category=${id}`)
-            }}
-            />
+    <div style={s.statItem}>
+      <span style={s.statValue}>{value}</span>
+      <span style={s.statLabel}>{label}</span>
+    </div>
+  );
+}
+
+function ServiceCardsSection({ navigate }) {
+  return (
+    <section style={s.cardsSection}>
+      <div className="container">
+        <div style={s.cardsSectionHeader}>
+          <h2 style={s.cardsSectionTitle}>Everything under one identity</h2>
+          <p style={s.cardsSectionSub}>Six systems. One face. Zero friction.</p>
+        </div>
+        <div className="cat-grid" style={s.cardsGrid}>
+          {SERVICE_CARDS.map(card => (
+            <ServiceCard key={card.id} card={card} navigate={navigate} />
           ))}
         </div>
       </div>
@@ -127,57 +111,61 @@ function CategoriesSection({ navigate }) {
   );
 }
 
-function CategoryCard({ label, desc, Icon, onClick }) {
+function ServiceCard({ card, navigate }) {
   const [hov, setHov] = useState(false);
-
   return (
     <button
-      onClick={onClick}
+      onClick={() => navigate(card.to)}
       style={{
-        ...s.catCard,
-        borderColor: hov ? '#1B4FD8' : '#E8E8E4',
-        boxShadow: hov ? '0 4px 16px rgba(27,79,216,0.10)' : 'none',
-        transform: hov ? 'translateY(-2px)' : 'translateY(0)',
+        background: hov ? 'rgba(255,255,255,0.055)' : 'rgba(255,255,255,0.03)',
+        backdropFilter: 'blur(10px)',
+        WebkitBackdropFilter: 'blur(10px)',
+        border: `1px solid ${hov ? 'rgba(99,102,241,0.35)' : 'rgba(255,255,255,0.07)'}`,
+        borderRadius: '20px',
+        padding: '28px 24px',
+        textAlign: 'left',
+        cursor: 'pointer',
+        transition: 'all 0.2s ease',
+        transform: hov ? 'translateY(-4px)' : 'none',
+        boxShadow: hov ? `0 12px 40px rgba(99,102,241,0.18)` : 'none',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '18px',
+        width: '100%',
       }}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
     >
-      <div style={s.iconBox}>
-        <Icon size={22} color="#374151" strokeWidth={1.5} />
+      <div style={{
+        width: '52px', height: '52px', borderRadius: '16px',
+        background: card.color + '20',
+        border: `1px solid ${card.color}30`,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        flexShrink: 0,
+      }}>
+        <card.Icon size={24} color={card.color} strokeWidth={1.8} />
       </div>
-      <h3 className="card-title" style={{ marginTop: '16px', marginBottom: '6px' }}>{label}</h3>
-      <p style={{ fontSize: '14px', color: '#737373', lineHeight: 1.5 }}>{desc}</p>
+      <div style={{ flex: 1 }}>
+        <h3 style={{ fontSize: '17px', fontWeight: 800, color: '#F8FAFC', marginBottom: '7px', letterSpacing: '-0.02em' }}>
+          {card.label}
+        </h3>
+        <p style={{ fontSize: '14px', color: '#94A3B8', lineHeight: 1.6 }}>{card.desc}</p>
+      </div>
+      <span style={{ fontSize: '13px', fontWeight: 700, color: card.color, letterSpacing: '-0.01em' }}>
+        Explore →
+      </span>
     </button>
-  );
-}
-
-function SocialProofStrip() {
-  return (
-    <section style={s.stripWrap}>
-      <div style={s.stripInner}>
-        <p style={{ fontSize: '15px', fontWeight: 600, color: '#737373', marginBottom: '24px' }}>
-          Powered by AI. Built for humans.
-        </p>
-        <div style={s.statsRow}>
-          {STATS.map(({ value, label }) => (
-            <div key={label} style={s.statItem}>
-              <span style={s.statValue}>{value}</span>
-              <span style={s.statLabel}>{label}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
   );
 }
 
 function HowItWorksSection() {
   return (
-    <section style={{ ...s.section, background: 'var(--bg-page)' }}>
-      <div className="container" style={s.container}>
-        <h2 className="section-heading" style={{ textAlign: 'center', marginBottom: '48px' }}>
-          How it works
-        </h2>
+    <section style={s.howWrap}>
+      <div className="container">
+        <div style={{ textAlign: 'center', marginBottom: '56px' }}>
+          <h2 style={{ ...s.cardsSectionTitle, marginBottom: '12px' }}>How it works</h2>
+          <p style={s.cardsSectionSub}>Three steps. No friction.</p>
+        </div>
         <div className="steps-row" style={s.stepsRow}>
           {STEPS.map((step, i) => (
             <StepItem key={step.n} step={step} isLast={i === STEPS.length - 1} />
@@ -193,126 +181,151 @@ function StepItem({ step, isLast }) {
     <div style={s.stepWrap}>
       <div style={s.stepContent}>
         <div style={s.stepBadge}>{step.n}</div>
-        <h3 style={{ fontWeight: 600, fontSize: '17px', color: '#1A1A1A', margin: '16px 0 8px' }}>
+        <h3 style={{ fontWeight: 700, fontSize: '18px', color: '#F8FAFC', margin: '18px 0 10px', letterSpacing: '-0.02em' }}>
           {step.title}
         </h3>
-        <p style={{ fontSize: '14px', color: '#737373', lineHeight: 1.65 }}>{step.desc}</p>
+        <p style={{ fontSize: '14px', color: '#94A3B8', lineHeight: 1.7 }}>{step.desc}</p>
       </div>
-      {!isLast && <div style={s.stepConnector} />}
+      {!isLast && <div className="step-connector" style={s.stepConnector} />}
     </div>
   );
 }
 
 const s = {
-  heroWrap: {
+  hero: {
+    minHeight: '100vh',
+    background: '#0A0A0A',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop: '120px',
+    paddingBottom: '80px',
     position: 'relative',
-    paddingTop: '96px',
-    paddingBottom: '96px',
-    textAlign: 'center',
     overflow: 'hidden',
-    background: 'var(--bg-page)',
   },
   dotGrid: {
     position: 'absolute',
     inset: 0,
-    opacity: 0.4,
+    opacity: 0.3,
     zIndex: 0,
+    pointerEvents: 'none',
   },
   heroInner: {
     position: 'relative',
     zIndex: 1,
-    maxWidth: '680px',
+    maxWidth: '720px',
     margin: '0 auto',
     padding: '0 24px',
+    textAlign: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  eyebrowWrap: { marginBottom: '28px' },
+  eyebrow: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '8px',
+    background: 'rgba(255,255,255,0.05)',
+    border: '1px solid rgba(255,255,255,0.08)',
+    borderRadius: '99px',
+    padding: '7px 18px',
+    fontSize: '12px',
+    fontWeight: 600,
+    color: 'rgba(255,255,255,0.45)',
+    letterSpacing: '0.02em',
+  },
+  eyebrowDot: {
+    width: '6px',
+    height: '6px',
+    borderRadius: '50%',
+    background: '#10B981',
+    boxShadow: '0 0 8px #10B981',
+    display: 'inline-block',
   },
   headline: {
     fontFamily: "'Inter', sans-serif",
-    fontWeight: 700,
-    fontSize: 'clamp(36px, 5vw, 56px)',
-    letterSpacing: '-0.04em',
-    color: 'var(--text-primary)',
-    lineHeight: 1.1,
-    marginBottom: '20px',
+    fontWeight: 900,
+    fontSize: 'clamp(44px, 8vw, 88px)',
+    letterSpacing: 'clamp(-2px, -0.04em, -4px)',
+    lineHeight: 1.04,
+    color: '#F8FAFC',
+    marginBottom: '24px',
   },
-  subheadline: {
-    fontSize: '18px',
-    color: 'var(--text-secondary)',
+  sub: {
+    fontSize: 'clamp(16px, 2.2vw, 21px)',
+    fontWeight: 500,
+    color: 'rgba(255,255,255,0.4)',
     lineHeight: 1.6,
     maxWidth: '520px',
-    margin: '0 auto 32px',
-  },
-  ctaRow: {
-    display: 'flex',
-    justifyContent: 'center',
-    gap: '12px',
-    flexWrap: 'wrap',
-  },
-  section: {
-    padding: '80px 0',
-  },
-  container: {
-    maxWidth: '1200px',
-    margin: '0 auto',
-    padding: '0 48px',
-  },
-  catGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(4, 1fr)',
-    gap: '16px',
-  },
-  catCard: {
-    background: 'var(--bg-card)',
-    border: '1px solid var(--border)',
-    borderRadius: '16px',
-    padding: '24px',
-    textAlign: 'left',
-    cursor: 'pointer',
-    transition: 'all 0.18s ease',
-    width: '100%',
-  },
-  iconBox: {
-    width: '48px',
-    height: '48px',
-    borderRadius: '12px',
-    background: 'var(--icon-bg)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexShrink: 0,
-  },
-  stripWrap: {
-    background: 'var(--bg-card)',
-    borderTop: '1px solid var(--border)',
-    borderBottom: '1px solid var(--border)',
-    padding: '48px 24px',
-    textAlign: 'center',
-  },
-  stripInner: {
-    maxWidth: '800px',
-    margin: '0 auto',
+    marginBottom: '44px',
+    letterSpacing: '-0.01em',
   },
   statsRow: {
     display: 'flex',
-    justifyContent: 'center',
-    gap: '48px',
+    alignItems: 'center',
+    gap: '32px',
     flexWrap: 'wrap',
+    justifyContent: 'center',
+  },
+  statDivider: {
+    width: '1px',
+    height: '32px',
+    background: 'rgba(255,255,255,0.1)',
   },
   statItem: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    gap: '4px',
+    gap: '3px',
   },
   statValue: {
     fontFamily: "'Inter', sans-serif",
-    fontWeight: 700,
-    fontSize: '28px',
+    fontWeight: 800,
+    fontSize: '26px',
+    color: '#F8FAFC',
     letterSpacing: '-0.03em',
-    color: 'var(--text-primary)',
   },
   statLabel: {
-    fontSize: '13px',
-    color: 'var(--text-secondary)',
+    fontSize: '12px',
+    fontWeight: 500,
+    color: 'rgba(255,255,255,0.35)',
+    textTransform: 'uppercase',
+    letterSpacing: '0.08em',
+  },
+  cardsSection: {
+    background: '#0A0A0A',
+    padding: '100px 0',
+    borderTop: '1px solid #1A1A1A',
+  },
+  cardsSectionHeader: {
+    textAlign: 'center',
+    marginBottom: '48px',
+  },
+  cardsSectionTitle: {
+    fontFamily: "'Inter', sans-serif",
+    fontWeight: 800,
+    fontSize: 'clamp(28px, 4vw, 40px)',
+    letterSpacing: '-0.04em',
+    color: '#F8FAFC',
+    marginBottom: '12px',
+  },
+  cardsSectionSub: {
+    fontSize: '17px',
+    color: '#64748B',
+    fontWeight: 500,
+  },
+  cardsGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(3, 1fr)',
+    gap: '16px',
+  },
+  howWrap: {
+    background: '#080808',
+    padding: '100px 0',
+    borderTop: '1px solid #1A1A1A',
+    borderBottom: '1px solid #1A1A1A',
   },
   stepsRow: {
     display: 'grid',
@@ -327,17 +340,18 @@ const s = {
   },
   stepContent: {
     flex: 1,
-    padding: '0 32px 0 0',
+    padding: '0 40px 0 0',
   },
   stepBadge: {
-    width: '40px',
-    height: '40px',
+    width: '44px',
+    height: '44px',
     borderRadius: '50%',
-    background: 'var(--accent-light)',
-    color: 'var(--accent)',
+    background: 'rgba(99,102,241,0.12)',
+    border: '1px solid rgba(99,102,241,0.25)',
+    color: '#818CF8',
     fontFamily: "'Inter', sans-serif",
-    fontWeight: 700,
-    fontSize: '16px',
+    fontWeight: 800,
+    fontSize: '17px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -345,10 +359,10 @@ const s = {
   },
   stepConnector: {
     position: 'absolute',
-    top: '20px',
+    top: '22px',
     right: '-16px',
     width: '32px',
-    borderTop: '2px dashed #E8E8E4',
+    borderTop: '2px dashed #1A1A1A',
     zIndex: 1,
   },
 };

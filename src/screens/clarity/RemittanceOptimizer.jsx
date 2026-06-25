@@ -310,7 +310,7 @@ export default function RemittanceOptimizer() {
                     key={svc.id}
                     style={{
                       ...card,
-                      border: `1px solid ${isBest ? '#1B4FD8' : 'var(--border)'}`,
+                      border: `1px solid ${isBest ? '#6366F1' : 'var(--border)'}`,
                       padding: '20px 24px',
                       position: 'relative',
                       opacity: isWorst && !isBest ? 0.75 : 1,
@@ -319,7 +319,7 @@ export default function RemittanceOptimizer() {
                     {isBest && (
                       <span style={{
                         position: 'absolute', top: '-12px', left: '20px',
-                        background: '#1B4FD8', color: '#fff',
+                        background: '#6366F1', color: '#fff',
                         fontSize: '11px', fontWeight: 700, letterSpacing: '0.06em',
                         padding: '3px 12px', borderRadius: '20px',
                       }}>BEST VALUE</span>

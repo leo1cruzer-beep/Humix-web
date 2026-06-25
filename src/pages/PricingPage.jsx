@@ -158,7 +158,7 @@ function PricingCard({ tier, price, priceSub, subtitle, features, cta, ctaVarian
     <div className="pricing-card" style={{
       ...s.card,
       border: featured ? '2px solid var(--accent)' : '1px solid var(--border)',
-      boxShadow: featured ? '0 8px 32px rgba(27,79,216,0.15)' : 'none',
+      boxShadow: featured ? '0 8px 48px rgba(99,102,241,0.25)' : 'none',
       transform: featured ? 'scale(1.02)' : 'scale(1)',
       position: 'relative',
     }}>
@@ -239,7 +239,7 @@ const s = {
     width: '48px',
     height: '26px',
     borderRadius: '13px',
-    background: '#1B4FD8',
+    background: '#6366F1',
     border: 'none',
     cursor: 'pointer',
     position: 'relative',
@@ -251,7 +251,7 @@ const s = {
     width: '20px',
     height: '20px',
     borderRadius: '50%',
-    background: '#FFFFFF',
+    background: '#F8FAFC',
     transition: 'transform 0.2s ease',
     boxShadow: '0 1px 4px rgba(0,0,0,0.15)',
   },
@@ -263,7 +263,7 @@ const s = {
   },
   card: {
     background: 'var(--bg-card)',
-    borderRadius: '16px',
+    borderRadius: '20px',
     flex: 1,
     overflow: 'hidden',
   },

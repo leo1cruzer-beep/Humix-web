@@ -68,7 +68,7 @@ export default function CareerPage() {
               style={{
                 background: 'var(--bg-card)',
                 border: `1px solid ${hov === t.id ? 'var(--accent)' : 'var(--border)'}`,
-                borderRadius: '16px', padding: '24px', cursor: 'pointer',
+                borderRadius: '20px', padding: '24px', cursor: 'pointer',
                 textAlign: 'left', transition: 'all 0.18s ease',
                 boxShadow: hov === t.id ? 'var(--shadow-hover)' : 'none',
                 transform: hov === t.id ? 'translateY(-2px)' : 'none',
@@ -92,7 +92,7 @@ export default function CareerPage() {
           ))}
         </div>
 
-        <div style={{ marginTop: '48px', padding: '20px 24px', background: 'var(--accent-light)', borderRadius: '12px', border: '1px solid rgba(27,79,216,0.12)', display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
+        <div style={{ marginTop: '48px', padding: '20px 24px', background: 'var(--accent-light)', borderRadius: '12px', border: '1px solid rgba(99,102,241,0.2)', display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
           <span style={{ fontSize: '18px', flexShrink: 0 }}>💡</span>
           <div>
             <div style={{ fontWeight: 600, fontSize: '14px', color: 'var(--accent)', marginBottom: '4px' }}>Powered by DeepSeek AI</div>
