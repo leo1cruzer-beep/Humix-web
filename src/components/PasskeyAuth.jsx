@@ -2,24 +2,17 @@ import { useState, useEffect } from 'react';
 import { X, Fingerprint, Lock } from 'lucide-react';
 import { startRegistration, startAuthentication } from '@simplewebauthn/browser';
 import { useIdentity } from '../hooks/useIdentity';
+import { supabase } from '../lib/supabase';
 
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
-const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const USER_ID_KEY = 'humix_user_id';
-
 const SIZE = 240;
 const RING = 7;
 
-function edgeFn(name, path, body) {
-  return fetch(`${SUPABASE_URL}/functions/v1/${name}/${path}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      apikey: SUPABASE_ANON_KEY,
-      Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
-    },
-    body: JSON.stringify(body),
-  }).then(r => r.json());
+function randomChallenge() {
+  const bytes = new Uint8Array(32);
+  crypto.getRandomValues(bytes);
+  return btoa(String.fromCharCode(...bytes))
+    .replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
 }
 
 export default function PasskeyAuth({ onComplete, onClose }) {
@@ -54,22 +47,45 @@ export default function PasskeyAuth({ onComplete, onClose }) {
   const handleRegister = async () => {
     setPhase('registering');
     try {
-      const { options, userId, error } = await edgeFn('passkey-register', 'generate-options', {});
-      if (error) throw new Error(error);
+      const userId = crypto.randomUUID();
 
-      const registrationResponse = await startRegistration({ optionsJSON: options });
+      const optionsJSON = {
+        challenge: randomChallenge(),
+        rp: { id: window.location.hostname, name: 'Humix' },
+        user: {
+          id: btoa(userId).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, ''),
+          name: `user_${userId.slice(0, 8)}`,
+          displayName: 'Humix User',
+        },
+        pubKeyCredParams: [
+          { alg: -7,   type: 'public-key' }, // ES256
+          { alg: -257, type: 'public-key' }, // RS256
+        ],
+        timeout: 60000,
+        attestation: 'none',
+        authenticatorSelection: {
+          residentKey: 'preferred',
+          userVerification: 'preferred',
+        },
+        excludeCredentials: [],
+      };
 
-      const result = await edgeFn('passkey-register', 'verify', { userId, registrationResponse });
-      if (!result.verified) throw new Error('Registration not verified');
+      const registration = await startRegistration({ optionsJSON });
+
+      const { error } = await supabase.from('passkeys').insert({
+        credential_id: registration.id,
+        public_key: registration.response.publicKey ?? registration.response.attestationObject,
+        user_id: userId,
+        sign_count: 0,
+      });
+
+      if (error) throw new Error(error.message);
 
       localStorage.setItem(USER_ID_KEY, userId);
       setPhase('confirmed');
       setTimeout(() => { verify(); onComplete(); }, 1300);
     } catch (e) {
-      if (e?.name === 'NotAllowedError') {
-        setPhase('ready');
-        return;
-      }
+      if (e?.name === 'NotAllowedError') { setPhase('ready'); return; }
       setErrMsg(e?.message ?? 'Registration failed');
       setPhase('failed');
     }
@@ -79,21 +95,28 @@ export default function PasskeyAuth({ onComplete, onClose }) {
     const userId = localStorage.getItem(USER_ID_KEY);
     setPhase('verifying');
     try {
-      const { options, error } = await edgeFn('passkey-authenticate', 'generate-options', { userId });
-      if (error) throw new Error(error);
+      const { data: passkeys, error: fetchError } = await supabase
+        .from('passkeys')
+        .select('credential_id')
+        .eq('user_id', userId);
 
-      const authenticationResponse = await startAuthentication({ optionsJSON: options });
+      if (fetchError) throw new Error(fetchError.message);
+      if (!passkeys?.length) throw new Error('No credentials found — please register first.');
 
-      const result = await edgeFn('passkey-authenticate', 'verify', { userId, authenticationResponse });
-      if (!result.verified) throw new Error('Authentication not verified');
+      const optionsJSON = {
+        challenge: randomChallenge(),
+        rpId: window.location.hostname,
+        allowCredentials: passkeys.map(p => ({ id: p.credential_id, type: 'public-key' })),
+        timeout: 60000,
+        userVerification: 'preferred',
+      };
+
+      await startAuthentication({ optionsJSON });
 
       setPhase('confirmed');
       setTimeout(() => { verify(); onComplete(); }, 1300);
     } catch (e) {
-      if (e?.name === 'NotAllowedError') {
-        setPhase('ready');
-        return;
-      }
+      if (e?.name === 'NotAllowedError') { setPhase('ready'); return; }
       setErrMsg(e?.message ?? 'Authentication failed');
       setPhase('failed');
     }
