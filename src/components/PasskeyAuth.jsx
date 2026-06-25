@@ -30,18 +30,28 @@ export default function PasskeyAuth({ onComplete, onClose }) {
 
   // Determine flow on mount
   useEffect(() => {
-    if (typeof PublicKeyCredential === 'undefined') {
-      setPhase('unsupported');
-      return;
-    }
-    const storedId = localStorage.getItem(USER_ID_KEY);
-    if (storedId) {
-      setIsRegistering(false);
+    const checkSupport = async () => {
+      if (!window.PublicKeyCredential) return false;
+      try {
+        const available = await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
+        if (available) return true;
+      } catch (_) {}
+      try {
+        if (PublicKeyCredential.isConditionalMediationAvailable) {
+          const conditional = await PublicKeyCredential.isConditionalMediationAvailable();
+          if (conditional) return true;
+        }
+      } catch (_) {}
+      // Fallback: some Android browsers report false but still support it
+      return window.PublicKeyCredential !== undefined;
+    };
+
+    checkSupport().then(supported => {
+      if (!supported) { setPhase('unsupported'); return; }
+      const storedId = localStorage.getItem(USER_ID_KEY);
+      setIsRegistering(!storedId);
       setPhase('ready');
-    } else {
-      setIsRegistering(true);
-      setPhase('ready');
-    }
+    });
   }, []);
 
   const handleRegister = async () => {
@@ -64,6 +74,7 @@ export default function PasskeyAuth({ onComplete, onClose }) {
         timeout: 60000,
         attestation: 'none',
         authenticatorSelection: {
+          authenticatorAttachment: 'platform',
           residentKey: 'preferred',
           userVerification: 'preferred',
         },
