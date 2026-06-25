@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
-import { Routes, Route, useLocation, useNavigationType, useNavigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation, useNavigationType, useNavigate } from 'react-router-dom';
 import Navbar from './components/Navbar.jsx';
 import Footer from './components/Footer.jsx';
 import FaceScan from './components/FaceScan.jsx';
@@ -62,7 +62,7 @@ function ProtectedRoute({ children, isVerified, openScan }) {
     if (!isVerified) openScan();
   }, [isVerified, openScan]);
 
-  if (!isVerified) return null;
+  if (!isVerified) return <Navigate to="/" replace />;
   return children;
 }
 
@@ -79,6 +79,11 @@ export default function App() {
     navigate('/');
   }, [navigate]);
 
+  // helper to keep route definitions terse
+  const guard = (el) => (
+    <ProtectedRoute isVerified={isVerified} openScan={openScan}>{el}</ProtectedRoute>
+  );
+
   if (pathname === '/life-assistant') {
     return (
       <>
@@ -87,7 +92,7 @@ export default function App() {
           <FaceScan onComplete={onScanComplete} onClose={closeScan} />
         )}
         <Routes>
-          <Route path="/life-assistant" element={<LifeAssistantPage />} />
+          <Route path="/life-assistant" element={guard(<LifeAssistantPage />)} />
         </Routes>
       </>
     );
@@ -104,27 +109,27 @@ export default function App() {
         <div style={{ flex: 1 }}>
           <Routes>
             <Route path="/"               element={<HomePage onScanToEnter={openScan} />} />
-            <Route path="/explore"        element={<ExplorePage />} />
-            <Route path="/services"       element={<ServicesPage />} />
-            <Route path="/pricing"        element={<PricingPage />} />
-            <Route path="/community"      element={<CommunityPage />} />
-            <Route path="/career"              element={<CareerPage />} />
-            <Route path="/career/resume"       element={<Resume />} />
-            <Route path="/career/cover-letter" element={<CoverLetter />} />
-            <Route path="/career/interview"    element={<InterviewPrep />} />
-            <Route path="/career/salary"       element={<SalaryInsights />} />
-            <Route path="/finance"             element={<FinancePage />} />
-            <Route path="/finance/:tool"       element={<FinancePage />} />
-            <Route path="/business"            element={<BusinessPage />} />
-            <Route path="/business/plan"       element={<BusinessPlan />} />
-            <Route path="/business/pitch"      element={<PitchDeck />} />
-            <Route path="/business/names"      element={<NameGenerator />} />
-            <Route path="/business/market"     element={<MarketResearch />} />
-            <Route path="/creative"            element={<CreativePage />} />
-            <Route path="/creative/content"    element={<ContentWriter />} />
-            <Route path="/creative/social"     element={<SocialMediaPack />} />
-            <Route path="/creative/email"      element={<EmailCampaign />} />
-            <Route path="/creative/brand"      element={<BrandVoice />} />
+            <Route path="/explore"        element={guard(<ExplorePage />)} />
+            <Route path="/services"       element={guard(<ServicesPage />)} />
+            <Route path="/pricing"        element={guard(<PricingPage />)} />
+            <Route path="/community"      element={guard(<CommunityPage />)} />
+            <Route path="/career"              element={guard(<CareerPage />)} />
+            <Route path="/career/resume"       element={guard(<Resume />)} />
+            <Route path="/career/cover-letter" element={guard(<CoverLetter />)} />
+            <Route path="/career/interview"    element={guard(<InterviewPrep />)} />
+            <Route path="/career/salary"       element={guard(<SalaryInsights />)} />
+            <Route path="/finance"             element={guard(<FinancePage />)} />
+            <Route path="/finance/:tool"       element={guard(<FinancePage />)} />
+            <Route path="/business"            element={guard(<BusinessPage />)} />
+            <Route path="/business/plan"       element={guard(<BusinessPlan />)} />
+            <Route path="/business/pitch"      element={guard(<PitchDeck />)} />
+            <Route path="/business/names"      element={guard(<NameGenerator />)} />
+            <Route path="/business/market"     element={guard(<MarketResearch />)} />
+            <Route path="/creative"            element={guard(<CreativePage />)} />
+            <Route path="/creative/content"    element={guard(<ContentWriter />)} />
+            <Route path="/creative/social"     element={guard(<SocialMediaPack />)} />
+            <Route path="/creative/email"      element={guard(<EmailCampaign />)} />
+            <Route path="/creative/brand"      element={guard(<BrandVoice />)} />
             <Route path="*"               element={<NotFoundPage />} />
           </Routes>
         </div>
