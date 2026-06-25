@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { X, Fingerprint, Lock } from 'lucide-react';
-import { startRegistration, startAuthentication } from '@simplewebauthn/browser';
 import { useIdentity } from '../hooks/useIdentity';
 import { supabase } from '../lib/supabase';
 
@@ -8,11 +7,8 @@ const USER_ID_KEY = 'humix_user_id';
 const SIZE = 240;
 const RING = 7;
 
-function randomChallenge() {
-  const bytes = new Uint8Array(32);
-  crypto.getRandomValues(bytes);
-  return btoa(String.fromCharCode(...bytes))
-    .replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+function toBase64(buffer) {
+  return btoa(String.fromCharCode(...new Uint8Array(buffer)));
 }
 
 export default function PasskeyAuth({ onComplete, onClose }) {
@@ -58,34 +54,36 @@ export default function PasskeyAuth({ onComplete, onClose }) {
     setPhase('registering');
     try {
       const userId = crypto.randomUUID();
+      const userIdBytes = new TextEncoder().encode(userId);
 
-      const optionsJSON = {
-        challenge: randomChallenge(),
-        rp: { id: window.location.hostname, name: 'Humix' },
-        user: {
-          id: btoa(userId).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, ''),
-          name: `user_${userId.slice(0, 8)}`,
-          displayName: 'Humix User',
+      const credential = await navigator.credentials.create({
+        publicKey: {
+          challenge: new TextEncoder().encode(crypto.randomUUID()),
+          rp: { name: 'Humix', id: 'humix.app' },
+          user: { id: userIdBytes, name: 'humix-user', displayName: 'Humix User' },
+          pubKeyCredParams: [
+            { alg: -7,   type: 'public-key' },
+            { alg: -257, type: 'public-key' },
+          ],
+          authenticatorSelection: {
+            authenticatorAttachment: 'platform',
+            userVerification: 'preferred',
+            residentKey: 'preferred',
+            requireResidentKey: false,
+          },
+          timeout: 60000,
+          attestation: 'none',
         },
-        pubKeyCredParams: [
-          { alg: -7,   type: 'public-key' }, // ES256
-          { alg: -257, type: 'public-key' }, // RS256
-        ],
-        timeout: 60000,
-        attestation: 'none',
-        authenticatorSelection: {
-          authenticatorAttachment: 'platform',
-          residentKey: 'preferred',
-          userVerification: 'preferred',
-        },
-        excludeCredentials: [],
-      };
+      });
 
-      const registration = await startRegistration({ optionsJSON });
+      if (!credential) throw new Error('No credential returned');
+
+      const credentialId = toBase64(credential.rawId);
+      const publicKey    = toBase64(credential.response.getPublicKey());
 
       const { error } = await supabase.from('passkeys').insert({
-        credential_id: registration.id,
-        public_key: registration.response.publicKey ?? registration.response.attestationObject,
+        credential_id: credentialId,
+        public_key: publicKey,
         user_id: userId,
         sign_count: 0,
       });
@@ -103,26 +101,18 @@ export default function PasskeyAuth({ onComplete, onClose }) {
   };
 
   const handleAuthenticate = async () => {
-    const userId = localStorage.getItem(USER_ID_KEY);
     setPhase('verifying');
     try {
-      const { data: passkeys, error: fetchError } = await supabase
-        .from('passkeys')
-        .select('credential_id')
-        .eq('user_id', userId);
+      const assertion = await navigator.credentials.get({
+        publicKey: {
+          challenge: new TextEncoder().encode(crypto.randomUUID()),
+          rpId: 'humix.app',
+          userVerification: 'preferred',
+          timeout: 60000,
+        },
+      });
 
-      if (fetchError) throw new Error(fetchError.message);
-      if (!passkeys?.length) throw new Error('No credentials found — please register first.');
-
-      const optionsJSON = {
-        challenge: randomChallenge(),
-        rpId: window.location.hostname,
-        allowCredentials: passkeys.map(p => ({ id: p.credential_id, type: 'public-key' })),
-        timeout: 60000,
-        userVerification: 'preferred',
-      };
-
-      await startAuthentication({ optionsJSON });
+      if (!assertion) throw new Error('No assertion returned');
 
       setPhase('confirmed');
       setTimeout(() => { verify(); onComplete(); }, 1300);
