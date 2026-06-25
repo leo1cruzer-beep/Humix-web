@@ -5,6 +5,12 @@ export const useActivityLogger = () => {
 
   const logActivity = async (serviceName, category, preview) => {
     if (!userId) return;
+
+    await supabase.from('profiles').upsert(
+      { id: userId, created_at: new Date().toISOString() },
+      { onConflict: 'id', ignoreDuplicates: true }
+    );
+
     const { error } = await supabase.from('conversations').insert({
       user_id: userId,
       service: serviceName,

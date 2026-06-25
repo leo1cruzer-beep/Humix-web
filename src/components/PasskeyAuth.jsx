@@ -90,6 +90,12 @@ export default function PasskeyAuth({ onComplete, onClose }) {
 
       if (error) throw new Error(error.message);
 
+      const { error: profileError } = await supabase.from('profiles').upsert(
+        { id: userId, created_at: new Date().toISOString() },
+        { onConflict: 'id', ignoreDuplicates: true }
+      );
+      if (profileError) throw new Error(profileError.message);
+
       localStorage.setItem(USER_ID_KEY, userId);
       setPhase('confirmed');
       setTimeout(() => { verify(); onComplete(); }, 1300);
