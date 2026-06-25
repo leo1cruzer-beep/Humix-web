@@ -292,7 +292,7 @@ export default function PasskeyAuth({ onComplete, onClose }) {
             <p style={{ ...s.title, color: '#EF4444' }}>Verification Failed</p>
             <p style={{ ...s.sub, maxWidth: '260px', margin: '0 auto' }}>{errMsg}</p>
             <div style={{ display: 'flex', gap: '10px', marginTop: '24px', justifyContent: 'center' }}>
-              <button className="btn btn-ghost" style={{ padding: '10px 20px', fontSize: '13px' }}
+              <button className="btn btn-ghost" style={{ padding: '10px 20px', fontSize: '13px', color: '#F8FAFC' }}
                 onClick={() => { setPhase('ready'); }}>
                 Try Again
               </button>
@@ -306,7 +306,7 @@ export default function PasskeyAuth({ onComplete, onClose }) {
           {phase === 'unsupported' && <>
             <p style={{ ...s.title, color: '#EF4444' }}>Passkeys not supported on this device</p>
             <p style={s.sub}>Your browser doesn't support biometric login</p>
-            <button className="btn btn-ghost" style={{ ...s.actionBtn, marginTop: '24px' }}
+            <button style={{ ...s.actionBtn, background: 'rgba(255,255,255,0.08)', marginTop: '24px' }}
               onClick={handleGuestContinue}>
               Continue as guest
             </button>
@@ -393,7 +393,9 @@ const s = {
     fontFamily: "'Inter', sans-serif", fontSize: '14px', color: '#64748B', fontWeight: 500,
   },
   actionBtn: {
-    marginTop: '24px', padding: '12px 28px', fontSize: '14px', fontWeight: 600,
+    marginTop: '24px', padding: '12px 28px', fontSize: '16px', fontWeight: 700,
+    color: '#F8FAFC', background: '#6366F1', border: 'none', borderRadius: '10px',
+    cursor: 'pointer',
   },
   hint: {
     fontFamily: "'Inter', sans-serif", fontSize: '12px', color: '#475569',
