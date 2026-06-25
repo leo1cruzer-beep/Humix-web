@@ -15,6 +15,7 @@ import FinancePage from './pages/FinancePage.jsx';
 import BusinessPage from './pages/BusinessPage.jsx';
 import CreativePage from './pages/CreativePage.jsx';
 import NotFoundPage from './pages/NotFoundPage.jsx';
+import IdentityProfile from './pages/IdentityProfile.jsx';
 import Resume from './screens/career/Resume.jsx';
 import CoverLetter from './screens/career/CoverLetter.jsx';
 import InterviewPrep from './screens/career/InterviewPrep.jsx';
@@ -130,6 +131,7 @@ export default function App() {
             <Route path="/creative/social"     element={guard(<SocialMediaPack />)} />
             <Route path="/creative/email"      element={guard(<EmailCampaign />)} />
             <Route path="/creative/brand"      element={guard(<BrandVoice />)} />
+            <Route path="/profile"             element={guard(<IdentityProfile />)} />
             <Route path="*"               element={<NotFoundPage />} />
           </Routes>
         </div>
