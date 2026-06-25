@@ -103,7 +103,7 @@ export default function App() {
         <Navbar onScanToEnter={openScan} isVerified={isVerified} />
         <div style={{ flex: 1 }}>
           <Routes>
-            <Route path="/"               element={<HomePage />} />
+            <Route path="/"               element={<HomePage onScanToEnter={openScan} />} />
             <Route path="/explore"        element={<ExplorePage />} />
             <Route path="/services"       element={<ServicesPage />} />
             <Route path="/pricing"        element={<PricingPage />} />

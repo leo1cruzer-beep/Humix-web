@@ -19,18 +19,18 @@ const STEPS = [
   { n: '3', title: 'Take action',         desc: 'AI tools that turn insight into results. In your language, at your pace.' },
 ];
 
-export default function HomePage() {
+export default function HomePage({ onScanToEnter }) {
   const navigate = useNavigate();
   return (
     <main className="page-enter">
-      <HeroSection navigate={navigate} />
+      <HeroSection navigate={navigate} onScanToEnter={onScanToEnter} />
       <ServiceCardsSection navigate={navigate} />
       <HowItWorksSection />
     </main>
   );
 }
 
-function HeroSection({ navigate }) {
+function HeroSection({ navigate, onScanToEnter }) {
   return (
     <section style={s.hero}>
       {/* Gradient orbs — CSS animation only */}
@@ -65,7 +65,7 @@ function HeroSection({ navigate }) {
         {/* Primary CTA */}
         <button
           className="btn-cta"
-          onClick={() => navigate('/explore')}
+          onClick={onScanToEnter}
           style={{ marginBottom: '56px' }}
         >
           Scan Your Face to Begin
