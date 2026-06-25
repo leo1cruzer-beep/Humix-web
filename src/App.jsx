@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { Routes, Route, Navigate, useLocation, useNavigationType, useNavigate } from 'react-router-dom';
 import Navbar from './components/Navbar.jsx';
 import Footer from './components/Footer.jsx';
-import FaceScan from './components/FaceScan.jsx';
+import PasskeyAuth from './components/PasskeyAuth.jsx';
 import { useIdentity } from './hooks/useIdentity.jsx';
 import HomePage from './pages/HomePage.jsx';
 import ExplorePage from './pages/ExplorePage.jsx';
@@ -89,7 +89,7 @@ export default function App() {
       <>
         <ScrollRestorer />
         {scanOpen && (
-          <FaceScan onComplete={onScanComplete} onClose={closeScan} />
+          <PasskeyAuth onComplete={onScanComplete} onClose={closeScan} />
         )}
         <Routes>
           <Route path="/life-assistant" element={guard(<LifeAssistantPage />)} />
@@ -102,7 +102,7 @@ export default function App() {
     <>
       <ScrollRestorer />
       {scanOpen && (
-        <FaceScan onComplete={onScanComplete} onClose={closeScan} />
+        <PasskeyAuth onComplete={onScanComplete} onClose={closeScan} />
       )}
       <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', background: 'var(--bg-page)' }}>
         <Navbar onScanToEnter={openScan} isVerified={isVerified} />
