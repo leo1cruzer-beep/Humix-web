@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { callAI } from '../../utils/ai.js'
+import { useActivityLogger } from '../../hooks/useActivityLogger'
 
 function CopyButton({ text }) {
   const [copied, setCopied] = useState(false)
@@ -21,6 +22,7 @@ export default function EmailCampaign() {
   const [result, setResult] = useState('')
   const [loading, setLoading] = useState(false)
 
+  const { logActivity } = useActivityLogger()
   const canGenerate = product.trim() && offer.trim() && audience.trim()
 
   async function generate() {
@@ -59,7 +61,9 @@ Follow-up email timing if no open
 
 Keep the copy feeling like it's from a real human, not a marketing department.`
     try {
-      setResult(await callAI(prompt, 800))
+      const text = await callAI(prompt, 800)
+      setResult(text)
+      logActivity('Email Campaign', 'Creative', text)
     } catch {
       setResult('Unable to generate. Please try again.')
     } finally {

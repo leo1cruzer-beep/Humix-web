@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useActivityLogger } from '../../hooks/useActivityLogger'
 import { Link } from 'react-router-dom'
 
 const CURRENCIES = {
@@ -63,6 +64,7 @@ export default function DebtFreedom() {
   const [loading, setLoading] = useState(false)
   const [aiLoading, setAiLoading] = useState(false)
   const [error, setError] = useState('')
+  const { logActivity } = useActivityLogger()
 
   const cur = CURRENCIES[currency]
 
@@ -91,6 +93,7 @@ export default function DebtFreedom() {
     try {
       const advice = await callAI(prompt)
       setAiAdvice(advice)
+      logActivity('Debt Freedom', 'Finance', advice)
     } catch {
       setAiAdvice('AI advice temporarily unavailable')
     } finally {

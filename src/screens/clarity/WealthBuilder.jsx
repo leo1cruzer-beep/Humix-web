@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
+import { useActivityLogger } from '../../hooks/useActivityLogger'
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts'
 
 async function callAI(prompt) {
@@ -51,6 +52,7 @@ export default function WealthBuilder() {
   const [aiAdvice, setAiAdvice] = useState('')
   const [aiLoading, setAiLoading] = useState(false)
   const [calculated, setCalculated] = useState(false)
+  const { logActivity } = useActivityLogger()
 
   const monthlyNum = parseFloat(monthly) || 0
   const initialNum = parseFloat(initial) || 0
@@ -90,6 +92,7 @@ export default function WealthBuilder() {
     try {
       const advice = await callAI(prompt)
       setAiAdvice(advice)
+      logActivity('Wealth Builder', 'Finance', advice)
     } catch {
       setAiAdvice('AI advice temporarily unavailable')
     } finally {

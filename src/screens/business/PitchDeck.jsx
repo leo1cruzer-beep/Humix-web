@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { callAI } from '../../utils/ai.js'
+import { useActivityLogger } from '../../hooks/useActivityLogger'
 
 function CopyButton({ text }) {
   const [copied, setCopied] = useState(false)
@@ -21,6 +22,7 @@ export default function PitchDeck() {
   const [result, setResult] = useState('')
   const [loading, setLoading] = useState(false)
 
+  const { logActivity } = useActivityLogger()
   const canGenerate = idea.trim()
 
   async function generate() {
@@ -53,7 +55,9 @@ SLIDE 10: THE ASK (${ask ? `$${ask}` : 'funding amount'} + use of funds breakdow
 After the slides, add:
 INVESTOR FAQs — 5 tough questions investors will ask with suggested answers.`
     try {
-      setResult(await callAI(prompt, 1000))
+      const text = await callAI(prompt, 1000)
+      setResult(text)
+      logActivity('Pitch Deck', 'Business', text)
     } catch {
       setResult('Unable to generate. Please try again.')
     } finally {

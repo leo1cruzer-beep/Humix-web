@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { callAI } from '../../utils/ai.js'
+import { useActivityLogger } from '../../hooks/useActivityLogger'
 
 function CopyButton({ text }) {
   const [copied, setCopied] = useState(false)
@@ -20,6 +21,7 @@ export default function MarketResearch() {
   const [result, setResult] = useState('')
   const [loading, setLoading] = useState(false)
 
+  const { logActivity } = useActivityLogger()
   const canGenerate = industry.trim() && country.trim()
 
   async function generate() {
@@ -61,7 +63,9 @@ MARKET ENTRY STRATEGY FOR ${country.toUpperCase()}
 DATA DISCLAIMER
 This is AI-generated analysis based on training data. Validate with primary research, government trade databases, and industry reports before making investment decisions.`
     try {
-      setResult(await callAI(prompt, 1000))
+      const text = await callAI(prompt, 1000)
+      setResult(text)
+      logActivity('Market Research', 'Business', text)
     } catch {
       setResult('Unable to generate. Please try again.')
     } finally {

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { callAI } from '../../utils/ai.js'
+import { useActivityLogger } from '../../hooks/useActivityLogger'
 
 function CopyButton({ text }) {
   const [copied, setCopied] = useState(false)
@@ -21,6 +22,7 @@ export default function SalaryInsights() {
   const [result, setResult] = useState('')
   const [loading, setLoading] = useState(false)
 
+  const { logActivity } = useActivityLogger()
   const canGenerate = title.trim() && country.trim()
 
   async function generate() {
@@ -55,7 +57,9 @@ MARKET OUTLOOK
 
 Use real currency values. Be direct — no vague ranges.`
     try {
-      setResult(await callAI(prompt, 900))
+      const text = await callAI(prompt, 900)
+      setResult(text)
+      logActivity('Salary Insights', 'Career', text)
     } catch {
       setResult('Unable to generate. Please try again.')
     } finally {

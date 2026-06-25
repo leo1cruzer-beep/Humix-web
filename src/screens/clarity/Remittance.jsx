@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { useActivityLogger } from '../../hooks/useActivityLogger'
 
 const BASE_RATES = {
   PKR: { flag: '🇵🇰', name: 'Pakistani Rupee',   country: 'Pakistan',     fallback: 278.50 },
@@ -60,6 +61,7 @@ export default function Remittance() {
   const [aiTip, setAiTip] = useState('')
   const [aiLoading, setAiLoading] = useState(false)
   const [tipLoaded, setTipLoaded] = useState(false)
+  const { logActivity } = useActivityLogger()
 
   useEffect(() => {
     async function load() {
@@ -90,7 +92,9 @@ export default function Remittance() {
     const rate = cur?.currentRate?.toFixed(selected === 'NGN' ? 0 : 2)
     const prompt = `I want to send money home. Current USD/${selected} rate is ${rate}. Give me remittance timing advice in 2-3 sentences.`
     try {
-      setAiTip(await callAI(prompt))
+      const tip = await callAI(prompt)
+      setAiTip(tip)
+      logActivity('Remittance', 'Finance', tip)
     } catch {
       setAiTip('AI advice temporarily unavailable')
     } finally {

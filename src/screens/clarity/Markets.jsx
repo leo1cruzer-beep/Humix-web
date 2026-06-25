@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { useActivityLogger } from '../../hooks/useActivityLogger'
 
 const INITIAL = {
   BTC: { price: 97450, name: 'Bitcoin',  symbol: '₿', color: '#F97316', mktCap: '$1.92T', vol24h: '$38.2B' },
@@ -78,6 +79,7 @@ export default function Markets() {
   const [aiSummary, setAiSummary] = useState('')
   const [aiLoading, setAiLoading] = useState(false)
   const [aiLoaded, setAiLoaded] = useState(false)
+  const { logActivity } = useActivityLogger()
   const [selected, setSelected] = useState(null)
 
   useEffect(() => {
@@ -128,6 +130,7 @@ export default function Markets() {
     try {
       const s = await callAI(content)
       setAiSummary(s)
+      logActivity('Markets', 'Finance', s)
     } catch {
       setAiSummary('AI advice temporarily unavailable')
     } finally {

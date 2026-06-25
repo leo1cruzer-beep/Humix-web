@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useActivityLogger } from '../../hooks/useActivityLogger'
 import { Link } from 'react-router-dom'
 
 const REMITTANCE_API = 'http://localhost:3003'
@@ -133,6 +134,7 @@ export default function RemittanceOptimizer() {
   const [dataSource, setDataSource] = useState(null) // { lastUpdated, isLive }
 
   const [aiTip, setAiTip] = useState('')
+  const { logActivity } = useActivityLogger()
   const [aiLoading, setAiLoading] = useState(false)
 
   const [alertCurrency, setAlertCurrency] = useState('USD/PKR')
@@ -187,7 +189,9 @@ export default function RemittanceOptimizer() {
     const prompt = `User wants to send ${amount} ${fromCurrency} to ${dest?.country}. Best service is ${best.name} saving ${savings} ${toCurrency} vs worst option. Give a 2 sentence personal recommendation mentioning the actual savings amount and what that money means (groceries, school fees etc). Be warm and human.`
     setAiLoading(true)
     try {
-      setAiTip(await callAI(prompt))
+      const tip = await callAI(prompt)
+      setAiTip(tip)
+      logActivity('Remittance Optimizer', 'Finance', tip)
     } catch {
       setAiTip(`Based on our comparison, ${best.name} gives your family the most — choose it and they receive ${savings} extra ${toCurrency}.`)
     } finally {

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { callAI } from '../../utils/ai.js'
+import { useActivityLogger } from '../../hooks/useActivityLogger'
 
 function CopyButton({ text }) {
   const [copied, setCopied] = useState(false)
@@ -19,6 +20,7 @@ export default function InterviewPrep() {
   const [level, setLevel] = useState('mid')
   const [result, setResult] = useState('')
   const [loading, setLoading] = useState(false)
+  const { logActivity } = useActivityLogger()
 
   async function generate() {
     if (!role.trim()) return
@@ -45,7 +47,9 @@ Include a mix of:
 
 All answers must be specific to a ${level}-level ${role}. No generic answers.`
     try {
-      setResult(await callAI(prompt, 1000))
+      const text = await callAI(prompt, 1000)
+      setResult(text)
+      logActivity('Interview Prep', 'Career', text)
     } catch {
       setResult('Unable to generate. Please try again.')
     } finally {

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { callAI } from '../../utils/ai.js'
+import { useActivityLogger } from '../../hooks/useActivityLogger'
 
 function CopyButton({ text }) {
   const [copied, setCopied] = useState(false)
@@ -21,6 +22,7 @@ export default function BusinessPlan() {
   const [result, setResult] = useState('')
   const [loading, setLoading] = useState(false)
 
+  const { logActivity } = useActivityLogger()
   const canGenerate = idea.trim() && market.trim() && country.trim()
 
   async function generate() {
@@ -62,7 +64,9 @@ FIRST 90 DAYS ACTION PLAN
 
 Make all numbers specific and realistic for the ${country} market.`
     try {
-      setResult(await callAI(prompt, 1000))
+      const text = await callAI(prompt, 1000)
+      setResult(text)
+      logActivity('Business Plan', 'Business', text)
     } catch {
       setResult('Unable to generate. Please try again.')
     } finally {

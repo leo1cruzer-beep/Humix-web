@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { callAI } from '../../utils/ai.js'
+import { useActivityLogger } from '../../hooks/useActivityLogger'
 
 function CopyButton({ text }) {
   const [copied, setCopied] = useState(false)
@@ -21,6 +22,7 @@ export default function CoverLetter() {
   const [result, setResult] = useState('')
   const [loading, setLoading] = useState(false)
 
+  const { logActivity } = useActivityLogger()
   const canGenerate = title.trim() && company.trim() && background.trim()
 
   async function generate() {
@@ -41,7 +43,9 @@ Requirements:
 
 STRICT: Do NOT start with "I am writing to apply" or "Please find my resume attached". Begin with something that immediately grabs attention.`
     try {
-      setResult(await callAI(prompt, 700))
+      const text = await callAI(prompt, 700)
+      setResult(text)
+      logActivity('Cover Letter', 'Career', text)
     } catch {
       setResult('Unable to generate. Please try again.')
     } finally {

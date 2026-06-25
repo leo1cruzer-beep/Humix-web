@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useActivityLogger } from '../hooks/useActivityLogger';
 import { Heart, Scale, Sprout, GraduationCap, Briefcase, Send, ArrowLeft } from 'lucide-react';
 
 const SERVICES = [
@@ -36,6 +37,7 @@ export default function LifeAssistantPage() {
   const [selectedLang, setSelectedLang]     = useState('en');
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
+  const { logActivity } = useActivityLogger();
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -103,6 +105,7 @@ export default function LifeAssistantPage() {
       });
       const reply = data.assistantMessage?.content ?? 'I received your message.';
       setMessages(prev => [...prev, { role: 'assistant', text: reply, id: Date.now() }]);
+      logActivity(activeService.label, 'Life Assistant', reply);
     } catch {
       setMessages(prev => [
         ...prev,

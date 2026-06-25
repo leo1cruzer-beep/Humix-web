@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { callAI } from '../../utils/ai.js'
+import { useActivityLogger } from '../../hooks/useActivityLogger'
 
 function CopyButton({ text }) {
   const [copied, setCopied] = useState(false)
@@ -22,6 +23,7 @@ export default function Resume() {
   const [result, setResult] = useState('')
   const [loading, setLoading] = useState(false)
 
+  const { logActivity } = useActivityLogger()
   const canGenerate = title.trim() && skills.trim() && country.trim()
 
   async function generate() {
@@ -51,7 +53,9 @@ CERTIFICATIONS & PROFESSIONAL DEVELOPMENT
 
 Make language strong and achievement-focused. Every bullet should start with an action verb.`
     try {
-      setResult(await callAI(prompt, 900))
+      const text = await callAI(prompt, 900)
+      setResult(text)
+      logActivity('Resume Builder', 'Career', text)
     } catch {
       setResult('Unable to generate resume. Please try again.')
     } finally {

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { callAI } from '../../utils/ai.js'
+import { useActivityLogger } from '../../hooks/useActivityLogger'
 
 function CopyButton({ text }) {
   const [copied, setCopied] = useState(false)
@@ -29,6 +30,8 @@ export default function ContentWriter() {
   const [result, setResult] = useState('')
   const [loading, setLoading] = useState(false)
 
+  const { logActivity } = useActivityLogger()
+
   async function generate() {
     if (!topic.trim()) return
     setLoading(true)
@@ -47,7 +50,9 @@ Critical rules:
 
 Output ONLY the finished content. Nothing else.`
     try {
-      setResult(await callAI(prompt, 600))
+      const text = await callAI(prompt, 600)
+      setResult(text)
+      logActivity('Content Writer', 'Creative', text)
     } catch {
       setResult('Unable to generate. Please try again.')
     } finally {

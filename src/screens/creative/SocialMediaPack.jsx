@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { callAI } from '../../utils/ai.js'
+import { useActivityLogger } from '../../hooks/useActivityLogger'
 
 function CopyButton({ text }) {
   const [copied, setCopied] = useState(false)
@@ -19,6 +20,8 @@ export default function SocialMediaPack() {
   const [goal, setGoal] = useState('awareness')
   const [result, setResult] = useState('')
   const [loading, setLoading] = useState(false)
+
+  const { logActivity } = useActivityLogger()
 
   async function generate() {
     if (!description.trim()) return
@@ -55,7 +58,9 @@ Generate 5 unique, ready-to-post pieces — one per platform. Each must be uniqu
 
 Make each piece feel native to its platform. No placeholders.`
     try {
-      setResult(await callAI(prompt, 900))
+      const text = await callAI(prompt, 900)
+      setResult(text)
+      logActivity('Social Media Pack', 'Creative', text)
     } catch {
       setResult('Unable to generate. Please try again.')
     } finally {

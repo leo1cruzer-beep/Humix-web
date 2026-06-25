@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useActivityLogger } from '../../hooks/useActivityLogger'
 
 async function callAI(prompt) {
   const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
@@ -81,6 +82,7 @@ export default function Budget() {
   const [aiAdvice, setAiAdvice] = useState('')
   const [aiLoading, setAiLoading] = useState(false)
   const [calculated, setCalculated] = useState(false)
+  const { logActivity } = useActivityLogger()
 
   const totalIncome = income.reduce((s, i) => s + (parseFloat(i.amount) || 0), 0)
   const totalExpenses = expenses.reduce((s, e) => s + (parseFloat(e.amount) || 0), 0)
@@ -97,6 +99,7 @@ export default function Budget() {
     try {
       const advice = await callAI(prompt)
       setAiAdvice(advice)
+      logActivity('Budget Tracker', 'Finance', advice)
     } catch {
       setAiAdvice('AI advice temporarily unavailable')
     } finally {
