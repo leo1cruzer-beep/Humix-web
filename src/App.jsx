@@ -1,7 +1,9 @@
-import { useEffect, useRef } from 'react';
-import { Routes, Route, useLocation, useNavigationType } from 'react-router-dom';
+import { useEffect, useRef, useState, useCallback } from 'react';
+import { Routes, Route, useLocation, useNavigationType, useNavigate } from 'react-router-dom';
 import Navbar from './components/Navbar.jsx';
 import Footer from './components/Footer.jsx';
+import FaceScan from './components/FaceScan.jsx';
+import { useIdentity } from './hooks/useIdentity.jsx';
 import HomePage from './pages/HomePage.jsx';
 import ExplorePage from './pages/ExplorePage.jsx';
 import ServicesPage from './pages/ServicesPage.jsx';
@@ -55,12 +57,35 @@ function ScrollRestorer() {
   return null;
 }
 
+function ProtectedRoute({ children, isVerified, openScan }) {
+  useEffect(() => {
+    if (!isVerified) openScan();
+  }, [isVerified, openScan]);
+
+  if (!isVerified) return null;
+  return children;
+}
+
 export default function App() {
   const { pathname } = useLocation();
+  const navigate = useNavigate();
+  const { isVerified } = useIdentity();
+  const [scanOpen, setScanOpen] = useState(false);
+
+  const openScan  = useCallback(() => setScanOpen(true),  []);
+  const closeScan = useCallback(() => setScanOpen(false), []);
+  const onScanComplete = useCallback(() => {
+    setScanOpen(false);
+    navigate('/');
+  }, [navigate]);
+
   if (pathname === '/life-assistant') {
     return (
       <>
         <ScrollRestorer />
+        {scanOpen && (
+          <FaceScan onComplete={onScanComplete} onClose={closeScan} />
+        )}
         <Routes>
           <Route path="/life-assistant" element={<LifeAssistantPage />} />
         </Routes>
@@ -71,8 +96,11 @@ export default function App() {
   return (
     <>
       <ScrollRestorer />
+      {scanOpen && (
+        <FaceScan onComplete={onScanComplete} onClose={closeScan} />
+      )}
       <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', background: 'var(--bg-page)' }}>
-        <Navbar />
+        <Navbar onScanToEnter={openScan} isVerified={isVerified} />
         <div style={{ flex: 1 }}>
           <Routes>
             <Route path="/"               element={<HomePage />} />

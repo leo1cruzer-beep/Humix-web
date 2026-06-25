@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
-import AuthModal from './AuthModal';
+import { Menu, X, ScanFace } from 'lucide-react';
 
 const NAV_LINKS = [
   { label: 'Explore',        to: '/explore' },
@@ -12,14 +11,11 @@ const NAV_LINKS = [
   { label: 'Career',         to: '/career' },
 ];
 
-export default function Navbar() {
+export default function Navbar({ onScanToEnter, isVerified }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [authModal, setAuthModal] = useState({ open: false, tab: 'login' });
   const { pathname } = useLocation();
 
-  const openLogin  = () => { setDrawerOpen(false); setAuthModal({ open: true, tab: 'login' }); };
-  const openSignup = () => { setDrawerOpen(false); setAuthModal({ open: true, tab: 'signup' }); };
-  const closeAuth  = () => setAuthModal(prev => ({ ...prev, open: false }));
+  const handleScan = () => { setDrawerOpen(false); onScanToEnter?.(); };
 
   useEffect(() => {
     document.body.style.overflow = drawerOpen ? 'hidden' : '';
@@ -41,12 +37,21 @@ export default function Navbar() {
           </div>
 
           <div className="nav-right-buttons" style={s.rightButtons}>
-            <button className="btn btn-ghost" style={{ padding: '8px 20px' }} onClick={openLogin}>
-              Log In
-            </button>
-            <button className="btn btn-blue" style={{ padding: '8px 20px' }} onClick={openSignup}>
-              Get Started
-            </button>
+            {isVerified ? (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: '#10B981', fontWeight: 600, fontFamily: "'Inter', sans-serif" }}>
+                <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#10B981', boxShadow: '0 0 6px #10B981', display: 'inline-block' }} />
+                Verified
+              </div>
+            ) : (
+              <button
+                className="btn btn-blue"
+                style={{ padding: '8px 20px', display: 'flex', alignItems: 'center', gap: '8px' }}
+                onClick={handleScan}
+              >
+                <ScanFace size={16} strokeWidth={2} />
+                Scan to Enter
+              </button>
+            )}
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginLeft: 'auto' }} className="nav-hamburger-group">
@@ -102,25 +107,24 @@ export default function Navbar() {
           );
         })}
 
-        <button
-          onClick={openLogin}
-          style={{ ...s.drawerLink, color: '#64748B', background: 'none', border: 'none', width: '100%', textAlign: 'left', cursor: 'pointer' }}
-        >
-          Log In
-        </button>
-
         <div style={{ padding: '16px 24px', marginTop: 'auto', borderTop: '1px solid #1A1A1A' }}>
-          <button
-            className="btn btn-blue"
-            style={{ width: '100%', justifyContent: 'center', padding: '13px 16px', fontSize: '15px' }}
-            onClick={openSignup}
-          >
-            Get Started
-          </button>
+          {isVerified ? (
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '13px 16px', fontSize: '14px', color: '#10B981', fontWeight: 600, fontFamily: "'Inter', sans-serif" }}>
+              <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#10B981', boxShadow: '0 0 8px #10B981', display: 'inline-block' }} />
+              Identity Verified
+            </div>
+          ) : (
+            <button
+              className="btn btn-blue"
+              style={{ width: '100%', justifyContent: 'center', padding: '13px 16px', fontSize: '15px', gap: '8px' }}
+              onClick={handleScan}
+            >
+              <ScanFace size={17} strokeWidth={2} />
+              Scan to Enter
+            </button>
+          )}
         </div>
       </div>
-
-      <AuthModal isOpen={authModal.open} onClose={closeAuth} defaultTab={authModal.tab} />
     </>
   );
 }

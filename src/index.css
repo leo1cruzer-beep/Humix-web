@@ -549,6 +549,26 @@ ul { list-style: none; }
 .legal-modal { background: #111111 !important; color: var(--text-primary) !important; }
 .legal-modal p, .legal-modal h2 { color: var(--text-primary) !important; }
 
+/* ─── Face scan keyframes ───────────────────────────────────── */
+@keyframes scanRotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes scanLine {
+  0%   { top: 15%; opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { top: 85%; opacity: 0; }
+}
+@keyframes confirmCheck {
+  from { transform: scale(0) rotate(-15deg); opacity: 0; }
+  to   { transform: scale(1) rotate(0deg);   opacity: 1; }
+}
+@keyframes ringFadeGreen {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
 /* ─── Finance pages responsive ──────────────────────────────── */
 @media (max-width: 900px) {
   .finance-two-col { grid-template-columns: 1fr !important; }
