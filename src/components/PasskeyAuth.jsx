@@ -90,11 +90,19 @@ export default function PasskeyAuth({ onComplete, onClose }) {
 
       if (error) throw new Error(error.message);
 
-      const { error: profileError } = await supabase.from('profiles').upsert(
-        { id: userId, created_at: new Date().toISOString() },
-        { onConflict: 'id', ignoreDuplicates: true }
-      );
-      if (profileError) throw new Error(profileError.message);
+      // Debug: verify Supabase auth session state at registration time
+      const { data: { user: authUser } } = await supabase.auth.getUser();
+      console.log('[PasskeyAuth] supabase.auth.getUser() at registration:', authUser);
+
+      const profileRes = await fetch('/api/create-profile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId }),
+      });
+      if (!profileRes.ok) {
+        const body = await profileRes.json().catch(() => ({}));
+        throw new Error(body.error ?? 'Profile creation failed');
+      }
 
       localStorage.setItem(USER_ID_KEY, userId);
       setPhase('confirmed');
