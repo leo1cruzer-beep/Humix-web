@@ -1,10 +1,30 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Fingerprint, Activity, Calendar, Star, Shield, LogOut, ChevronRight } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useIdentity } from '../hooks/useIdentity';
 
 const USER_ID_KEY = 'humix_user_id';
+
+const serviceRoutes = {
+  'Resume Builder':    '/career/resume',
+  'Cover Letter':      '/career/cover-letter',
+  'Interview Prep':    '/career/interview',
+  'Salary Insights':   '/career/salary',
+  'Business Plan':     '/business/plan',
+  'Pitch Deck':        '/business/pitch-deck',
+  'Name Generator':    '/business/name',
+  'Market Research':   '/business/market',
+  'Content Writer':    '/creative/content',
+  'Social Media Pack': '/creative/social',
+  'Email Campaign':    '/creative/email',
+  'Brand Voice':       '/creative/brand',
+  'Budget Tracker':    '/finance/budget',
+  'Wealth Builder':    '/finance/wealth',
+  'Debt Freedom':      '/finance/debt',
+  'Remittance':        '/finance/remittance',
+  'Life Assistant':    '/life',
+};
 
 function daysSince(dateStr) {
   if (!dateStr) return 0;
@@ -26,6 +46,7 @@ export default function IdentityProfile() {
   const [serviceCount, setServiceCount] = useState(0);
   const [loading, setLoading]       = useState(true);
   const [confirmReset, setConfirmReset] = useState(false);
+  const [hoveredActivity, setHoveredActivity] = useState(null);
 
   useEffect(() => {
     if (!userId) return;
@@ -144,7 +165,19 @@ export default function IdentityProfile() {
           ) : (
             <div style={s.activityList}>
               {activity.map((item, i) => (
-                <div key={i} style={s.activityItem}>
+                <Link
+                  key={i}
+                  to={serviceRoutes[item.service] || '/'}
+                  style={{
+                    ...s.activityItem,
+                    textDecoration: 'none',
+                    cursor: 'pointer',
+                    filter: hoveredActivity === i ? 'brightness(1.15)' : 'brightness(1)',
+                    transition: 'filter 0.15s',
+                  }}
+                  onMouseEnter={() => setHoveredActivity(i)}
+                  onMouseLeave={() => setHoveredActivity(null)}
+                >
                   <div style={s.activityDot} />
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <p style={s.activityService}>{item.service ?? 'Humix Service'}</p>
@@ -154,7 +187,7 @@ export default function IdentityProfile() {
                   </div>
                   <span style={s.activityDate}>{fmtDate(item.created_at)}</span>
                   <ChevronRight size={14} color="#1E293B" />
-                </div>
+                </Link>
               ))}
             </div>
           )}
