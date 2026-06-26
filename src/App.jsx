@@ -25,10 +25,17 @@ import BusinessPlan from './screens/business/BusinessPlan.jsx';
 import PitchDeck from './screens/business/PitchDeck.jsx';
 import NameGenerator from './screens/business/NameGenerator.jsx';
 import MarketResearch from './screens/business/MarketResearch.jsx';
+import MicroTasks from './screens/business/MicroTasks.jsx';
+import Freelance from './screens/business/Freelance.jsx';
+import MarketPrices from './screens/business/MarketPrices.jsx';
+import RemittanceJobs from './screens/business/RemittanceJobs.jsx';
 import ContentWriter from './screens/creative/ContentWriter.jsx';
 import SocialMediaPack from './screens/creative/SocialMediaPack.jsx';
 import EmailCampaign from './screens/creative/EmailCampaign.jsx';
 import BrandVoice from './screens/creative/BrandVoice.jsx';
+import AgentRegisterPage from './pages/agent/AgentRegisterPage.jsx';
+import AgentDashboardPage from './pages/agent/AgentDashboardPage.jsx';
+import AgentLeaderboardPage from './pages/agent/AgentLeaderboardPage.jsx';
 
 
 function ProtectedRoute({ children, isVerified, openScan }) {
@@ -41,10 +48,17 @@ function ProtectedRoute({ children, isVerified, openScan }) {
 }
 
 export default function App() {
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
   const navigate = useNavigate();
   const { isVerified } = useIdentity();
   const [scanOpen, setScanOpen] = useState(false);
+
+  // Capture referral code from ?ref=CODE URL param
+  useEffect(() => {
+    const params = new URLSearchParams(search);
+    const ref = params.get('ref');
+    if (ref) localStorage.setItem('humix_pending_referral', ref.toUpperCase());
+  }, [search]);
 
   const openScan  = useCallback(() => setScanOpen(true),  []);
   const closeScan = useCallback(() => setScanOpen(false), []);
@@ -94,11 +108,19 @@ export default function App() {
             <Route path="/career/salary"       element={guard(<SalaryInsights />)} />
             <Route path="/finance"             element={guard(<FinancePage />)} />
             <Route path="/finance/:tool"       element={guard(<FinancePage />)} />
-            <Route path="/business"            element={guard(<BusinessPage />)} />
-            <Route path="/business/plan"       element={guard(<BusinessPlan />)} />
-            <Route path="/business/pitch"      element={guard(<PitchDeck />)} />
-            <Route path="/business/names"      element={guard(<NameGenerator />)} />
-            <Route path="/business/market"     element={guard(<MarketResearch />)} />
+            <Route path="/business"                    element={guard(<BusinessPage />)} />
+            <Route path="/business/plan"             element={guard(<BusinessPlan />)} />
+            <Route path="/business/pitch"            element={guard(<PitchDeck />)} />
+            <Route path="/business/names"            element={guard(<NameGenerator />)} />
+            <Route path="/business/market"           element={guard(<MarketResearch />)} />
+            <Route path="/business/microtasks"       element={guard(<MicroTasks />)} />
+            <Route path="/business/freelance"        element={guard(<Freelance />)} />
+            <Route path="/business/market-prices"    element={guard(<MarketPrices />)} />
+            <Route path="/business/remittance-jobs"  element={guard(<RemittanceJobs />)} />
+            <Route path="/agent/register"    element={<AgentRegisterPage />} />
+            <Route path="/agent/dashboard"   element={<AgentDashboardPage />} />
+            <Route path="/agent/leaderboard" element={<AgentLeaderboardPage />} />
+            <Route path="/agent"             element={<Navigate to="/agent/register" replace />} />
             <Route path="/creative"            element={guard(<CreativePage />)} />
             <Route path="/creative/content"    element={guard(<ContentWriter />)} />
             <Route path="/creative/social"     element={guard(<SocialMediaPack />)} />
