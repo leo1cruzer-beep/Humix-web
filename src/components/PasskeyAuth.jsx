@@ -113,6 +113,10 @@ export default function PasskeyAuth({ onComplete, onClose }) {
     setOtpError('');
     const phone = phoneNumber.trim();
     if (!phone) { setOtpError('Please enter your phone number'); return; }
+    if (!phone.startsWith('+')) {
+      setOtpError('Include your country code (e.g. +1 for US, +44 for UK)');
+      return;
+    }
 
     // Check phone uniqueness before sending OTP
     const { data: existing } = await supabase

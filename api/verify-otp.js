@@ -13,17 +13,19 @@ export default async function handler(req, res) {
   }
 
   const auth = Buffer.from(`${accountSid}:${authToken}`).toString('base64');
-  const r = await fetch(
-    `https://verify.twilio.com/v2/Services/${serviceSid}/VerificationChecks`,
-    {
-      method: 'POST',
-      headers: {
-        Authorization: `Basic ${auth}`,
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: new URLSearchParams({ To: phone, Code: code }).toString(),
-    }
-  );
+  const url = `https://verify.twilio.com/v2/Services/${serviceSid}/VerificationChecks`;
+  const bodyParams = new URLSearchParams({ To: phone, Code: code }).toString();
+  console.log('[verify-otp] POST', url);
+  console.log('[verify-otp] To:', phone, '| Code:', code);
+  console.log('[verify-otp] body:', bodyParams);
+  const r = await fetch(url, {
+    method: 'POST',
+    headers: {
+      Authorization: `Basic ${auth}`,
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: bodyParams,
+  });
 
   const body = await r.json().catch(() => ({}));
   if (!r.ok || body.status !== 'approved') {
