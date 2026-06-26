@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState, useCallback } from 'react';
-import { Routes, Route, Navigate, useLocation, useNavigationType, useNavigate } from 'react-router-dom';
+import { useEffect, useState, useCallback } from 'react';
+import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom';
+import ScrollManager from './components/ScrollManager.jsx';
 import Navbar from './components/Navbar.jsx';
 import Footer from './components/Footer.jsx';
 import PasskeyAuth from './components/PasskeyAuth.jsx';
@@ -29,34 +30,6 @@ import SocialMediaPack from './screens/creative/SocialMediaPack.jsx';
 import EmailCampaign from './screens/creative/EmailCampaign.jsx';
 import BrandVoice from './screens/creative/BrandVoice.jsx';
 
-const scrollCache = new Map();
-
-function ScrollRestorer() {
-  const { pathname } = useLocation();
-  const navType = useNavigationType();
-  const prevRef = useRef(pathname);
-
-  useEffect(() => {
-    const onScroll = () => scrollCache.set(prevRef.current, window.scrollY);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => {
-      scrollCache.set(prevRef.current, window.scrollY);
-      window.removeEventListener('scroll', onScroll);
-    };
-  }, [pathname]);
-
-  useEffect(() => {
-    prevRef.current = pathname;
-    if (navType === 'POP') {
-      const pos = scrollCache.get(pathname);
-      if (pos != null) requestAnimationFrame(() => window.scrollTo(0, pos));
-    } else {
-      window.scrollTo(0, 0);
-    }
-  }, [pathname, navType]);
-
-  return null;
-}
 
 function ProtectedRoute({ children, isVerified, openScan }) {
   useEffect(() => {
@@ -88,7 +61,7 @@ export default function App() {
   if (pathname === '/life-assistant') {
     return (
       <>
-        <ScrollRestorer />
+        <ScrollManager />
         {scanOpen && (
           <PasskeyAuth onComplete={onScanComplete} onClose={closeScan} />
         )}
@@ -101,7 +74,7 @@ export default function App() {
 
   return (
     <>
-      <ScrollRestorer />
+      <ScrollManager />
       {scanOpen && (
         <PasskeyAuth onComplete={onScanComplete} onClose={closeScan} />
       )}
