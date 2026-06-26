@@ -62,7 +62,7 @@ export default function HomePage({ onScanToEnter }) {
   const navigate = useNavigate();
   return (
     <main className="page-enter page-transition">
-      <HeroSection onScanToEnter={onScanToEnter} />
+      <HeroSection onScanToEnter={onScanToEnter} navigate={navigate} />
       <ServiceCardsSection navigate={navigate} />
       <HowItWorksSection />
       <ProblemSection />
@@ -80,10 +80,7 @@ export default function HomePage({ onScanToEnter }) {
    EXISTING SECTIONS (unchanged)
 ══════════════════════════════════════════════════════════════════ */
 
-function HeroSection({ onScanToEnter }) {
-  const handleLearnMore = () => {
-    document.getElementById('services-section')?.scrollIntoView({ behavior: 'smooth' });
-  };
+function HeroSection({ onScanToEnter, navigate }) {
 
   return (
     <section style={s.hero}>
@@ -100,19 +97,17 @@ function HeroSection({ onScanToEnter }) {
         </div>
 
         <h1 style={s.headline}>
-          AI built for the world's<br />
-          <span style={s.headlineAccent}>next billion.</span>
+          <span style={s.headlineAccent}>Earn. Learn. Thrive.</span>
         </h1>
 
         <p style={s.sub}>
-          Health advice, legal help, income tools, and more —<br />
-          in your language, on any device.
+          Humix helps people in underserved communities earn real income, access healthcare, and know their rights — in their language, on any phone.
         </p>
 
         <div style={s.ctaRow}>
-          <button onClick={onScanToEnter} style={s.btnPrimary}>Get Started Free</button>
-          <button onClick={handleLearnMore} style={s.btnGhost}>
-            Learn More <ArrowRight size={15} strokeWidth={2} />
+          <button onClick={onScanToEnter} style={s.btnPrimary}>Start Earning Today</button>
+          <button onClick={() => navigate('/agent/register')} style={s.btnGhost}>
+            Become an Agent <ArrowRight size={15} strokeWidth={2} />
           </button>
         </div>
 
@@ -519,25 +514,25 @@ function EducationIllustration() {
 /* ─── Section 2: How Humix Works ─────────────────────────────────── */
 const WORK_CARDS = [
   {
-    eyebrow: 'HEALTH', color: '#00C48C',
+    eyebrow: 'INCOME FIRST', color: '#FFB340',
+    title: 'Your AI Income Concierge',
+    body: 'Young agents use Humix micro-tasks — translation, data work, market analysis — to earn daily income. Build trust and capital before unlocking health, legal and education tools.',
+    stat: '200M+ youth in Asia and Africa have no path to digital income today',
+    Illustration: IncomeIllustration,
+  },
+  {
+    eyebrow: 'HEALTH', color: '#00C48C', flip: true,
     title: 'A doctor in your pocket',
     body: 'Describe your symptoms in Urdu, Punjabi, Arabic, or English. Get immediate triage advice, medicine guidance, and directions to the nearest verified clinic — even offline.',
     stat: '300M+ people lack access to a doctor within 5km',
     Illustration: HealthIllustration,
   },
   {
-    eyebrow: 'LEGAL', color: '#0A84FF', flip: true,
+    eyebrow: 'LEGAL', color: '#0A84FF',
     title: 'Know your rights. Protect your family.',
     body: 'From worker rights in Qatar to land disputes in Nigeria — get clear legal guidance in your language without paying for a lawyer.',
     stat: '60% of the world\'s poor face at least one legal problem per year',
     Illustration: LegalIllustration,
-  },
-  {
-    eyebrow: 'INCOME', color: '#FFB340',
-    title: 'Earn in dollars. Live anywhere.',
-    body: 'Micro-tasks, freelance skills, remote jobs — Humix guides you step by step to earning income online regardless of where you are.',
-    stat: '200M+ informal workers have zero access to digital income opportunities',
-    Illustration: IncomeIllustration,
   },
   {
     eyebrow: 'EDUCATION', color: '#BF5AF2', flip: true,
@@ -608,11 +603,11 @@ function WorkCard({ card }) {
 
 /* ─── Section 3: The Agent Model ─────────────────────────────────── */
 const FLOW_STEPS = [
-  { label: 'Village Agent',              icon: <User size={20} color="#00C48C" strokeWidth={1.8} /> },
-  { label: 'Registers community' },
-  { label: 'Helps with consultations' },
-  { label: 'Earns commission' },
-  { label: 'Grows network' },
+  { label: 'Download Humix',      icon: <User size={20} color="#00C48C" strokeWidth={1.8} /> },
+  { label: 'Complete micro-tasks' },
+  { label: 'Earn daily income' },
+  { label: 'Help your community' },
+  { label: 'Earn commissions' },
 ];
 
 const AGENT_COLS = [
@@ -658,14 +653,17 @@ function AgentModelSection({ navigate }) {
         <div style={{ textAlign: 'center', marginBottom: '56px' }}>
           <p style={{ ...s.sectionEyebrow, color: '#00C48C' }}>THE DISTRIBUTION MODEL</p>
           <h2 style={{ ...s.cardsSectionTitle, fontSize: 'clamp(24px, 4vw, 40px)', marginBottom: '14px' }}>
-            The village agent — Humix's distribution model
+            The Village Agent: an AI-powered micro-business
           </h2>
-          <p style={{ fontSize: '17px', color: '#606060', maxWidth: '480px', margin: '0 auto' }}>
-            One person with a smartphone can change an entire community
+          <p style={{ fontSize: '17px', color: '#606060', maxWidth: '560px', margin: '0 auto' }}>
+            Agents don't just help their community — they run an AI-powered micro-business that grows as their network grows.
           </p>
         </div>
 
-        {/* Horizontal flow diagram */}
+        {/* How Agents Earn flow */}
+        <p style={{ textAlign: 'center', fontSize: '11px', fontWeight: 600, letterSpacing: '0.10em', color: '#00C48C', textTransform: 'uppercase', marginBottom: '28px' }}>
+          HOW AGENTS EARN
+        </p>
         <div className="flow-scroll">
           {FLOW_STEPS.map((step, i) => (
             <div key={i} style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
