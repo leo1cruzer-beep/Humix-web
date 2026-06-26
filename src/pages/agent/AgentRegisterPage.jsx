@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { supabase } from '../../lib/supabase'
+import { getDeviceFingerprint } from '../../lib/deviceFingerprint'
 
 const COUNTRIES = [
   'Pakistan', 'Nigeria', 'Kenya', 'India', 'Bangladesh', 'Ethiopia',
@@ -39,6 +40,17 @@ export default function AgentRegisterPage() {
     setLoading(true)
     setError('')
     try {
+      const deviceFingerprint = getDeviceFingerprint()
+
+      const { data: existingAgent } = await supabase
+        .from('agents')
+        .select('id')
+        .eq('device_fingerprint', deviceFingerprint)
+        .maybeSingle()
+      if (existingAgent) {
+        throw new Error('An agent account already exists on this device. Each device can only register one agent.')
+      }
+
       const referral_code = genCode()
       const { data, error: err } = await supabase
         .from('agents')
@@ -49,6 +61,7 @@ export default function AgentRegisterPage() {
           phone: form.phone.trim(),
           preferred_language: form.language,
           referral_code,
+          device_fingerprint: deviceFingerprint,
         }])
         .select()
         .single()

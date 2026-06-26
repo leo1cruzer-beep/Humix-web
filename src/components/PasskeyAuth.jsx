@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { X, Fingerprint, Lock } from 'lucide-react';
 import { useIdentity } from '../hooks/useIdentity';
 import { supabase } from '../lib/supabase';
+import { getDeviceFingerprint } from '../lib/deviceFingerprint';
 
 const USER_ID_KEY = 'humix_user_id';
 const SIZE = 240;
@@ -53,6 +54,18 @@ export default function PasskeyAuth({ onComplete, onClose }) {
   const handleRegister = async () => {
     setPhase('registering');
     try {
+      const deviceFingerprint = getDeviceFingerprint();
+
+      // Block duplicate registrations from the same device
+      const { data: existingProfile } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('device_fingerprint', deviceFingerprint)
+        .maybeSingle();
+      if (existingProfile) {
+        throw new Error('An account already exists on this device. Each device can only have one Humix account.');
+      }
+
       // Self-generated UUID — never exists in auth.users. profiles.id must NOT
       // have a FK constraint to auth.users.id or the profile insert will fail.
       const userId = crypto.randomUUID();
@@ -109,6 +122,12 @@ export default function PasskeyAuth({ onComplete, onClose }) {
         throw new Error(body.error ?? 'Profile creation failed');
       }
 
+      // Store device fingerprint on the profile to prevent future duplicate registrations
+      await supabase
+        .from('profiles')
+        .update({ device_fingerprint: deviceFingerprint })
+        .eq('id', userId);
+
       localStorage.setItem(USER_ID_KEY, userId);
 
       // Handle referral earnings
@@ -117,18 +136,25 @@ export default function PasskeyAuth({ onComplete, onClose }) {
       if (pendingReferral) {
         const { data: agentData, error: agentLookupErr } = await supabase
           .from('agents')
-          .select('id, total_earnings, referral_code')
+          .select('id, total_earnings, referral_code, device_fingerprint')
           .eq('referral_code', pendingReferral)
           .single();
         console.log('[PasskeyAuth] agent lookup result:', agentData, agentLookupErr);
         if (agentData) {
-          const newEarnings = (agentData.total_earnings || 0) + 0.25;
-          const { error: updateErr } = await supabase
-            .from('agents')
-            .update({ total_earnings: newEarnings })
-            .eq('id', agentData.id);
-          console.log('[PasskeyAuth] earnings update result — newEarnings:', newEarnings, 'error:', updateErr);
-          if (!updateErr) localStorage.removeItem('humix_pending_referral');
+          const isSameDevice = agentData.device_fingerprint === deviceFingerprint;
+          console.log('[PasskeyAuth] agent device match (self-referral check):', isSameDevice);
+          if (!isSameDevice) {
+            const newEarnings = (agentData.total_earnings || 0) + 0.25;
+            const { error: updateErr } = await supabase
+              .from('agents')
+              .update({ total_earnings: newEarnings })
+              .eq('id', agentData.id);
+            console.log('[PasskeyAuth] earnings update result — newEarnings:', newEarnings, 'error:', updateErr);
+            if (!updateErr) localStorage.removeItem('humix_pending_referral');
+          } else {
+            console.log('[PasskeyAuth] skipping referral credit — same device as agent');
+            localStorage.removeItem('humix_pending_referral');
+          }
         }
       }
 
