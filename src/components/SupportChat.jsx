@@ -10,9 +10,9 @@ import { supabase } from '../lib/supabase';
 //   created_at TIMESTAMP DEFAULT NOW()
 // );
 
-const SYSTEM_PROMPT = `You are Humix Support AI. Humix is an AI platform for underserved global populations offering Life Assistant (health, legal, agriculture, education, freelancing), Finance tools, Career tools, Business income tools, and Creative tools. You help users understand features, troubleshoot issues, and answer questions about Humix. You also handle sales inquiries — explain pricing (free to use), agent program (earn commissions), and platform benefits. Be warm, helpful, concise. If asked about something you don't know say 'Let me connect you with our team' and ask for their email.`;
+const SYSTEM_PROMPT = `You are Havro Support AI. Havro is an AI platform for underserved global populations offering Life Assistant (health, legal, agriculture, education, freelancing), Finance tools, Career tools, Business income tools, and Creative tools. You help users understand features, troubleshoot issues, and answer questions about Havro. You also handle sales inquiries — explain pricing (free to use), agent program (earn commissions), and platform benefits. Be warm, helpful, concise. If asked about something you don't know say 'Let me connect you with our team' and ask for their email.`;
 
-const GREETING = "Hi! 👋 I'm Humix AI Support. How can I help you today? You can ask me about features, the agent program, or anything else.";
+const GREETING = "Hi! 👋 I'm Havro AI Support. How can I help you today? You can ask me about features, the agent program, or anything else.";
 
 const ESCALATION_KEYWORDS = ['human', 'agent', 'real person'];
 const ESCALATION_REPLY = "I'll connect you with our team. Please share your email and we'll get back to you within 24 hours.";
@@ -118,7 +118,7 @@ export default function SupportChat() {
           pointerEvents: isOpen ? 'auto' : 'none',
         }}
         role="dialog"
-        aria-label="Humix Support Chat"
+        aria-label="Havro Support Chat"
         aria-hidden={!isOpen}
       >
         {/* Header */}
@@ -126,7 +126,7 @@ export default function SupportChat() {
           <div style={s.headerLeft}>
             <span style={s.onlineDot} />
             <div>
-              <p style={s.headerTitle}>Humix Support</p>
+              <p style={s.headerTitle}>Havro Support</p>
               <p style={s.headerSub}>AI Assistant — replies instantly</p>
             </div>
           </div>

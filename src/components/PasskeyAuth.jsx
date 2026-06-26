@@ -3,7 +3,7 @@ import { X, Fingerprint, Lock } from 'lucide-react';
 import { useIdentity } from '../hooks/useIdentity';
 import { supabase } from '../lib/supabase';
 
-const USER_ID_KEY = 'humix_user_id';
+const USER_ID_KEY = 'havro_user_id';
 const SIZE = 240;
 const RING = 7;
 
@@ -41,7 +41,7 @@ export default function PasskeyAuth({ onComplete, onClose }) {
       const assertion = await navigator.credentials.get({
         publicKey: {
           challenge: new TextEncoder().encode(crypto.randomUUID()),
-          rpId: 'humix.app',
+          rpId: 'havro.app',
           userVerification: 'preferred',
           timeout: 60000,
         },
@@ -85,11 +85,11 @@ export default function PasskeyAuth({ onComplete, onClose }) {
       const credential = await navigator.credentials.create({
         publicKey: {
           challenge: new TextEncoder().encode(crypto.randomUUID()),
-          rp: { name: 'Humix', id: 'humix.app' },
+          rp: { name: 'Havro', id: 'havro.app' },
           user: {
             id: new TextEncoder().encode(userId),
-            name: 'humix-user',
-            displayName: 'Humix User',
+            name: 'havro-user',
+            displayName: 'Havro User',
           },
           pubKeyCredParams: [
             { alg: -7,   type: 'public-key' },
@@ -131,7 +131,7 @@ export default function PasskeyAuth({ onComplete, onClose }) {
 
       localStorage.setItem(USER_ID_KEY, userId);
 
-      const pendingReferral = localStorage.getItem('humix_pending_referral');
+      const pendingReferral = localStorage.getItem('havro_pending_referral');
       if (pendingReferral) {
         const { data: agentData } = await supabase
           .from('agents')
@@ -143,7 +143,7 @@ export default function PasskeyAuth({ onComplete, onClose }) {
             .from('agents')
             .update({ total_earnings: (agentData.total_earnings || 0) + 0.25 })
             .eq('id', agentData.id);
-          if (!updateErr) localStorage.removeItem('humix_pending_referral');
+          if (!updateErr) localStorage.removeItem('havro_pending_referral');
         }
       }
 
@@ -292,7 +292,7 @@ export default function PasskeyAuth({ onComplete, onClose }) {
 
           {phase === 'confirmed' && <>
             <p style={{ ...s.title, color: '#10B981' }}>Identity Confirmed ✓</p>
-            <p style={s.sub}>Welcome to Humix</p>
+            <p style={s.sub}>Welcome to Havro</p>
           </>}
 
           {phase === 'failed' && <>

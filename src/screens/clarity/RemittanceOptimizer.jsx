@@ -142,12 +142,12 @@ export default function RemittanceOptimizer() {
   const [alertCurrency, setAlertCurrency] = useState('USD/PKR')
   const [alertTarget, setAlertTarget] = useState('')
   const [alerts, setAlerts] = useState(() => {
-    try { return JSON.parse(localStorage.getItem('humix_rate_alerts') || '[]') } catch { return [] }
+    try { return JSON.parse(localStorage.getItem('havro_rate_alerts') || '[]') } catch { return [] }
   })
   const [alertSaved, setAlertSaved] = useState(false)
 
   const [compareCount, setCompareCount] = useState(() => {
-    try { return parseInt(localStorage.getItem('humix_compare_count') || '0', 10) } catch { return 0 }
+    try { return parseInt(localStorage.getItem('havro_compare_count') || '0', 10) } catch { return 0 }
   })
 
   async function handleCompare() {
@@ -178,7 +178,7 @@ export default function RemittanceOptimizer() {
 
     const newCount = compareCount + 1
     setCompareCount(newCount)
-    localStorage.setItem('humix_compare_count', String(newCount))
+    localStorage.setItem('havro_compare_count', String(newCount))
 
     runAI(results, amount)
     setLoading(false)
@@ -207,7 +207,7 @@ export default function RemittanceOptimizer() {
     if (!alertTarget) return
     const updated = [...alerts, { pair: alertCurrency, target: alertTarget, ts: Date.now() }]
     setAlerts(updated)
-    localStorage.setItem('humix_rate_alerts', JSON.stringify(updated))
+    localStorage.setItem('havro_rate_alerts', JSON.stringify(updated))
     setAlertTarget('')
     setAlertSaved(true)
     setTimeout(() => setAlertSaved(false), 3000)
@@ -216,7 +216,7 @@ export default function RemittanceOptimizer() {
   function removeAlert(idx) {
     const updated = alerts.filter((_, i) => i !== idx)
     setAlerts(updated)
-    localStorage.setItem('humix_rate_alerts', JSON.stringify(updated))
+    localStorage.setItem('havro_rate_alerts', JSON.stringify(updated))
   }
 
   const fromInfo = SOURCE_CURRENCIES[fromCurrency]
@@ -472,12 +472,12 @@ export default function RemittanceOptimizer() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap' }}>
             <span style={{ fontSize: '24px' }}>📊</span>
             <div style={{ flex: 1 }}>
-              <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '4px' }}>Your Humix Stats</div>
+              <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '4px' }}>Your Havro Stats</div>
               <div style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
                 {compareCount === 0
                   ? 'Hit Compare Now to see your first service comparison.'
                   : <>
-                      Using Humix you've compared{' '}
+                      Using Havro you've compared{' '}
                       <strong style={{ color: 'var(--accent)' }}>{compareCount} transfer{compareCount !== 1 ? 's' : ''}</strong>.
                       {bestSaving > 0 && (
                         <> Your last comparison found{' '}

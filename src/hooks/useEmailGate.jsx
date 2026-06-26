@@ -1,8 +1,8 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useIdentity } from './useIdentity';
 
-const LIFE_USES_KEY = 'humix_life_assistant_uses';
-const TOOL_USES_KEY = 'humix_tool_uses';
+const LIFE_USES_KEY = 'havro_life_assistant_uses';
+const TOOL_USES_KEY = 'havro_tool_uses';
 const LIFE_LIMIT    = 5;
 const TOOL_LIMIT    = 1;
 

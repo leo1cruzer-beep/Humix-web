@@ -123,7 +123,7 @@ export default function Hero() {
 /* ── App mockup ─────────────────────────────────────────────── */
 function AppMockup() {
   return (
-    <div style={m.shell} role="img" aria-label="Humix dashboard preview">
+    <div style={m.shell} role="img" aria-label="Havro dashboard preview">
       {/* Window chrome */}
       <div style={m.chrome}>
         <div style={m.chromeDots}>
@@ -131,7 +131,7 @@ function AppMockup() {
             <span key={c} style={{ ...m.chromeDot, background: c }} />
           ))}
         </div>
-        <div style={m.chromeTitle}>Humix — Dashboard</div>
+        <div style={m.chromeTitle}>Havro — Dashboard</div>
         <div style={{ width: 44 }} />
       </div>
 

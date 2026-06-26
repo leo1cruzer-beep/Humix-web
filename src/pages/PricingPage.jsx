@@ -49,7 +49,7 @@ const FAQS = [
   },
   {
     q: 'Do you offer discounts for nonprofits or students?',
-    a: "Yes! We offer 50% off for verified nonprofits and full-time students. Contact us at support@humix.ai with proof of status.",
+    a: "Yes! We offer 50% off for verified nonprofits and full-time students. Contact us at support@havro.ai with proof of status.",
   },
 ];
 

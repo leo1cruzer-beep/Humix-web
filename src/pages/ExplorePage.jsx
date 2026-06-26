@@ -76,7 +76,7 @@ export default function ExplorePage() {
       {/* Page Header */}
       <div style={s.pageHeader}>
         <div style={s.container}>
-          <h1 className="page-title" style={{ marginBottom: '8px' }}>Explore Humix</h1>
+          <h1 className="page-title" style={{ marginBottom: '8px' }}>Explore Havro</h1>
           <p style={{ fontSize: '17px', color: 'var(--text-secondary)', marginBottom: '32px' }}>
             Browse all tools, services, and AI features
           </p>
@@ -246,7 +246,7 @@ function ToolCard({ tool }) {
       <h3 className="card-title" style={{ marginBottom: '8px' }}>{tool.title}</h3>
       <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: 1.55, marginBottom: '16px', flex: 1 }}>{tool.desc}</p>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto' }}>
-        <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>By Humix AI</span>
+        <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>By Havro AI</span>
         <button
           onClick={handleTryFree}
           style={{ fontSize: '13px', fontWeight: 600, color: 'var(--accent)', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}

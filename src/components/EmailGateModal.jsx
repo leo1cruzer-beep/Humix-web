@@ -33,7 +33,7 @@ export default function EmailGateModal({ isOpen, onClose }) {
     try {
       const { error: err } = await supabase.auth.signInWithOtp({
         email,
-        options: { emailRedirectTo: 'https://humix.app' },
+        options: { emailRedirectTo: 'https://havro.app' },
       });
       if (err) throw err;
       setSent(true);

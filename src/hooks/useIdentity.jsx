@@ -1,10 +1,10 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 
-const CONFIRMED_KEY   = 'humix_identity_confirmed';
-const USER_ID_KEY     = 'humix_user_id';
-const LAST_ACTIVE_KEY = 'humix_last_active';
-const GUEST_USES_KEY  = 'humix_guest_uses';
+const CONFIRMED_KEY   = 'havro_identity_confirmed';
+const USER_ID_KEY     = 'havro_user_id';
+const LAST_ACTIVE_KEY = 'havro_last_active';
+const GUEST_USES_KEY  = 'havro_guest_uses';
 const SESSION_TTL     = 24 * 60 * 60 * 1000;
 
 function checkAndRefresh() {

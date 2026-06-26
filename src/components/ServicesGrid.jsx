@@ -32,7 +32,7 @@ export default function ServicesGrid() {
     <section style={s.section}>
       <div className="container">
         <div ref={headRef} className="reveal" style={s.header}>
-          <h2 style={s.title}>Explore Humix</h2>
+          <h2 style={s.title}>Explore Havro</h2>
           <p style={s.subtitle}>
             Eight AI service areas built for real-world outcomes. Start anywhere — they all work together.
           </p>

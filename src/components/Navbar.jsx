@@ -33,7 +33,7 @@ export default function Navbar({ onScanToEnter, isVerified }) {
     <>
       <nav style={s.nav}>
         <div className="nav-inner" style={s.inner}>
-          <Link to="/" style={s.logo}>HUMIX</Link>
+          <Link to="/" style={s.logo}>HAVRO</Link>
 
           <div className="nav-center-links" style={s.centerLinks}>
             {NAV_LINKS.map(({ label, to }) => (
@@ -87,7 +87,7 @@ export default function Navbar({ onScanToEnter, isVerified }) {
         transform: drawerOpen ? 'translateX(0)' : 'translateX(100%)',
       }}>
         <div style={s.drawerHeader}>
-          <span style={s.logo}>HUMIX</span>
+          <span style={s.logo}>HAVRO</span>
           <button onClick={() => setDrawerOpen(false)} style={s.closeBtn} aria-label="Close menu">
             <X size={20} color="#A0A0A0" strokeWidth={1.5} />
           </button>

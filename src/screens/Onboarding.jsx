@@ -45,7 +45,7 @@ export default function Onboarding({ onComplete }) {
         </div>
         <div style={{ textAlign: 'center', animation: 'fadeUp 0.6s ease 0.3s both' }}>
           <h1 style={{ fontFamily: 'Syne, sans-serif', fontSize: 36, fontWeight: 800, color: '#FAFAF8', letterSpacing: -1 }}>
-            HUMIX
+            HAVRO
           </h1>
           <p style={{ color: '#9B9890', fontSize: 16, marginTop: 6, fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
             Every life. One place.
@@ -70,7 +70,7 @@ export default function Onboarding({ onComplete }) {
         <div style={{ width: '100%', paddingTop: 52 }}>
           <Progress step={step} />
           <h1 style={{ fontFamily: 'Syne, sans-serif', fontSize: 30, fontWeight: 800, marginBottom: 6 }}>
-            Welcome to Humix
+            Welcome to Havro
           </h1>
           <p style={{ color: '#6B6860', fontSize: 15, marginBottom: 28 }}>
             Your complete human operating system — 4 powerful systems working together.
@@ -96,7 +96,7 @@ export default function Onboarding({ onComplete }) {
         <div style={{ width: '100%', paddingTop: 52 }}>
           <Progress step={step} />
           <h1 style={{ fontFamily: 'Syne, sans-serif', fontSize: 28, fontWeight: 800, marginBottom: 6 }}>Who are you?</h1>
-          <p style={{ color: '#6B6860', fontSize: 15, marginBottom: 24 }}>This helps Humix personalize your experience.</p>
+          <p style={{ color: '#6B6860', fontSize: 15, marginBottom: 24 }}>This helps Havro personalize your experience.</p>
           <div className="identity-grid" style={{ marginBottom: 28 }}>
             {IDENTITIES.map(id => (
               <div key={id.id} className={`identity-card ${identity === id.id ? 'selected' : ''}`} onClick={() => setIdentity(id.id)}>
@@ -156,7 +156,7 @@ export default function Onboarding({ onComplete }) {
         <div style={{ width: '100%', paddingTop: 52 }}>
           <Progress step={step} />
           <h1 style={{ fontFamily: 'Syne, sans-serif', fontSize: 28, fontWeight: 800, marginBottom: 6 }}>Your language</h1>
-          <p style={{ color: '#6B6860', fontSize: 15, marginBottom: 20 }}>Humix speaks your language — literally.</p>
+          <p style={{ color: '#6B6860', fontSize: 15, marginBottom: 20 }}>Havro speaks your language — literally.</p>
           <div className="lang-grid" style={{ marginBottom: 28 }}>
             {LANGUAGES.map(l => (
               <div key={l.code} className={`lang-card ${language?.code === l.code ? 'selected' : ''}`} onClick={() => setLanguage(l)}>
@@ -184,7 +184,7 @@ export default function Onboarding({ onComplete }) {
             {greeting}
           </h1>
           <p style={{ color: '#6B6860', fontSize: 15, lineHeight: 1.6, maxWidth: 300, margin: '0 auto 8px' }}>
-            A {identityData?.label} in {country?.flag} {country?.name}. Humix is ready for you.
+            A {identityData?.label} in {country?.flag} {country?.name}. Havro is ready for you.
           </p>
           <p style={{ color: '#9B9890', fontSize: 13, marginBottom: 36 }}>
             15.2M people are already improving their lives here.
@@ -206,7 +206,7 @@ export default function Onboarding({ onComplete }) {
             style={{ marginTop: 28, maxWidth: 320, animation: 'fadeUp 0.4s ease 0.7s both' }}
             onClick={() => onComplete({ identity, country: country || { name: 'Pakistan', flag: '🇵🇰' }, language: language || { code: 'en', native: 'English', dir: 'ltr' } })}
           >
-            Enter Humix ✦
+            Enter Havro ✦
           </button>
         </div>
       </div>

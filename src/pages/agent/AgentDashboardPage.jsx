@@ -158,7 +158,7 @@ export default function AgentDashboardPage() {
   const [showPayout, setShowPayout] = useState(false)
   const [notification, setNotification] = useState(null)
 
-  const agentId = localStorage.getItem('humix_agent_id')
+  const agentId = localStorage.getItem('havro_agent_id')
 
   const fetchAgent = useCallback(async () => {
     if (!agentId) { setLoading(false); return }
@@ -171,10 +171,10 @@ export default function AgentDashboardPage() {
 
   // Check for referral conversion (when app loads with ?ref= param and user "registers")
   useEffect(() => {
-    const pending = localStorage.getItem('humix_pending_referral')
+    const pending = localStorage.getItem('havro_pending_referral')
     if (pending && agent && pending === agent.referral_code) {
       setNotification('New user registered through your link! +$0.25')
-      localStorage.removeItem('humix_pending_referral')
+      localStorage.removeItem('havro_pending_referral')
     }
   }, [agent])
 
@@ -182,7 +182,7 @@ export default function AgentDashboardPage() {
     fetchAgent()
   }
 
-  const referralLink = agent ? `humix.app?ref=${agent.referral_code}` : ''
+  const referralLink = agent ? `havro.app?ref=${agent.referral_code}` : ''
   const thisMonthEarnings = (agent?.total_earnings || 0).toFixed(2)
 
   if (loading) {
@@ -199,7 +199,7 @@ export default function AgentDashboardPage() {
         <div style={{ textAlign: 'center' }}>
           <div style={{ fontSize: '48px', marginBottom: '16px' }}>🌍</div>
           <h2 style={{ fontSize: '22px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '10px' }}>No Agent Profile Found</h2>
-          <p style={{ fontSize: '15px', color: 'var(--text-secondary)', marginBottom: '24px' }}>Register to become a Humix Agent and start earning.</p>
+          <p style={{ fontSize: '15px', color: 'var(--text-secondary)', marginBottom: '24px' }}>Register to become a Havro Agent and start earning.</p>
           <Link to="/agent/register" className="btn btn-blue" style={{ padding: '14px 28px' }}>Register Now →</Link>
         </div>
       </main>
@@ -297,7 +297,7 @@ export default function AgentDashboardPage() {
             {[
               { icon: '👤', action: 'Register a new user', earn: '$0.25', desc: 'Share your link — they register, you earn' },
               { icon: '💬', action: 'Help with a consultation', earn: '$0.10', desc: 'Log any service you help a community member with' },
-              { icon: '📈', action: 'Your user earns income', earn: '5%', desc: 'You get 5% of whatever they earn on Humix' },
+              { icon: '📈', action: 'Your user earns income', earn: '5%', desc: 'You get 5% of whatever they earn on Havro' },
             ].map(item => (
               <div key={item.action} style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '14px', background: 'var(--icon-bg)', borderRadius: '12px' }}>
                 <div style={{ fontSize: '22px', flexShrink: 0 }}>{item.icon}</div>

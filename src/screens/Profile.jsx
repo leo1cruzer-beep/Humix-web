@@ -32,7 +32,7 @@ export default function Profile({ userProfile }) {
             {identityEmoji}
           </div>
           <div style={{ fontFamily: 'Syne, sans-serif', fontWeight: 800, fontSize: 20, marginBottom: 2 }}>
-            Humix User
+            Havro User
           </div>
           <div style={{ color: 'var(--text2)', fontSize: 14, marginBottom: 12 }}>
             {country.flag} {country.name} · {lang.native}
@@ -103,9 +103,9 @@ export default function Profile({ userProfile }) {
           <button
             className="btn btn-full"
             style={{ background: '#fff', color: '#1A1916' }}
-            onClick={() => { navigator.share?.({ title: 'Humix', text: 'Check out Humix!', url: window.location.href }); setInvited(true) }}
+            onClick={() => { navigator.share?.({ title: 'Havro', text: 'Check out Havro!', url: window.location.href }); setInvited(true) }}
           >
-            {invited ? '✓ Shared!' : 'Share Humix'}
+            {invited ? '✓ Shared!' : 'Share Havro'}
           </button>
         </div>
       </div>
@@ -113,7 +113,7 @@ export default function Profile({ userProfile }) {
       {/* About */}
       <div className="section" style={{ paddingBottom: 32 }}>
         <div className="card" style={{ textAlign: 'center', color: 'var(--text2)' }}>
-          <div style={{ fontFamily: 'Syne, sans-serif', fontWeight: 800, fontSize: 18, color: 'var(--text)', marginBottom: 4 }}>HUMIX</div>
+          <div style={{ fontFamily: 'Syne, sans-serif', fontWeight: 800, fontSize: 18, color: 'var(--text)', marginBottom: 4 }}>HAVRO</div>
           <div style={{ fontSize: 12, marginBottom: 8 }}>The Human Operating System</div>
           <div style={{ fontSize: 11 }}>v1.0.0 · 15.2M users · 47 countries</div>
         </div>

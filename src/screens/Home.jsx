@@ -42,7 +42,7 @@ export default function Home({ userProfile, onTabChange }) {
               {greeting.text} {greeting.emoji}
             </p>
             <h1 style={{ fontFamily: 'Syne, sans-serif', fontSize: 28, fontWeight: 800, letterSpacing: -0.5 }}>
-              Your Humix
+              Your Havro
             </h1>
           </div>
           <button
@@ -124,7 +124,7 @@ export default function Home({ userProfile, onTabChange }) {
             15.2M
           </div>
           <div style={{ fontSize: 14, color: '#aaa', lineHeight: 1.5 }}>
-            people improving their lives with Humix across 47 countries and 12 languages
+            people improving their lives with Havro across 47 countries and 12 languages
           </div>
           <div style={{ display: 'flex', justifyContent: 'center', gap: 20, marginTop: 16 }}>
             {[['47', 'countries'], ['12', 'languages'], ['98%', 'love it']].map(([n, l]) => (

@@ -4,7 +4,7 @@ import { Fingerprint, Activity, Calendar, Star, Shield, LogOut, ChevronRight } f
 import { supabase } from '../lib/supabase';
 import { useIdentity } from '../hooks/useIdentity';
 
-const USER_ID_KEY = 'humix_user_id';
+const USER_ID_KEY = 'havro_user_id';
 
 const serviceRoutes = {
   'Resume Builder':       '/career/resume',
@@ -79,7 +79,7 @@ export default function IdentityProfile() {
 
   const identityScore = Math.min(100, 50 + serviceCount * 10);
   const daysActive    = daysSince(passkey?.created_at);
-  const humixId       = userId ? userId.slice(0, 8).toUpperCase() : '--------';
+  const havroId       = userId ? userId.slice(0, 8).toUpperCase() : '--------';
 
   const handleReset = () => {
     clearIdentity();
@@ -115,8 +115,8 @@ export default function IdentityProfile() {
             Identity Verified ✓
           </div>
 
-          <h1 style={s.idTitle}>Humix ID</h1>
-          <p style={s.idValue}>{humixId}</p>
+          <h1 style={s.idTitle}>Havro ID</h1>
+          <p style={s.idValue}>{havroId}</p>
 
           <div style={s.metaRow}>
             <div style={s.metaItem}>
@@ -147,7 +147,7 @@ export default function IdentityProfile() {
           {activity.length === 0 ? (
             <div style={s.emptyState}>
               <Shield size={32} color="#1E293B" strokeWidth={1.2} />
-              <p style={s.emptyText}>No activity yet — start using Humix services</p>
+              <p style={s.emptyText}>No activity yet — start using Havro services</p>
             </div>
           ) : (
             <div style={s.activityList}>
@@ -166,7 +166,7 @@ export default function IdentityProfile() {
                 >
                   <div style={s.activityDot} />
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <p style={s.activityService}>{item.service ?? 'Humix Service'}</p>
+                    <p style={s.activityService}>{item.service ?? 'Havro Service'}</p>
                     {item.preview && <p style={s.activityPreview}>{item.preview}</p>}
                   </div>
                   <span style={s.activityDate}>{fmtDate(item.created_at)}</span>

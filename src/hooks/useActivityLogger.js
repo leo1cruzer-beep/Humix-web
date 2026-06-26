@@ -1,7 +1,7 @@
 import { supabase } from '../lib/supabase';
 
 export const useActivityLogger = () => {
-  const userId = localStorage.getItem('humix_user_id');
+  const userId = localStorage.getItem('havro_user_id');
 
   const logActivity = async (serviceName, category, preview) => {
     if (!userId) return;

@@ -69,7 +69,7 @@ export default function AgentRegisterPage() {
         created_at: new Date().toISOString(),
       })
 
-      localStorage.setItem('humix_agent_id', data.id)
+      localStorage.setItem('havro_agent_id', data.id)
       navigate('/agent/dashboard')
     } catch (e) {
       setError(e.message || 'Registration failed. Please try again.')
@@ -84,16 +84,16 @@ export default function AgentRegisterPage() {
       <div style={{ background: 'var(--bg-card)', borderBottom: '1px solid var(--border)', padding: '48px 0 40px', marginBottom: '40px' }}>
         <div style={container}>
           <Link to="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '13px', color: 'var(--text-muted)', marginBottom: '20px' }}>
-            ← Back to Humix
+            ← Back to Havro
           </Link>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
             <span className="badge badge-green">Village Agent Program</span>
           </div>
           <h1 style={{ fontSize: '32px', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '10px', lineHeight: 1.2 }}>
-            Become a Humix Agent
+            Become a Havro Agent
           </h1>
           <p style={{ fontSize: '16px', color: 'var(--text-secondary)', maxWidth: '500px', lineHeight: 1.6 }}>
-            Help your community use Humix — earn money for every person you register and every consultation you help with.
+            Help your community use Havro — earn money for every person you register and every consultation you help with.
           </p>
           <div style={{ display: 'flex', gap: '24px', marginTop: '24px', flexWrap: 'wrap' }}>
             {[['$0.25', 'Per new user'], ['$0.10', 'Per consultation'], ['5%', 'Of their earnings']].map(([val, lbl]) => (
@@ -195,7 +195,7 @@ export default function AgentRegisterPage() {
             </button>
 
             <p style={{ fontSize: '12px', color: 'var(--text-muted)', textAlign: 'center' }}>
-              By registering you agree to represent Humix honestly in your community.
+              By registering you agree to represent Havro honestly in your community.
             </p>
           </form>
 

@@ -33,7 +33,7 @@ export default function SignupModal({ isOpen, onClose, onFaceId }) {
     try {
       const { error: err } = await supabase.auth.signInWithOtp({
         email,
-        options: { emailRedirectTo: 'https://humix.app' },
+        options: { emailRedirectTo: 'https://havro.app' },
       });
       if (err) throw err;
       setEmailSent(true);
@@ -52,7 +52,7 @@ export default function SignupModal({ isOpen, onClose, onFaceId }) {
           <X size={18} color="#64748B" strokeWidth={1.5} />
         </button>
 
-        <h2 id="signup-title" style={s.title}>Join Humix — It's Free</h2>
+        <h2 id="signup-title" style={s.title}>Join Havro — It's Free</h2>
         <p style={s.subtitle}>You've used 2 free tools. Sign up to continue — it's free.</p>
 
         <div style={s.cards}>

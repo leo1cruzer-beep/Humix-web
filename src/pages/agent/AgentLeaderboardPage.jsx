@@ -18,7 +18,7 @@ export default function AgentLeaderboardPage() {
   const [country, setCountry] = useState('all')
   const [countries, setCountries] = useState([])
 
-  const agentId = localStorage.getItem('humix_agent_id')
+  const agentId = localStorage.getItem('havro_agent_id')
 
   useEffect(() => {
     async function load() {

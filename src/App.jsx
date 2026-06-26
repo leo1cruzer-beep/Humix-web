@@ -71,7 +71,7 @@ export default function App() {
   useEffect(() => {
     const params = new URLSearchParams(search);
     const ref = params.get('ref');
-    if (ref) localStorage.setItem('humix_pending_referral', ref.toUpperCase());
+    if (ref) localStorage.setItem('havro_pending_referral', ref.toUpperCase());
   }, [search]);
 
   // Auto-close signup modal when auth completes

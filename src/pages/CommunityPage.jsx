@@ -17,12 +17,12 @@ const COMMUNITY_CATS = [
 ];
 
 const DISCUSSIONS = [
-  { id: 1, title: 'How I paid off $18K in debt using Humix Finance tools in 14 months', category: 'Finance', author: 'Maria G.', time: '2h ago', replies: 34 },
+  { id: 1, title: 'How I paid off $18K in debt using Havro Finance tools in 14 months', category: 'Finance', author: 'Maria G.', time: '2h ago', replies: 34 },
   { id: 2, title: 'Best AI prompts for growing your freelance client base in 2026', category: 'Freelancers', time: '4h ago', author: 'Ahmed K.', replies: 21 },
   { id: 3, title: 'Crop rotation advice for smallholder farms in East Africa', category: 'Farmers', time: '6h ago', author: 'Joseph M.', replies: 15 },
   { id: 4, title: 'Anyone else using Companion AI for mental health journaling?', category: 'Health', time: '8h ago', author: 'Priya S.', replies: 47 },
   { id: 5, title: 'Landing a remote tech job with no degree — my full story', category: 'Tech', time: '12h ago', author: 'David L.', replies: 89 },
-  { id: 6, title: 'How we used Humix Business tools to launch our startup in 30 days', category: 'Entrepreneurs', time: '1d ago', author: 'Linda T.', replies: 62 },
+  { id: 6, title: 'How we used Havro Business tools to launch our startup in 30 days', category: 'Entrepreneurs', time: '1d ago', author: 'Linda T.', replies: 62 },
   { id: 7, title: 'Study group for IELTS prep — join us every Tuesday', category: 'Students', time: '1d ago', author: 'Chen W.', replies: 28 },
   { id: 8, title: 'Building a portfolio with AI-assisted design tools — tips and tricks', category: 'Creatives', time: '2d ago', author: 'Sofia R.', replies: 33 },
 ];

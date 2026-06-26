@@ -66,7 +66,7 @@ export default function HomePage({ onScanToEnter }) {
       <ServiceCardsSection navigate={navigate} />
       <HowItWorksSection />
       <ProblemSection />
-      <HowHumixWorksSection />
+      <HowHavroWorksSection />
       <AgentModelSection navigate={navigate} />
       <ConnectivitySection />
       <ImpactNumbersSection />
@@ -93,7 +93,7 @@ function HeroSection({ onScanToEnter, navigate }) {
       <div style={s.heroInner}>
         <div style={s.eyebrow}>
           <span style={s.eyebrowDot} />
-          <span style={s.eyebrowText}>HUMIX PLATFORM</span>
+          <span style={s.eyebrowText}>HAVRO PLATFORM</span>
         </div>
 
         <h1 style={s.headline}>
@@ -101,7 +101,7 @@ function HeroSection({ onScanToEnter, navigate }) {
         </h1>
 
         <p style={s.sub}>
-          Humix helps people in underserved communities earn real income, access healthcare, and know their rights — in their language, on any phone.
+          Havro helps people in underserved communities earn real income, access healthcare, and know their rights — in their language, on any phone.
         </p>
 
         <div style={s.ctaRow}>
@@ -511,12 +511,12 @@ function EducationIllustration() {
   );
 }
 
-/* ─── Section 2: How Humix Works ─────────────────────────────────── */
+/* ─── Section 2: How Havro Works ─────────────────────────────────── */
 const WORK_CARDS = [
   {
     eyebrow: 'INCOME FIRST', color: '#FFB340',
     title: 'Your AI Income Concierge',
-    body: 'Young agents use Humix micro-tasks — translation, data work, market analysis — to earn daily income. Build trust and capital before unlocking health, legal and education tools.',
+    body: 'Young agents use Havro micro-tasks — translation, data work, market analysis — to earn daily income. Build trust and capital before unlocking health, legal and education tools.',
     stat: '200M+ youth in Asia and Africa have no path to digital income today',
     Illustration: IncomeIllustration,
   },
@@ -543,12 +543,12 @@ const WORK_CARDS = [
   },
 ];
 
-function HowHumixWorksSection() {
+function HowHavroWorksSection() {
   return (
     <section style={{ background: '#0C0C0D', padding: '100px 0', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
       <div className="mission-inner">
         <div style={{ textAlign: 'center', marginBottom: '80px' }}>
-          <p style={s.sectionEyebrow}>HOW HUMIX WORKS</p>
+          <p style={s.sectionEyebrow}>HOW HAVRO WORKS</p>
           <h2 style={{ ...s.cardsSectionTitle, fontSize: 'clamp(26px, 4vw, 44px)', marginBottom: '14px' }}>
             One platform. Every need.
           </h2>
@@ -603,7 +603,7 @@ function WorkCard({ card }) {
 
 /* ─── Section 3: The Agent Model ─────────────────────────────────── */
 const FLOW_STEPS = [
-  { label: 'Download Humix',      icon: <User size={20} color="#00C48C" strokeWidth={1.8} /> },
+  { label: 'Download Havro',      icon: <User size={20} color="#00C48C" strokeWidth={1.8} /> },
   { label: 'Complete micro-tasks' },
   { label: 'Earn daily income' },
   { label: 'Help your community' },
@@ -615,7 +615,7 @@ const AGENT_COLS = [
     icon: <User size={26} color="#00C48C" strokeWidth={1.5} />,
     title: 'The Agent',
     points: [
-      'A teacher, imam, or community leader downloads Humix',
+      'A teacher, imam, or community leader downloads Havro',
       'They become the access point for everyone around them',
       'They earn $0.25 per registration, $0.10 per consultation',
     ],
@@ -770,7 +770,7 @@ const CONNECTIVITY_TIERS = [
   {
     Icon: <Smartphone size={28} color="#00C48C" strokeWidth={1.5} />,
     title: 'Mobile App',
-    body: 'For those with smartphones — full Humix experience, biometric identity, all services.',
+    body: 'For those with smartphones — full Havro experience, biometric identity, all services.',
     badge: 'Live Now',
     badgeColor: '#00C48C',
     badgeBg: 'rgba(0,196,140,0.08)',
@@ -896,14 +896,14 @@ function VisionStatementSection({ onScanToEnter, navigate }) {
           color: '#F5F5F5', textAlign: 'center',
           margin: '0 0 28px', letterSpacing: '-0.01em',
         }}>
-          Every child born in a rural village deserves the same access to health advice, legal protection, and economic opportunity as someone born in New York or London. Humix is how we bridge that gap —{' '}
+          Every child born in a rural village deserves the same access to health advice, legal protection, and economic opportunity as someone born in New York or London. Havro is how we bridge that gap —{' '}
           <span style={{ color: '#00C48C', fontWeight: 600 }}>one village, one agent, one family at a time.</span>
         </blockquote>
         <p style={{
           textAlign: 'center', fontSize: '12px', color: '#606060',
           fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase',
           marginBottom: '56px',
-        }}>— The Humix Mission</p>
+        }}>— The Havro Mission</p>
 
         <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
           <button
@@ -940,7 +940,7 @@ function VisionStatementSection({ onScanToEnter, navigate }) {
 const JOIN_STEPS = [
   {
     Icon: <Smartphone size={28} color="#00C48C" strokeWidth={1.5} />,
-    title: 'Download or open humix.app',
+    title: 'Download or open havro.app',
     desc: 'Works on any phone, any browser. No app store required.',
   },
   {

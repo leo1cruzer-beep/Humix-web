@@ -70,8 +70,8 @@ export default function AuthModal({ isOpen, onClose, defaultTab = 'login' }) {
         </h2>
         <p style={s.subtitle}>
           {tab === 'login'
-            ? 'Sign in to your Humix account'
-            : 'Join Humix and start exploring services'}
+            ? 'Sign in to your Havro account'
+            : 'Join Havro and start exploring services'}
         </p>
 
         {/* Tab switcher */}

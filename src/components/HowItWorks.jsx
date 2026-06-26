@@ -24,7 +24,7 @@ export default function HowItWorks() {
     <section style={styles.section} id="how-it-works">
       <div className="container">
         <div style={styles.header}>
-          <h2 style={styles.title}>How Humix Works</h2>
+          <h2 style={styles.title}>How Havro Works</h2>
           <p style={styles.subtitle}>Get started in minutes — no technical knowledge needed</p>
         </div>
 
