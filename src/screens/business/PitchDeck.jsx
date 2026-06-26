@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { callAI } from '../../utils/ai.js'
 import { useActivityLogger } from '../../hooks/useActivityLogger'
 
@@ -19,7 +19,8 @@ export default function PitchDeck() {
   const [idea, setIdea] = useState('')
   const [stage, setStage] = useState('pre-seed')
   const [ask, setAsk] = useState('')
-  const [result, setResult] = useState('')
+  const { state } = useLocation()
+  const [result, setResult] = useState(state?.previousContent || '')
   const [loading, setLoading] = useState(false)
 
   const { logActivity } = useActivityLogger()

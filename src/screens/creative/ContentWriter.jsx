@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { callAI } from '../../utils/ai.js'
 import { useActivityLogger } from '../../hooks/useActivityLogger'
 
@@ -27,7 +27,8 @@ export default function ContentWriter() {
   const [topic, setTopic] = useState('')
   const [platform, setPlatform] = useState('LinkedIn')
   const [tone, setTone] = useState('professional')
-  const [result, setResult] = useState('')
+  const { state } = useLocation()
+  const [result, setResult] = useState(state?.previousContent || '')
   const [loading, setLoading] = useState(false)
 
   const { logActivity } = useActivityLogger()

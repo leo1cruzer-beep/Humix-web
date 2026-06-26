@@ -17,7 +17,7 @@ export const useActivityLogger = () => {
       service: serviceName,
       category: category,
       preview: preview?.slice(0, 100),
-      messages: [],
+      messages: [{ role: 'assistant', content: preview }],
       created_at: new Date().toISOString(),
     });
     if (error) {

@@ -7,23 +7,29 @@ import { useIdentity } from '../hooks/useIdentity';
 const USER_ID_KEY = 'humix_user_id';
 
 const serviceRoutes = {
-  'Resume Builder':    '/career/resume',
-  'Cover Letter':      '/career/cover-letter',
-  'Interview Prep':    '/career/interview',
-  'Salary Insights':   '/career/salary',
-  'Business Plan':     '/business/plan',
-  'Pitch Deck':        '/business/pitch-deck',
-  'Name Generator':    '/business/name',
-  'Market Research':   '/business/market',
-  'Content Writer':    '/creative/content',
-  'Social Media Pack': '/creative/social',
-  'Email Campaign':    '/creative/email',
-  'Brand Voice':       '/creative/brand',
-  'Budget Tracker':    '/finance/budget',
-  'Wealth Builder':    '/finance/wealth',
-  'Debt Freedom':      '/finance/debt',
-  'Remittance':        '/finance/remittance',
-  'Life Assistant':    '/life',
+  'Resume Builder':       '/career/resume',
+  'Cover Letter':         '/career/cover-letter',
+  'Interview Prep':       '/career/interview',
+  'Salary Insights':      '/career/salary',
+  'Business Plan':        '/business/plan',
+  'Pitch Deck':           '/business/pitch',
+  'Name Generator':       '/business/names',
+  'Market Research':      '/business/market',
+  'Content Writer':       '/creative/content',
+  'Social Media Pack':    '/creative/social',
+  'Email Campaign':       '/creative/email',
+  'Brand Voice':          '/creative/brand',
+  'Budget Tracker':       '/finance/budget',
+  'Wealth Builder':       '/finance/wealth',
+  'Debt Freedom':         '/finance/debt',
+  'Remittance':           '/finance/remittance',
+  'Remittance Optimizer': '/finance/remittance',
+  'Markets':              '/finance/markets',
+  'Health':               '/life-assistant',
+  'Legal':                '/life-assistant',
+  'Agriculture':          '/life-assistant',
+  'Education':            '/life-assistant',
+  'Freelancing':          '/life-assistant',
 };
 
 function daysSince(dateStr) {
@@ -55,7 +61,7 @@ export default function IdentityProfile() {
     async function load() {
       const [pkRes, convRes] = await Promise.all([
         supabase.from('passkeys').select('created_at').eq('user_id', userId).limit(1).single(),
-        supabase.from('conversations').select('service, created_at, preview').eq('user_id', userId).order('created_at', { ascending: false }).limit(5),
+        supabase.from('conversations').select('id, service, created_at, preview, messages').eq('user_id', userId).order('created_at', { ascending: false }).limit(5),
       ]);
 
       if (!alive) return;
@@ -168,6 +174,7 @@ export default function IdentityProfile() {
                 <Link
                   key={i}
                   to={serviceRoutes[item.service] || '/'}
+                  state={{ previousContent: item.messages?.[0]?.content || null }}
                   style={{
                     ...s.activityItem,
                     textDecoration: 'none',

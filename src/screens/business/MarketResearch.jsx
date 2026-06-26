@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { callAI } from '../../utils/ai.js'
 import { useActivityLogger } from '../../hooks/useActivityLogger'
 
@@ -18,7 +18,8 @@ function CopyButton({ text }) {
 export default function MarketResearch() {
   const [industry, setIndustry] = useState('')
   const [country, setCountry] = useState('')
-  const [result, setResult] = useState('')
+  const { state } = useLocation()
+  const [result, setResult] = useState(state?.previousContent || '')
   const [loading, setLoading] = useState(false)
 
   const { logActivity } = useActivityLogger()
