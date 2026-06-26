@@ -642,6 +642,7 @@ const AGENT_COLS = [
       'Word of mouth grows the network organically',
       'Connected communities educate each other',
     ],
+    callout: 'Earn while you empower your community.',
   },
 ];
 
@@ -718,6 +719,11 @@ function AgentModelSection({ navigate }) {
                     <p style={{ fontSize: '14px', color: '#A0A0A0', lineHeight: 1.6, margin: 0 }}>{pt}</p>
                   </div>
                 ))}
+                {col.callout && (
+                  <p style={{ fontSize: '14px', color: '#00C48C', fontStyle: 'italic', margin: '4px 0 0', lineHeight: 1.5 }}>
+                    {col.callout}
+                  </p>
+                )}
               </div>
             </div>
           ))}
@@ -919,9 +925,8 @@ function VisionStatementSection({ onScanToEnter, navigate }) {
             style={{
               display: 'inline-flex', alignItems: 'center', gap: '8px',
               padding: '13px 28px', borderRadius: '8px',
-              background: 'transparent', color: '#F5F5F5',
-              border: '1px solid rgba(255,255,255,0.16)',
-              fontFamily: "'Inter', sans-serif", fontSize: '15px', fontWeight: 500,
+              background: '#00C48C', color: '#000', border: 'none',
+              fontFamily: "'Inter', sans-serif", fontSize: '15px', fontWeight: 600,
               cursor: 'pointer',
             }}
           >
