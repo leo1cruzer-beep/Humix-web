@@ -591,3 +591,60 @@ ul { list-style: none; }
   .finance-market-layout { grid-template-columns: 1fr !important; }
   .coin-sparkline { display: none !important; }
 }
+
+/* ─── Mission / long-scroll homepage sections ───────────────────── */
+.mission-inner {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 0 24px;
+  box-sizing: border-box;
+}
+
+/* Alternating left/right rows */
+.alt-row { display: flex; align-items: center; gap: 80px; }
+.alt-row.flip { flex-direction: row-reverse; }
+.alt-col { flex: 1 1 0; min-width: 0; }
+
+/* Problem stats 4-column grid */
+.problem-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.02);
+  overflow: hidden;
+  margin-bottom: 48px;
+}
+.problem-stats-grid > div + div { border-left: 1px solid rgba(255,255,255,0.06); }
+
+/* Agent, connectivity, impact, join grids */
+.agent-cols        { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.connectivity-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.impact-grid-6     { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+.join-row          { display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px; }
+
+/* Flow diagram */
+.flow-scroll {
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+  padding: 8px 0 4px;
+  justify-content: center;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.flow-scroll::-webkit-scrollbar { display: none; }
+
+@media (max-width: 900px) {
+  .alt-row, .alt-row.flip { flex-direction: column !important; gap: 40px; }
+  .agent-cols, .connectivity-cols, .join-row { grid-template-columns: 1fr; gap: 16px; }
+  .impact-grid-6 { grid-template-columns: repeat(2, 1fr); gap: 28px; }
+  .flow-scroll { justify-content: flex-start; }
+}
+
+@media (max-width: 640px) {
+  .problem-stats-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .problem-stats-grid > div + div { border-left: none; }
+  .problem-stats-grid > div:nth-child(odd) { border-right: 1px solid rgba(255,255,255,0.06); }
+  .problem-stats-grid > div:nth-child(n+3) { border-top: 1px solid rgba(255,255,255,0.06); }
+}
