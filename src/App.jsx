@@ -1,9 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import ScrollManager from './components/ScrollManager.jsx';
 import Navbar from './components/Navbar.jsx';
 import Footer from './components/Footer.jsx';
-import Auth from './components/Auth.jsx';
+import PasskeyAuth from './components/PasskeyAuth.jsx';
 import { useIdentity } from './hooks/useIdentity.jsx';
 import HomePage from './pages/HomePage.jsx';
 import ExplorePage from './pages/ExplorePage.jsx';
@@ -37,46 +37,59 @@ import AgentRegisterPage from './pages/agent/AgentRegisterPage.jsx';
 import AgentDashboardPage from './pages/agent/AgentDashboardPage.jsx';
 import AgentLeaderboardPage from './pages/agent/AgentLeaderboardPage.jsx';
 
-function ProtectedRoute({ children, isVerified }) {
+function ProtectedRoute({ children, isVerified, openScan }) {
+  useEffect(() => {
+    if (!isVerified) openScan();
+  }, [isVerified, openScan]);
+
   if (!isVerified) return <Navigate to="/" replace />;
   return children;
 }
 
 export default function App() {
-  const { search } = useLocation();
-  const { isVerified, loading } = useIdentity();
+  const { pathname, search } = useLocation();
+  const navigate = useNavigate();
+  const { isVerified } = useIdentity();
+  const [scanOpen, setScanOpen] = useState(false);
 
-  // Capture referral code from ?ref=CODE URL param
   useEffect(() => {
     const params = new URLSearchParams(search);
     const ref = params.get('ref');
     if (ref) localStorage.setItem('humix_pending_referral', ref.toUpperCase());
   }, [search]);
 
-  // Show nothing while checking session (avoids flash)
-  if (loading) {
-    return (
-      <div style={{ minHeight: '100vh', background: '#0A0A0A', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={spinnerStyle} />
-      </div>
-    );
-  }
-
-  // Not logged in — show auth screen
-  if (!isVerified) return <Auth />;
+  const openScan  = useCallback(() => setScanOpen(true),  []);
+  const closeScan = useCallback(() => setScanOpen(false), []);
+  const onScanComplete = useCallback(() => {
+    setScanOpen(false);
+    navigate('/');
+  }, [navigate]);
 
   const guard = (el) => (
-    <ProtectedRoute isVerified={isVerified}>{el}</ProtectedRoute>
+    <ProtectedRoute isVerified={isVerified} openScan={openScan}>{el}</ProtectedRoute>
   );
+
+  if (pathname === '/life-assistant') {
+    return (
+      <>
+        <ScrollManager />
+        {scanOpen && <PasskeyAuth onComplete={onScanComplete} onClose={closeScan} />}
+        <Routes>
+          <Route path="/life-assistant" element={guard(<LifeAssistantPage />)} />
+        </Routes>
+      </>
+    );
+  }
 
   return (
     <>
       <ScrollManager />
+      {scanOpen && <PasskeyAuth onComplete={onScanComplete} onClose={closeScan} />}
       <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', background: 'var(--bg-page)' }}>
-        <Navbar />
+        <Navbar onScanToEnter={openScan} isVerified={isVerified} />
         <div style={{ flex: 1 }}>
           <Routes>
-            <Route path="/"               element={<HomePage />} />
+            <Route path="/"               element={<HomePage onScanToEnter={openScan} />} />
             <Route path="/explore"        element={guard(<ExplorePage />)} />
             <Route path="/services"       element={guard(<ServicesPage />)} />
             <Route path="/pricing"        element={guard(<PricingPage />)} />
@@ -106,7 +119,6 @@ export default function App() {
             <Route path="/creative/social"     element={guard(<SocialMediaPack />)} />
             <Route path="/creative/email"      element={guard(<EmailCampaign />)} />
             <Route path="/creative/brand"      element={guard(<BrandVoice />)} />
-            <Route path="/life-assistant"      element={guard(<LifeAssistantPage />)} />
             <Route path="/profile"             element={guard(<IdentityProfile />)} />
             <Route path="*"                    element={<NotFoundPage />} />
           </Routes>
@@ -116,12 +128,3 @@ export default function App() {
     </>
   );
 }
-
-const spinnerStyle = {
-  width: '32px',
-  height: '32px',
-  borderRadius: '50%',
-  border: '3px solid rgba(99,102,241,0.15)',
-  borderTop: '3px solid #6366F1',
-  animation: 'spin 0.8s linear infinite',
-};

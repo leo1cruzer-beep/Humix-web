@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, UserCircle, LogOut } from 'lucide-react';
-import { useIdentity } from '../hooks/useIdentity';
+import { Menu, X, ScanFace, UserCircle } from 'lucide-react';
 
 const NAV_LINKS = [
   { label: 'Explore',        to: '/explore' },
@@ -12,10 +11,11 @@ const NAV_LINKS = [
   { label: 'Career',         to: '/career' },
 ];
 
-export default function Navbar() {
-  const { user, clearIdentity } = useIdentity();
+export default function Navbar({ onScanToEnter, isVerified }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const { pathname } = useLocation();
+
+  const handleScan = () => { setDrawerOpen(false); onScanToEnter?.(); };
 
   useEffect(() => {
     document.body.style.overflow = drawerOpen ? 'hidden' : '';
@@ -37,14 +37,22 @@ export default function Navbar() {
           </div>
 
           <div className="nav-right-buttons" style={s.rightButtons}>
-            <Link to="/profile" style={s.profileLink}>
-              <span style={s.onlineDot} />
-              {user?.email ?? 'Profile'}
-              <UserCircle size={16} color="#10B981" strokeWidth={1.8} />
-            </Link>
-            <button style={s.logoutBtn} onClick={clearIdentity} title="Sign out">
-              <LogOut size={15} strokeWidth={2} />
-            </button>
+            {isVerified ? (
+              <Link to="/profile" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: '#10B981', fontWeight: 600, fontFamily: "'Inter', sans-serif", textDecoration: 'none' }}>
+                <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#10B981', boxShadow: '0 0 6px #10B981', display: 'inline-block' }} />
+                Verified
+                <UserCircle size={16} color="#10B981" strokeWidth={1.8} />
+              </Link>
+            ) : (
+              <button
+                className="btn btn-blue"
+                style={{ padding: '8px 20px', display: 'flex', alignItems: 'center', gap: '8px' }}
+                onClick={handleScan}
+              >
+                <ScanFace size={16} strokeWidth={2} />
+                Scan to Enter
+              </button>
+            )}
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginLeft: 'auto' }} className="nav-hamburger-group">
@@ -60,7 +68,6 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Overlay */}
       <div
         style={{
           ...s.overlay,
@@ -71,7 +78,6 @@ export default function Navbar() {
         onClick={() => setDrawerOpen(false)}
       />
 
-      {/* Drawer */}
       <div style={{
         ...s.drawer,
         transform: drawerOpen ? 'translateX(0)' : 'translateX(100%)',
@@ -100,19 +106,23 @@ export default function Navbar() {
           );
         })}
 
-        <div style={{ padding: '16px 24px', marginTop: 'auto', borderTop: '1px solid #1A1A1A', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-          <Link to="/profile" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', color: '#10B981', fontWeight: 600, fontFamily: "'Inter', sans-serif", textDecoration: 'none' }}>
-            <span style={s.onlineDot} />
-            {user?.email ?? 'Profile'}
-            <UserCircle size={16} color="#10B981" strokeWidth={1.8} />
-          </Link>
-          <button
-            onClick={clearIdentity}
-            style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'none', border: 'none', color: '#64748B', fontSize: '14px', fontFamily: "'Inter', sans-serif", cursor: 'pointer', padding: 0 }}
-          >
-            <LogOut size={15} strokeWidth={2} />
-            Sign Out
-          </button>
+        <div style={{ padding: '16px 24px', marginTop: 'auto', borderTop: '1px solid #1A1A1A' }}>
+          {isVerified ? (
+            <Link to="/profile" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '13px 16px', fontSize: '14px', color: '#10B981', fontWeight: 600, fontFamily: "'Inter', sans-serif", textDecoration: 'none' }}>
+              <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#10B981', boxShadow: '0 0 8px #10B981', display: 'inline-block' }} />
+              Identity Verified
+              <UserCircle size={16} color="#10B981" strokeWidth={1.8} />
+            </Link>
+          ) : (
+            <button
+              className="btn btn-blue"
+              style={{ width: '100%', justifyContent: 'center', padding: '13px 16px', fontSize: '15px', gap: '8px' }}
+              onClick={handleScan}
+            >
+              <ScanFace size={17} strokeWidth={2} />
+              Scan to Enter
+            </button>
+          )}
         </div>
       </div>
     </>
@@ -145,141 +155,39 @@ function NavLink({ to, label, active }) {
 
 const s = {
   nav: {
-    position: 'sticky',
-    top: 0,
-    zIndex: 100,
+    position: 'sticky', top: 0, zIndex: 100,
     background: 'rgba(10,10,10,0.9)',
-    backdropFilter: 'blur(20px)',
-    WebkitBackdropFilter: 'blur(20px)',
+    backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
     borderBottom: '1px solid rgba(255,255,255,0.06)',
-    height: '64px',
-    display: 'flex',
-    alignItems: 'center',
+    height: '64px', display: 'flex', alignItems: 'center',
   },
   inner: {
-    maxWidth: '1200px',
-    margin: '0 auto',
-    padding: '0 48px',
-    width: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '32px',
+    maxWidth: '1200px', margin: '0 auto', padding: '0 48px',
+    width: '100%', display: 'flex', alignItems: 'center', gap: '32px',
   },
   logo: {
-    fontFamily: "'Inter', sans-serif",
-    fontWeight: 900,
-    fontSize: '20px',
-    letterSpacing: '-0.04em',
-    color: '#6366F1',
-    textDecoration: 'none',
-    flexShrink: 0,
+    fontFamily: "'Inter', sans-serif", fontWeight: 900, fontSize: '20px',
+    letterSpacing: '-0.04em', color: '#6366F1', textDecoration: 'none', flexShrink: 0,
   },
-  centerLinks: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '32px',
-    flex: 1,
-    justifyContent: 'center',
-  },
-  rightButtons: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '12px',
-    flexShrink: 0,
-  },
-  profileLink: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '6px',
-    fontSize: '13px',
-    color: '#10B981',
-    fontWeight: 600,
-    fontFamily: "'Inter', sans-serif",
-    textDecoration: 'none',
-    maxWidth: '180px',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
-  },
-  onlineDot: {
-    width: 7,
-    height: 7,
-    borderRadius: '50%',
-    background: '#10B981',
-    boxShadow: '0 0 6px #10B981',
-    display: 'inline-block',
-    flexShrink: 0,
-  },
-  logoutBtn: {
-    background: 'rgba(255,255,255,0.05)',
-    border: '1px solid rgba(255,255,255,0.08)',
-    borderRadius: '8px',
-    width: '32px',
-    height: '32px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    cursor: 'pointer',
-    color: '#64748B',
-    transition: 'color 0.15s ease',
-  },
-  hamburger: {
-    background: 'none',
-    border: 'none',
-    cursor: 'pointer',
-    padding: '4px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  overlay: {
-    position: 'fixed',
-    inset: 0,
-    background: 'rgba(0,0,0,0.7)',
-    zIndex: 200,
-  },
+  centerLinks: { display: 'flex', alignItems: 'center', gap: '32px', flex: 1, justifyContent: 'center' },
+  rightButtons: { display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 },
+  hamburger: { background: 'none', border: 'none', cursor: 'pointer', padding: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center' },
+  overlay: { position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', zIndex: 200 },
   drawer: {
-    position: 'fixed',
-    top: 0,
-    right: 0,
-    height: '100%',
-    width: '280px',
-    background: '#0A0A0A',
-    border: '1px solid #1A1A1A',
-    boxShadow: '0 0 80px rgba(0,0,0,0.9)',
-    zIndex: 201,
-    display: 'flex',
-    flexDirection: 'column',
-    transition: 'transform 0.25s ease',
-    overflowY: 'auto',
+    position: 'fixed', top: 0, right: 0, height: '100%', width: '280px',
+    background: '#0A0A0A', border: '1px solid #1A1A1A',
+    boxShadow: '0 0 80px rgba(0,0,0,0.9)', zIndex: 201,
+    display: 'flex', flexDirection: 'column',
+    transition: 'transform 0.25s ease', overflowY: 'auto',
   },
   drawerHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: '0 24px',
-    height: '64px',
-    borderBottom: '1px solid #1A1A1A',
-    flexShrink: 0,
+    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+    padding: '0 24px', height: '64px', borderBottom: '1px solid #1A1A1A', flexShrink: 0,
   },
-  closeBtn: {
-    background: 'none',
-    border: 'none',
-    cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: '4px',
-  },
+  closeBtn: { background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4px' },
   drawerLink: {
-    display: 'flex',
-    alignItems: 'center',
-    height: '48px',
-    padding: '0 24px',
-    borderBottom: '1px solid #1A1A1A',
-    fontFamily: "'Inter', sans-serif",
-    fontSize: '15px',
-    textDecoration: 'none',
-    transition: 'color 0.15s ease',
+    display: 'flex', alignItems: 'center', height: '48px', padding: '0 24px',
+    borderBottom: '1px solid #1A1A1A', fontFamily: "'Inter', sans-serif",
+    fontSize: '15px', textDecoration: 'none', transition: 'color 0.15s ease',
   },
 };
