@@ -1,10 +1,10 @@
 import { useRef, useEffect } from 'react';
 
 const STATS = [
-  { num: 15,  suffix: 'M+', label: 'People using Humix',  decimals: false },
-  { num: 47,  suffix: '',   label: 'Countries',           decimals: false },
-  { num: 12,  suffix: '',   label: 'Languages supported', decimals: false },
-  { num: 4,   suffix: '',   label: 'AI service systems',  decimals: false },
+  { num: 4,   suffix: 'B+', label: 'People we\'re building for', decimals: false },
+  { num: 17,  suffix: '+',  label: 'AI tools available today',   decimals: false },
+  { num: 150, suffix: '+',  label: 'Countries accessible',       decimals: false },
+  { num: 3,   suffix: '',   label: 'Languages supported',        decimals: false },
 ];
 
 export default function StatsBar() {

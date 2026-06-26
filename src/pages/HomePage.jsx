@@ -828,7 +828,7 @@ function ConnectivitySection() {
 /* ─── Section 5: Impact Numbers ─────────────────────────────────── */
 const IMPACT_STATS = [
   { value: 4,   suffix: 'B+', decimals: 0, label: "People we're building for",      isStatic: false },
-  { value: 5,   suffix: '',   decimals: 0, label: 'Services available today',        isStatic: false },
+  { value: 17,  suffix: '+',  decimals: 0, label: 'AI tools available today',         isStatic: false },
   { value: 3,   suffix: '',   decimals: 0, label: 'Languages supported (growing)',   isStatic: false },
   { display: '$0',             label: 'Cost to users',                               isStatic: true  },
   { value: 150, suffix: '+',  decimals: 0, label: 'Countries accessible',            isStatic: false },
