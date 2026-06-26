@@ -5,7 +5,7 @@ import { useEmailGate } from '../../hooks/useEmailGate'
 
 const INITIAL = {
   BTC: { price: 97450, name: 'Bitcoin',  symbol: '₿', color: '#F97316', mktCap: '$1.92T', vol24h: '$38.2B' },
-  ETH: { price: 1756,  name: 'Ethereum', symbol: 'Ξ', color: '#6366F1', mktCap: '$211B',  vol24h: '$12.8B' },
+  ETH: { price: 1756,  name: 'Ethereum', symbol: 'Ξ', color: '#0A84FF', mktCap: '$211B',  vol24h: '$12.8B' },
   SOL: { price: 142,   name: 'Solana',   symbol: '◎', color: '#8B5CF6', mktCap: '$65.3B', vol24h: '$4.1B' },
   BNB: { price: 605,   name: 'BNB',      symbol: '⬡', color: '#F59E0B', mktCap: '$87.4B', vol24h: '$2.3B' },
 }

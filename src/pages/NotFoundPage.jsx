@@ -6,11 +6,11 @@ export default function NotFoundPage() {
     <main className="page-enter page-transition" style={{ padding: '120px 24px', textAlign: 'center' }}>
       <div style={{
         width: '72px', height: '72px', borderRadius: '50%',
-        background: 'rgba(99,102,241,0.12)', border: '1px solid rgba(99,102,241,0.2)',
+        background: 'rgba(0,196,140,0.10)', border: '1px solid rgba(0,196,140,0.20)',
         display: 'flex', alignItems: 'center',
         justifyContent: 'center', margin: '0 auto 24px',
       }}>
-        <Search size={32} color="#818CF8" strokeWidth={1.5} />
+        <Search size={32} color="#00C48C" strokeWidth={1.5} />
       </div>
       <h1 style={{ fontFamily: "'Inter', sans-serif", fontWeight: 800, fontSize: '32px', letterSpacing: '-0.04em', color: '#F8FAFC', marginBottom: '12px' }}>
         Page not found

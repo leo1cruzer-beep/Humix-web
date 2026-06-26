@@ -103,9 +103,9 @@ function LogModal({ agentId, onClose, onLogged }) {
                     <button key={s} type="button" onClick={() => setService(s)}
                       style={{
                         padding: '7px 14px', borderRadius: '50px', fontSize: '13px', fontWeight: 600,
-                        background: service === s ? 'var(--accent)' : 'var(--icon-bg)',
-                        color: service === s ? '#fff' : 'var(--text-secondary)',
-                        border: '1px solid ' + (service === s ? 'var(--accent)' : 'var(--border)'),
+                        background: service === s ? '#00C48C' : 'var(--icon-bg)',
+                        color: service === s ? '#000' : 'var(--text-secondary)',
+                        border: '1px solid ' + (service === s ? '#00C48C' : 'var(--border)'),
                         cursor: 'pointer',
                       }}>{s}</button>
                   ))}
@@ -248,9 +248,9 @@ export default function AgentDashboardPage() {
               <h1 style={{ fontSize: '26px', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '4px' }}>{agent.name}</h1>
               <p style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>{agent.country}{agent.region ? ` · ${agent.region}` : ''}</p>
             </div>
-            <div style={{ background: 'var(--accent-light)', border: '1px solid var(--accent)', borderRadius: '12px', padding: '14px 20px', textAlign: 'right' }}>
-              <div style={{ fontSize: '11px', fontWeight: 600, color: 'var(--accent-text)', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: '4px' }}>Your Code</div>
-              <div style={{ fontSize: '24px', fontWeight: 900, color: 'var(--accent)', letterSpacing: '0.12em' }}>{agent.referral_code}</div>
+            <div style={{ background: 'rgba(0,196,140,0.10)', border: '1px solid rgba(0,196,140,0.25)', borderRadius: '12px', padding: '14px 20px', textAlign: 'right' }}>
+              <div style={{ fontSize: '11px', fontWeight: 600, color: '#00C48C', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: '4px' }}>Your Code</div>
+              <div style={{ fontSize: '24px', fontWeight: 700, color: '#00C48C', letterSpacing: '0.12em' }}>{agent.referral_code}</div>
             </div>
           </div>
         </div>
@@ -269,7 +269,7 @@ export default function AgentDashboardPage() {
         <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '16px', padding: '20px 24px', marginBottom: '24px' }}>
           <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '10px' }}>Your Referral Link</div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
-            <div style={{ flex: 1, background: 'var(--icon-bg)', border: '1px solid var(--border)', borderRadius: '10px', padding: '11px 14px', fontFamily: 'monospace', fontSize: '14px', color: 'var(--accent-text)', wordBreak: 'break-all' }}>
+            <div style={{ flex: 1, background: 'var(--icon-bg)', border: '1px solid var(--border)', borderRadius: '10px', padding: '11px 14px', fontFamily: 'monospace', fontSize: '14px', color: '#00C48C', wordBreak: 'break-all' }}>
               {referralLink}
             </div>
             <CopyButton text={`https://${referralLink}`} />

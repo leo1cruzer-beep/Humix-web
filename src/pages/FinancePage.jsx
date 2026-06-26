@@ -93,14 +93,14 @@ function FinanceHome() {
               onMouseLeave={() => setHov(null)}
               style={{
                 background: 'var(--bg-card)',
-                border: `1px solid ${hov === tool.id ? 'var(--accent)' : 'var(--border)'}`,
+                border: `1px solid ${hov === tool.id ? 'rgba(255,179,64,0.30)' : 'rgba(255,255,255,0.08)'}`,
                 borderRadius: '16px',
                 padding: '24px',
                 cursor: 'pointer',
                 textAlign: 'left',
-                transition: 'all 0.18s ease',
-                boxShadow: hov === tool.id ? 'var(--shadow-hover)' : 'none',
-                transform: hov === tool.id ? 'translateY(-2px)' : 'none',
+                transition: 'all 0.15s ease',
+                boxShadow: hov === tool.id ? '0 8px 24px rgba(0,0,0,0.3)' : 'none',
+                transform: hov === tool.id ? 'translateY(-3px)' : 'none',
                 display: 'flex',
                 flexDirection: 'column',
                 gap: '12px',
@@ -109,7 +109,7 @@ function FinanceHome() {
               <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '12px' }}>
                 <div style={{
                   width: '44px', height: '44px', borderRadius: '12px',
-                  background: 'var(--accent-light)',
+                  background: 'rgba(255,179,64,0.10)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   fontSize: '22px', flexShrink: 0,
                 }}>
@@ -124,7 +124,7 @@ function FinanceHome() {
                 <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: 1.55 }}>{tool.desc}</p>
               </div>
               <div style={{ marginTop: 'auto', paddingTop: '4px' }}>
-                <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--accent)' }}>Open tool →</span>
+                <span style={{ fontSize: '13px', fontWeight: 600, color: '#FFB340' }}>Open tool →</span>
               </div>
             </button>
           ))}
@@ -134,14 +134,14 @@ function FinanceHome() {
         <div style={{
           marginTop: '48px',
           padding: '20px 24px',
-          background: 'var(--accent-light)',
+          background: 'rgba(255,179,64,0.08)',
           borderRadius: '12px',
-          border: '1px solid rgba(27,79,216,0.12)',
+          border: '1px solid rgba(255,179,64,0.15)',
           display: 'flex', gap: '14px', alignItems: 'flex-start',
         }}>
           <span style={{ fontSize: '18px', flexShrink: 0 }}>💡</span>
           <div>
-            <div style={{ fontWeight: 600, fontSize: '14px', color: 'var(--accent)', marginBottom: '4px' }}>
+            <div style={{ fontWeight: 600, fontSize: '14px', color: '#FFB340', marginBottom: '4px' }}>
               AI-powered financial guidance
             </div>
             <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.6 }}>

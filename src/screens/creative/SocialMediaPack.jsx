@@ -103,7 +103,7 @@ Make each piece feel native to its platform. No placeholders.`
               <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 <div>
                   <label style={labelStyle}>What are you promoting?</label>
-                  <textarea value={description} onChange={e => setDescription(e.target.value)} placeholder="e.g. Our new AI-powered meal planning app that generates weekly recipes based on your budget and nutrition goals — launching next week" rows={4} style={{ ...inputStyle, resize: 'vertical', lineHeight: 1.6, paddingTop: '10px' }} onFocus={e => e.target.style.borderColor='#6366F1'} onBlur={e => e.target.style.borderColor='var(--border)'} />
+                  <textarea value={description} onChange={e => setDescription(e.target.value)} placeholder="e.g. Our new AI-powered meal planning app that generates weekly recipes based on your budget and nutrition goals — launching next week" rows={4} style={{ ...inputStyle, resize: 'vertical', lineHeight: 1.6, paddingTop: '10px' }} onFocus={e => e.target.style.borderColor='rgba(255,255,255,0.24)'} onBlur={e => e.target.style.borderColor='var(--border)'} />
                 </div>
                 <div>
                   <label style={labelStyle}>Campaign Goal</label>
@@ -118,7 +118,7 @@ Make each piece feel native to its platform. No placeholders.`
                   {loading ? 'Creating Pack…' : 'Generate 5-Platform Pack →'}
                 </button>
               </div>
-              <div style={{ marginTop: '20px', padding: '14px 16px', background: 'var(--accent-light)', borderRadius: '10px', border: '1px solid rgba(27,79,216,0.12)' }}>
+              <div style={{ marginTop: '20px', padding: '14px 16px', background: 'var(--accent-light)', borderRadius: '10px', border: '1px solid rgba(0,196,140,0.12)' }}>
                 <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--accent)', marginBottom: '4px' }}>📅 Pro tip</div>
                 <p style={{ fontSize: '12px', color: 'var(--text-secondary)', lineHeight: 1.6 }}>Schedule posts at different times across the week. Don't post all 5 on the same day — spread them for maximum reach.</p>
               </div>

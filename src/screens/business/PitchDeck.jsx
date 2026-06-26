@@ -100,7 +100,7 @@ INVESTOR FAQs — 5 tough questions investors will ask with suggested answers.`
               <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 <div>
                   <label style={labelStyle}>Startup Idea</label>
-                  <textarea value={idea} onChange={e => setIdea(e.target.value)} placeholder="e.g. SaaS platform that helps restaurants reduce food waste by predicting demand using AI, targeting mid-size restaurant chains in the US" rows={5} style={{ ...inputStyle, resize: 'vertical', lineHeight: 1.6, paddingTop: '10px' }} onFocus={e => e.target.style.borderColor='#6366F1'} onBlur={e => e.target.style.borderColor='var(--border)'} />
+                  <textarea value={idea} onChange={e => setIdea(e.target.value)} placeholder="e.g. SaaS platform that helps restaurants reduce food waste by predicting demand using AI, targeting mid-size restaurant chains in the US" rows={5} style={{ ...inputStyle, resize: 'vertical', lineHeight: 1.6, paddingTop: '10px' }} onFocus={e => e.target.style.borderColor='rgba(255,255,255,0.24)'} onBlur={e => e.target.style.borderColor='var(--border)'} />
                 </div>
                 <div>
                   <label style={labelStyle}>Startup Stage</label>
@@ -113,7 +113,7 @@ INVESTOR FAQs — 5 tough questions investors will ask with suggested answers.`
                 </div>
                 <div>
                   <label style={labelStyle}>Funding Ask (optional)</label>
-                  <input value={ask} onChange={e => setAsk(e.target.value)} placeholder="e.g. $500,000 or $2M" style={inputStyle} onFocus={e => e.target.style.borderColor='#6366F1'} onBlur={e => e.target.style.borderColor='var(--border)'} />
+                  <input value={ask} onChange={e => setAsk(e.target.value)} placeholder="e.g. $500,000 or $2M" style={inputStyle} onFocus={e => e.target.style.borderColor='rgba(255,255,255,0.24)'} onBlur={e => e.target.style.borderColor='var(--border)'} />
                 </div>
                 <button className="btn btn-blue" onClick={generate} disabled={!canGenerate || loading} style={{ padding: '13px', fontSize: '15px', opacity: !canGenerate ? 0.6 : 1 }}>
                   {loading ? 'Building Deck…' : 'Generate Pitch Deck →'}

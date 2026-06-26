@@ -169,7 +169,7 @@ export default function LifeAssistantPage() {
             <div style={s.chatHeader}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <div style={s.iconBox}>
-                  <activeService.Icon size={16} color="var(--accent)" strokeWidth={1.5} />
+                  <activeService.Icon size={16} color="#00C48C" strokeWidth={1.5} />
                 </div>
                 <span style={{ fontWeight: 600, fontSize: '15px', color: 'var(--text-primary)' }}>
                   {activeService.label}
@@ -186,8 +186,8 @@ export default function LifeAssistantPage() {
                     disabled={busy}
                     style={{
                       ...s.langBtn,
-                      background: selectedLang === lang.code ? 'var(--accent)' : 'transparent',
-                      color: selectedLang === lang.code ? '#FFFFFF' : 'var(--text-secondary)',
+                      background: selectedLang === lang.code ? '#00C48C' : 'transparent',
+                      color: selectedLang === lang.code ? '#000' : 'var(--text-secondary)',
                     }}
                   >
                     {lang.label}
@@ -265,13 +265,13 @@ function ServicePill({ svc, active, onClick }) {
         display: 'flex',
         alignItems: 'center',
         gap: '8px',
-        padding: '8px 14px',
-        borderRadius: '99px',
-        border: `1.5px solid ${active ? 'var(--accent)' : 'var(--border)'}`,
-        background: active ? 'var(--accent-light)' : 'var(--bg-card)',
-        color: active ? 'var(--accent)' : 'var(--text-secondary)',
+        padding: '7px 14px',
+        borderRadius: '8px',
+        border: `1px solid ${active ? 'rgba(0,196,140,0.35)' : 'rgba(255,255,255,0.08)'}`,
+        background: active ? 'rgba(0,196,140,0.12)' : 'rgba(255,255,255,0.04)',
+        color: active ? '#00C48C' : 'var(--text-secondary)',
         fontSize: '14px',
-        fontWeight: active ? 600 : 500,
+        fontWeight: active ? 600 : 400,
         fontFamily: "'Inter', sans-serif",
         cursor: 'pointer',
         whiteSpace: 'nowrap',
@@ -351,7 +351,7 @@ const s = {
     width: '32px',
     height: '32px',
     borderRadius: '8px',
-    background: 'var(--accent-light)',
+    background: 'rgba(0,196,140,0.12)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -374,25 +374,25 @@ const s = {
     transition: 'all 0.15s ease',
     lineHeight: 1.4,
     fontFamily: "'Inter', sans-serif",
+    color: 'var(--text-secondary)',
   },
   userBubble: {
-    background: 'var(--accent)',
-    color: '#FFFFFF',
+    background: 'rgba(0,196,140,0.12)',
+    border: '1px solid rgba(0,196,140,0.20)',
+    color: 'var(--text-primary)',
     padding: '10px 14px',
-    borderRadius: '16px',
-    borderBottomRightRadius: '4px',
+    borderRadius: '16px 16px 4px 16px',
     fontSize: '15px',
     lineHeight: 1.5,
     maxWidth: '75%',
     wordBreak: 'break-word',
   },
   assistantBubble: {
-    background: 'var(--bg-card)',
-    border: '1px solid var(--border)',
+    background: 'rgba(255,255,255,0.05)',
+    border: '1px solid rgba(255,255,255,0.08)',
     color: 'var(--text-primary)',
     padding: '10px 14px',
-    borderRadius: '16px',
-    borderBottomLeftRadius: '4px',
+    borderRadius: '16px 16px 16px 4px',
     fontSize: '15px',
     lineHeight: 1.5,
     maxWidth: '75%',

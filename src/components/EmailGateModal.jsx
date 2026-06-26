@@ -54,8 +54,8 @@ export default function EmailGateModal({ isOpen, onClose }) {
 
         <div style={s.iconWrap}>
           {sent
-            ? <Mail size={28} color="#10B981" strokeWidth={1.5} />
-            : <Unlock size={28} color="#6366F1" strokeWidth={1.5} />
+            ? <Mail size={28} color="#00C48C" strokeWidth={1.5} />
+            : <Unlock size={28} color="#00C48C" strokeWidth={1.5} />
           }
         </div>
 
@@ -135,9 +135,9 @@ const s = {
     cursor: 'pointer',
   },
   iconWrap: {
-    width: '64px', height: '64px', borderRadius: '18px',
-    background: 'rgba(99,102,241,0.1)',
-    border: '1px solid rgba(99,102,241,0.2)',
+    width: '60px', height: '60px', borderRadius: '16px',
+    background: 'rgba(0,196,140,0.10)',
+    border: '1px solid rgba(0,196,140,0.20)',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
     margin: '0 auto 20px',
   },
@@ -164,17 +164,17 @@ const s = {
     fontFamily: "'Inter', sans-serif", fontSize: '13px', color: '#FCA5A5',
   },
   submitBtn: {
-    width: '100%', padding: '14px', fontSize: '15px', fontWeight: 700,
-    color: '#fff', background: '#6366F1', border: 'none', borderRadius: '50px',
+    width: '100%', padding: '13px', fontSize: '15px', fontWeight: 600,
+    color: '#000', background: '#00C48C', border: 'none', borderRadius: '8px',
     cursor: 'pointer', fontFamily: "'Inter', sans-serif",
-    boxShadow: '0 0 24px rgba(99,102,241,0.4)',
+    transition: 'background 0.15s ease',
   },
   sentBox: { marginTop: '4px' },
   sentText: {
     fontFamily: "'Inter', sans-serif", fontSize: '13px', color: '#64748B',
   },
   resendBtn: {
-    background: 'none', border: 'none', color: '#818CF8',
+    background: 'none', border: 'none', color: '#00C48C',
     fontFamily: "'Inter', sans-serif", fontSize: '13px',
     fontWeight: 600, cursor: 'pointer', textDecoration: 'underline',
   },

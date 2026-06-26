@@ -95,7 +95,7 @@ Output ONLY the finished content. Nothing else.`
               <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 <div>
                   <label style={labelStyle}>What's the content about?</label>
-                  <textarea value={topic} onChange={e => setTopic(e.target.value)} placeholder="e.g. 3 lessons I learned from my first startup failure, or Why remote work is changing hiring in 2025" rows={3} style={{ ...inputStyle, resize: 'vertical', lineHeight: 1.6, paddingTop: '10px' }} onFocus={e => e.target.style.borderColor='#6366F1'} onBlur={e => e.target.style.borderColor='var(--border)'} />
+                  <textarea value={topic} onChange={e => setTopic(e.target.value)} placeholder="e.g. 3 lessons I learned from my first startup failure, or Why remote work is changing hiring in 2025" rows={3} style={{ ...inputStyle, resize: 'vertical', lineHeight: 1.6, paddingTop: '10px' }} onFocus={e => e.target.style.borderColor='rgba(255,255,255,0.24)'} onBlur={e => e.target.style.borderColor='var(--border)'} />
                 </div>
                 <div>
                   <label style={labelStyle}>Platform</label>

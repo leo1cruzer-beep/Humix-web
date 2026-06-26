@@ -36,8 +36,8 @@ const TRENDING_TOPICS = [
 ];
 
 const CATEGORY_COLORS = {
-  Finance: '#16A34A', Freelancers: '#6366F1', Farmers: '#D97706',
-  Health: '#DC2626', Tech: '#7C3AED', Entrepreneurs: '#6366F1',
+  Finance: '#16A34A', Freelancers: '#0A84FF', Farmers: '#D97706',
+  Health: '#DC2626', Tech: '#7C3AED', Entrepreneurs: '#00C48C',
   Students: '#0891B2', Creatives: '#DB2777',
 };
 
@@ -146,8 +146,8 @@ function CatCard({ id, label, Icon, members, joined, onJoin }) {
     <div
       style={{
         ...s.catCard,
-        borderColor: hov ? 'rgba(99,102,241,0.4)' : 'rgba(255,255,255,0.07)',
-        boxShadow: hov ? '0 8px 32px rgba(99,102,241,0.15)' : 'none',
+        borderColor: hov ? 'rgba(255,255,255,0.18)' : 'rgba(255,255,255,0.07)',
+        boxShadow: hov ? '0 8px 24px rgba(0,0,0,0.3)' : 'none',
         transform: hov ? 'translateY(-4px)' : 'none',
       }}
       onMouseEnter={() => setHov(true)}
@@ -170,7 +170,7 @@ function CatCard({ id, label, Icon, members, joined, onJoin }) {
 }
 
 function PostRow({ post, hov, onHover, onLeave }) {
-  const color = CATEGORY_COLORS[post.category] || '#6366F1';
+  const color = CATEGORY_COLORS[post.category] || '#A0A0A0';
   return (
     <div
       style={{

@@ -92,7 +92,7 @@ All answers must be specific to a ${level}-level ${role}. No generic answers.`
               <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 <div>
                   <label style={labelStyle}>Job Role</label>
-                  <input value={role} onChange={e => setRole(e.target.value)} placeholder="e.g. Data Analyst, UX Designer, Sales Manager" style={inputStyle} onFocus={e => e.target.style.borderColor='#6366F1'} onBlur={e => e.target.style.borderColor='var(--border)'} />
+                  <input value={role} onChange={e => setRole(e.target.value)} placeholder="e.g. Data Analyst, UX Designer, Sales Manager" style={inputStyle} onFocus={e => e.target.style.borderColor='rgba(255,255,255,0.24)'} onBlur={e => e.target.style.borderColor='var(--border)'} />
                 </div>
                 <div>
                   <label style={labelStyle}>Experience Level</label>
@@ -107,7 +107,7 @@ All answers must be specific to a ${level}-level ${role}. No generic answers.`
                   {loading ? 'Preparing Questions…' : 'Get Top 10 Questions →'}
                 </button>
               </div>
-              <div style={{ marginTop: '20px', padding: '14px 16px', background: 'var(--accent-light)', borderRadius: '10px', border: '1px solid rgba(27,79,216,0.12)' }}>
+              <div style={{ marginTop: '20px', padding: '14px 16px', background: 'var(--accent-light)', borderRadius: '10px', border: '1px solid rgba(0,196,140,0.12)' }}>
                 <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--accent)', marginBottom: '4px' }}>💡 Pro tip</div>
                 <p style={{ fontSize: '12px', color: 'var(--text-secondary)', lineHeight: 1.6 }}>Practice each answer out loud. Aim for 90–120 seconds per answer in a real interview.</p>
               </div>

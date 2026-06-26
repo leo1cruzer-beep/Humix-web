@@ -150,7 +150,7 @@ export default function WealthBuilder() {
                           fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)',
                           background: 'var(--input-bg)', fontFamily: 'Inter, sans-serif',
                         }}
-                        onFocus={e => e.target.style.borderColor = '#6366F1'}
+                        onFocus={e => e.target.style.borderColor = 'rgba(255,255,255,0.24)'}
                         onBlur={e => e.target.style.borderColor = 'var(--border)'}
                       />
                       {suffix && <span style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', fontSize: '14px', fontWeight: 600, color: 'var(--text-secondary)' }}>{prefix}</span>}
@@ -168,7 +168,7 @@ export default function WealthBuilder() {
                   <input
                     type="range" min="1" max="40" value={years}
                     onChange={e => setYears(Number(e.target.value))}
-                    style={{ width: '100%', accentColor: '#6366F1' }}
+                    style={{ width: '100%', accentColor: '#00C48C' }}
                   />
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: 'var(--text-muted)', marginTop: '4px' }}>
                     <span>1 yr</span><span>10</span><span>20</span><span>40 yrs</span>
@@ -220,8 +220,8 @@ export default function WealthBuilder() {
                 <AreaChart data={data} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
                   <defs>
                     <linearGradient id="wGrad1" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#6366F1" stopOpacity={0.25} />
-                      <stop offset="100%" stopColor="#6366F1" stopOpacity={0.02} />
+                      <stop offset="0%" stopColor="#0A84FF" stopOpacity={0.25} />
+                      <stop offset="100%" stopColor="#0A84FF" stopOpacity={0.02} />
                     </linearGradient>
                     <linearGradient id="wGrad2" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="0%" stopColor="#16A34A" stopOpacity={0.2} />
@@ -233,7 +233,7 @@ export default function WealthBuilder() {
                   <YAxis tick={{ fontSize: 11, fill: 'var(--text-secondary)' }} tickFormatter={v => v >= 1000 ? `$${(v/1000).toFixed(0)}K` : `$${v}`} axisLine={false} tickLine={false} width={52} />
                   <Tooltip content={<CustomTooltip />} />
                   <Area type="monotone" dataKey="Contributions" stroke="#16A34A" fill="url(#wGrad2)" strokeWidth={2} dot={false} />
-                  <Area type="monotone" dataKey="With Returns" stroke="#6366F1" fill="url(#wGrad1)" strokeWidth={2.5} dot={false} />
+                  <Area type="monotone" dataKey="With Returns" stroke="#0A84FF" fill="url(#wGrad1)" strokeWidth={2.5} dot={false} />
                 </AreaChart>
               </ResponsiveContainer>
             </div>

@@ -318,7 +318,7 @@ export default function RemittanceOptimizer() {
                     key={svc.id}
                     style={{
                       ...card,
-                      border: `1px solid ${isBest ? '#6366F1' : 'var(--border)'}`,
+                      border: `1px solid ${isBest ? '#00C48C' : 'var(--border)'}`,
                       padding: '20px 24px',
                       position: 'relative',
                       opacity: isWorst && !isBest ? 0.75 : 1,
@@ -327,7 +327,7 @@ export default function RemittanceOptimizer() {
                     {isBest && (
                       <span style={{
                         position: 'absolute', top: '-12px', left: '20px',
-                        background: '#6366F1', color: '#fff',
+                        background: '#00C48C', color: '#000',
                         fontSize: '11px', fontWeight: 700, letterSpacing: '0.06em',
                         padding: '3px 12px', borderRadius: '20px',
                       }}>BEST VALUE</span>
@@ -374,7 +374,7 @@ export default function RemittanceOptimizer() {
 
             {/* Savings callout */}
             {bestSaving > 0 && (
-              <div style={{ marginTop: '12px', ...card, background: 'var(--accent-light)', border: '1px solid rgba(27,79,216,0.12)', padding: '16px 20px' }}>
+              <div style={{ marginTop: '12px', ...card, background: 'var(--accent-light)', border: '1px solid rgba(0,196,140,0.12)', padding: '16px 20px' }}>
                 <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
                   Choose <strong style={{ color: 'var(--accent)' }}>{comparisons[0].name}</strong> over{' '}
                   <strong>{comparisons[comparisons.length - 1].name}</strong> and your family receives{' '}
@@ -468,7 +468,7 @@ export default function RemittanceOptimizer() {
         </div>
 
         {/* ── Step 5: Savings Tracker ── */}
-        <div style={{ ...card, marginTop: '24px', background: 'var(--accent-light)', border: '1px solid rgba(27,79,216,0.12)' }}>
+        <div style={{ ...card, marginTop: '24px', background: 'var(--accent-light)', border: '1px solid rgba(0,196,140,0.12)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap' }}>
             <span style={{ fontSize: '24px' }}>📊</span>
             <div style={{ flex: 1 }}>

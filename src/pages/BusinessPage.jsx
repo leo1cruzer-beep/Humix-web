@@ -83,12 +83,12 @@ function ToolCard({ tool, onClick }) {
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
       style={{
-        background: tool.highlight ? 'rgba(99,102,241,0.06)' : 'var(--bg-card)',
-        border: `1.5px solid ${hov ? 'var(--accent)' : tool.highlight ? 'rgba(99,102,241,0.25)' : 'var(--border)'}`,
+        background: 'rgba(255,255,255,0.04)',
+        border: `1px solid ${hov ? 'rgba(255,179,64,0.30)' : 'rgba(255,255,255,0.08)'}`,
         borderRadius: '16px', padding: '22px', cursor: 'pointer',
-        textAlign: 'left', transition: 'all 0.18s ease',
-        boxShadow: hov ? 'var(--shadow-hover)' : 'none',
-        transform: hov ? 'translateY(-2px)' : 'none',
+        textAlign: 'left', transition: 'all 0.15s ease',
+        boxShadow: hov ? '0 8px 24px rgba(0,0,0,0.3)' : 'none',
+        transform: hov ? 'translateY(-3px)' : 'none',
         display: 'flex', flexDirection: 'column', gap: '10px',
       }}
     >
@@ -153,10 +153,10 @@ export default function BusinessPage() {
           ))}
         </div>
 
-        <div style={{ marginTop: '40px', padding: '20px 24px', background: 'var(--accent-light)', borderRadius: '12px', border: '1px solid rgba(99,102,241,0.18)', display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
+        <div style={{ marginTop: '40px', padding: '20px 24px', background: 'rgba(255,107,53,0.08)', borderRadius: '12px', border: '1px solid rgba(255,107,53,0.18)', display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
           <span style={{ fontSize: '18px', flexShrink: 0 }}>💡</span>
           <div>
-            <div style={{ fontWeight: 600, fontSize: '14px', color: 'var(--accent)', marginBottom: '4px' }}>Powered by DeepSeek AI</div>
+            <div style={{ fontWeight: 600, fontSize: '14px', color: '#FF6B35', marginBottom: '4px' }}>Powered by DeepSeek AI</div>
             <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
               All outputs are specific to your situation, skill, and country — not generic templates.
             </p>

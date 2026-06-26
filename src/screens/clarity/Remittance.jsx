@@ -158,7 +158,7 @@ export default function Remittance() {
                       background: 'var(--input-bg)', fontFamily: 'Inter, sans-serif',
                       boxSizing: 'border-box',
                     }}
-                    onFocus={e => e.target.style.borderColor = '#6366F1'}
+                    onFocus={e => e.target.style.borderColor = 'rgba(255,255,255,0.24)'}
                     onBlur={e => e.target.style.borderColor = 'var(--border)'}
                   />
                 </div>
@@ -218,7 +218,7 @@ export default function Remittance() {
           {/* Right: Result + table + AI */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             {/* Hero result */}
-            <div style={{ ...card, background: 'var(--accent-light)', border: '1px solid rgba(27,79,216,0.15)', textAlign: 'center', padding: '36px 24px' }}>
+            <div style={{ ...card, background: 'var(--accent-light)', border: '1px solid rgba(0,196,140,0.15)', textAlign: 'center', padding: '36px 24px' }}>
               <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '8px' }}>
                 Recipient gets
               </div>

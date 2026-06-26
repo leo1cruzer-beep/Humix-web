@@ -233,8 +233,8 @@ function ToolCard({ tool }) {
       onClick={handleTryFree}
       style={{
         ...s.toolCard,
-        borderColor: hov ? 'rgba(99,102,241,0.4)' : 'rgba(255,255,255,0.07)',
-        boxShadow: hov ? '0 8px 32px rgba(99,102,241,0.18)' : 'none',
+        borderColor: hov ? 'rgba(255,255,255,0.18)' : 'rgba(255,255,255,0.07)',
+        boxShadow: hov ? '0 8px 24px rgba(0,0,0,0.3)' : 'none',
         transform: hov ? 'translateY(-4px)' : 'none',
       }}
       onMouseEnter={() => setHov(true)}
@@ -352,7 +352,7 @@ const s = {
     cursor: 'pointer',
   },
   checkbox: {
-    accentColor: '#6366F1',
+    accentColor: '#00C48C',
     width: '16px',
     height: '16px',
     cursor: 'pointer',

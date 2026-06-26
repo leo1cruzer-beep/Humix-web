@@ -59,7 +59,7 @@ export default function SignupModal({ isOpen, onClose, onFaceId }) {
           {/* Face ID / Fingerprint */}
           <div style={s.card}>
             <div style={s.iconWrap}>
-              <Fingerprint size={34} color="#6366F1" strokeWidth={1.3} />
+              <Fingerprint size={34} color="#00C48C" strokeWidth={1.3} />
             </div>
             <p style={s.cardTitle}>Face ID / Fingerprint</p>
             <p style={s.cardSub}>Scan to Enter</p>
@@ -71,7 +71,7 @@ export default function SignupModal({ isOpen, onClose, onFaceId }) {
           {/* Email magic link */}
           <div style={s.card}>
             <div style={s.iconWrap}>
-              <Mail size={34} color="#6366F1" strokeWidth={1.3} />
+              <Mail size={34} color="#00C48C" strokeWidth={1.3} />
             </div>
             <p style={s.cardTitle}>Email</p>
             <p style={s.cardSub}>Magic link sent to email</p>
@@ -163,8 +163,8 @@ const s = {
     pointerEvents: 'none',
   },
   iconWrap: {
-    width: '68px', height: '68px', borderRadius: '18px',
-    background: 'rgba(99,102,241,0.1)',
+    width: '68px', height: '68px', borderRadius: '16px',
+    background: 'rgba(0,196,140,0.10)',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
     marginBottom: '16px',
   },
@@ -177,10 +177,10 @@ const s = {
     color: '#64748B', textAlign: 'center',
   },
   primaryBtn: {
-    marginTop: '18px', padding: '11px 20px', fontSize: '14px', fontWeight: 700,
-    color: '#F8FAFC', background: '#6366F1', border: 'none', borderRadius: '50px',
+    marginTop: '18px', padding: '11px 20px', fontSize: '14px', fontWeight: 600,
+    color: '#000', background: '#00C48C', border: 'none', borderRadius: '8px',
     cursor: 'pointer', width: '100%', fontFamily: "'Inter', sans-serif",
-    transition: 'opacity 0.15s ease',
+    transition: 'background 0.15s ease',
   },
   emailForm: {
     width: '100%', marginTop: '14px', display: 'flex', flexDirection: 'column',

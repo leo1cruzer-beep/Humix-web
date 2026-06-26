@@ -92,10 +92,10 @@ export default function CareerPage() {
           ))}
         </div>
 
-        <div style={{ marginTop: '48px', padding: '20px 24px', background: 'var(--accent-light)', borderRadius: '12px', border: '1px solid rgba(99,102,241,0.2)', display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
+        <div style={{ marginTop: '48px', padding: '20px 24px', background: 'rgba(10,132,255,0.08)', borderRadius: '12px', border: '1px solid rgba(10,132,255,0.18)', display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
           <span style={{ fontSize: '18px', flexShrink: 0 }}>💡</span>
           <div>
-            <div style={{ fontWeight: 600, fontSize: '14px', color: 'var(--accent)', marginBottom: '4px' }}>Powered by DeepSeek AI</div>
+            <div style={{ fontWeight: 600, fontSize: '14px', color: '#0A84FF', marginBottom: '4px' }}>Powered by DeepSeek AI</div>
             <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
               Every tool generates role-specific, personalized output — not generic templates. Your data stays in your browser session only.
             </p>

@@ -116,8 +116,8 @@ export default function ServicesPage() {
                 onClick={() => setActiveTab(tab)}
                 style={{
                   ...s.tab,
-                  color: activeTab === tab ? '#818CF8' : '#64748B',
-                  borderBottom: activeTab === tab ? '2px solid #6366F1' : '2px solid transparent',
+                  color: activeTab === tab ? '#F5F5F5' : '#A0A0A0',
+                  borderBottom: activeTab === tab ? '2px solid #00C48C' : '2px solid transparent',
                   fontWeight: activeTab === tab ? 600 : 400,
                 }}
               >
@@ -160,7 +160,7 @@ function ServiceCard({ svc }) {
       style={{
         ...s.card,
         transform: hov ? 'translateY(-4px)' : 'none',
-        boxShadow: hov ? '0 8px 32px rgba(99,102,241,0.18)' : 'none',
+        boxShadow: hov ? '0 8px 24px rgba(0,0,0,0.3)' : 'none',
       }}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
@@ -199,9 +199,9 @@ function ServiceCard({ svc }) {
         <button
           style={{
             ...s.viewBtn,
-            background: hov ? '#6366F1' : 'rgba(255,255,255,0.04)',
+            background: hov ? '#00C48C' : 'rgba(255,255,255,0.04)',
             color: hov ? '#FFFFFF' : 'var(--text-secondary)',
-            borderColor: hov ? '#6366F1' : 'var(--border)',
+            borderColor: hov ? 'rgba(255,255,255,0.20)' : 'var(--border)',
           }}
         >
           View Service
@@ -217,8 +217,8 @@ function ExpertCard({ expert }) {
     <div
       style={{
         ...s.expertCard,
-        borderColor: hov ? '#6366F1' : 'var(--border)',
-        boxShadow: hov ? '0 8px 32px rgba(99,102,241,0.18)' : 'none',
+        borderColor: hov ? 'rgba(255,255,255,0.20)' : 'var(--border)',
+        boxShadow: hov ? '0 8px 24px rgba(0,0,0,0.3)' : 'none',
       }}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
@@ -340,7 +340,7 @@ const s = {
     width: '32px',
     height: '32px',
     borderRadius: '50%',
-    background: '#6366F1',
+    background: '#00C48C',
     color: '#FFFFFF',
     display: 'flex',
     alignItems: 'center',
@@ -400,7 +400,7 @@ const s = {
     width: '64px',
     height: '64px',
     borderRadius: '50%',
-    background: '#6366F1',
+    background: '#00C48C',
     color: '#FFFFFF',
     display: 'flex',
     alignItems: 'center',

@@ -105,7 +105,7 @@ TOP PICK: [your recommendation and why]`
               <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 <div>
                   <label style={labelStyle}>Describe Your Business</label>
-                  <textarea value={description} onChange={e => setDescription(e.target.value)} placeholder="e.g. An online marketplace where African artisans sell handmade crafts directly to global buyers, with no middlemen" rows={4} style={{ ...inputStyle, resize: 'vertical', lineHeight: 1.6, paddingTop: '10px' }} onFocus={e => e.target.style.borderColor='#6366F1'} onBlur={e => e.target.style.borderColor='var(--border)'} />
+                  <textarea value={description} onChange={e => setDescription(e.target.value)} placeholder="e.g. An online marketplace where African artisans sell handmade crafts directly to global buyers, with no middlemen" rows={4} style={{ ...inputStyle, resize: 'vertical', lineHeight: 1.6, paddingTop: '10px' }} onFocus={e => e.target.style.borderColor='rgba(255,255,255,0.24)'} onBlur={e => e.target.style.borderColor='var(--border)'} />
                 </div>
                 <div>
                   <label style={labelStyle}>Name Style Preference</label>
@@ -121,7 +121,7 @@ TOP PICK: [your recommendation and why]`
                   {loading ? 'Generating Names…' : 'Generate 10 Names →'}
                 </button>
               </div>
-              <div style={{ marginTop: '20px', padding: '14px 16px', background: 'var(--accent-light)', borderRadius: '10px', border: '1px solid rgba(27,79,216,0.12)' }}>
+              <div style={{ marginTop: '20px', padding: '14px 16px', background: 'var(--accent-light)', borderRadius: '10px', border: '1px solid rgba(0,196,140,0.12)' }}>
                 <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--accent)', marginBottom: '4px' }}>💡 After choosing a name</div>
                 <p style={{ fontSize: '12px', color: 'var(--text-secondary)', lineHeight: 1.6 }}>Check trademark availability on your country's IP office website and verify the domain on Namecheap or GoDaddy before committing.</p>
               </div>

@@ -247,7 +247,7 @@ No extra text, just the JSON array.`
         )}
 
         {/* Info banner */}
-        <div style={{ marginTop: '32px', padding: '18px 20px', background: 'var(--accent-light)', borderRadius: '12px', border: '1px solid rgba(99,102,241,0.2)' }}>
+        <div style={{ marginTop: '32px', padding: '18px 20px', background: 'var(--accent-light)', borderRadius: '12px', border: '1px solid rgba(0,196,140,0.15)' }}>
           <div style={{ fontWeight: 600, fontSize: '13px', color: 'var(--accent-text)', marginBottom: '4px' }}>🚀 Real marketplace coming soon</div>
           <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
             These are AI-generated practice tasks. Real tasks from Appen, Scale AI, and Remotasks are being integrated. Complete practice tasks to get familiar with the work.

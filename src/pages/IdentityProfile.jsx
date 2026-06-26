@@ -107,7 +107,7 @@ export default function IdentityProfile() {
           <div style={s.cardGlow} />
 
           <div style={s.iconRing}>
-            <Fingerprint size={40} color="#6366F1" strokeWidth={1.4} />
+            <Fingerprint size={40} color="#00C48C" strokeWidth={1.4} />
           </div>
 
           <div style={s.verifiedBadge}>
@@ -126,7 +126,7 @@ export default function IdentityProfile() {
             <div style={s.metaDivider} />
             <div style={s.metaItem}>
               <span style={s.metaLabel}>Identity score</span>
-              <span style={{ ...s.metaValue, color: '#6366F1', textShadow: '0 0 12px rgba(99,102,241,0.6)' }}>
+              <span style={{ ...s.metaValue, color: '#00C48C', textShadow: 'none' }}>
                 {identityScore}
               </span>
             </div>
@@ -135,9 +135,9 @@ export default function IdentityProfile() {
 
         {/* ── Stats Row ───────────────────────────────────────── */}
         <div style={s.statsRow}>
-          <StatCard icon={<Activity size={20} color="#6366F1" strokeWidth={1.8} />} label="Services Used" value={serviceCount} />
+          <StatCard icon={<Activity size={20} color="#00C48C" strokeWidth={1.8} />} label="Services Used" value={serviceCount} />
           <StatCard icon={<Calendar size={20} color="#10B981" strokeWidth={1.8} />} label="Days Active" value={daysActive} valueColor="#10B981" />
-          <StatCard icon={<Star size={20} color="#F59E0B" strokeWidth={1.8} />} label="Identity Score" value={identityScore} valueColor="#6366F1" glow />
+          <StatCard icon={<Star size={20} color="#F59E0B" strokeWidth={1.8} />} label="Identity Score" value={identityScore} valueColor="#00C48C" glow />
         </div>
 
         {/* ── Recent Activity ─────────────────────────────────── */}
@@ -214,7 +214,7 @@ function StatCard({ icon, label, value, valueColor = '#F8FAFC', glow = false }) 
   return (
     <div style={s.statCard}>
       <div style={s.statIcon}>{icon}</div>
-      <p style={{ ...s.statValue, color: valueColor, textShadow: glow ? '0 0 16px rgba(99,102,241,0.5)' : 'none' }}>
+      <p style={{ ...s.statValue, color: valueColor, textShadow: 'none' }}>
         {value}
       </p>
       <p style={s.statLabel}>{label}</p>
@@ -226,22 +226,22 @@ const s = {
   page: { minHeight: '100vh', background: 'var(--bg-page)', padding: '48px 0 80px' },
   container: { maxWidth: '680px', margin: '0 auto', padding: '0 20px' },
   identityCard: {
-    position: 'relative', background: 'rgba(255,255,255,0.03)',
-    border: '1px solid rgba(99,102,241,0.2)', borderRadius: '24px',
+    position: 'relative', background: 'rgba(255,255,255,0.04)',
+    border: '1px solid rgba(0,196,140,0.20)', borderRadius: '20px',
     padding: '48px 32px 40px', textAlign: 'center', overflow: 'hidden',
     marginBottom: '20px', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
   },
   cardGlow: {
     position: 'absolute', top: '-80px', left: '50%', transform: 'translateX(-50%)',
     width: '300px', height: '200px',
-    background: 'radial-gradient(ellipse, rgba(99,102,241,0.15) 0%, transparent 70%)',
+    background: 'radial-gradient(ellipse, rgba(0,196,140,0.10) 0%, transparent 70%)',
     pointerEvents: 'none',
   },
   iconRing: {
     width: '80px', height: '80px', borderRadius: '50%',
-    background: 'rgba(99,102,241,0.12)', border: '1px solid rgba(99,102,241,0.3)',
+    background: 'rgba(0,196,140,0.10)', border: '1px solid rgba(0,196,140,0.25)',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
-    margin: '0 auto 20px', boxShadow: '0 0 32px rgba(99,102,241,0.2)',
+    margin: '0 auto 20px', boxShadow: 'none',
   },
   verifiedBadge: {
     display: 'inline-flex', alignItems: 'center', gap: '7px',
@@ -268,7 +268,7 @@ const s = {
   emptyText: { fontFamily: "'Inter', sans-serif", fontSize: '14px', color: '#334155', textAlign: 'center' },
   activityList: { background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '16px', overflow: 'hidden' },
   activityItem: { display: 'flex', alignItems: 'center', gap: '12px', padding: '14px 20px', borderBottom: '1px solid rgba(255,255,255,0.04)' },
-  activityDot: { width: '7px', height: '7px', borderRadius: '50%', background: '#6366F1', flexShrink: 0, boxShadow: '0 0 6px rgba(99,102,241,0.5)' },
+  activityDot: { width: '7px', height: '7px', borderRadius: '50%', background: '#00C48C', flexShrink: 0 },
   activityService: { fontFamily: "'Inter', sans-serif", fontSize: '14px', fontWeight: 600, color: '#F8FAFC', marginBottom: '2px' },
   activityPreview: { fontFamily: "'Inter', sans-serif", fontSize: '12px', color: '#475569', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '300px' },
   activityDate: { fontFamily: "'Inter', sans-serif", fontSize: '11px', color: '#334155', flexShrink: 0, marginLeft: 'auto' },
@@ -282,5 +282,5 @@ const s = {
   confirmBtns: { display: 'flex', gap: '10px', flexWrap: 'wrap' },
   cancelBtn: { padding: '9px 20px', borderRadius: '10px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', color: '#94A3B8', fontSize: '13px', fontWeight: 600, fontFamily: "'Inter', sans-serif", cursor: 'pointer' },
   confirmResetBtn: { padding: '9px 20px', borderRadius: '10px', background: '#EF4444', border: 'none', color: '#F8FAFC', fontSize: '13px', fontWeight: 700, fontFamily: "'Inter', sans-serif", cursor: 'pointer' },
-  spinner: { width: '32px', height: '32px', borderRadius: '50%', border: '3px solid rgba(99,102,241,0.15)', borderTop: '3px solid #6366F1', animation: 'spin 0.8s linear infinite' },
+  spinner: { width: '32px', height: '32px', borderRadius: '50%', border: '3px solid rgba(0,196,140,0.15)', borderTop: '3px solid #00C48C', animation: 'spin 0.8s linear infinite' },
 };

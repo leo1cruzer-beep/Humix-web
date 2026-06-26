@@ -92,10 +92,10 @@ export default function CreativePage() {
           ))}
         </div>
 
-        <div style={{ marginTop: '48px', padding: '20px 24px', background: 'var(--accent-light)', borderRadius: '12px', border: '1px solid rgba(27,79,216,0.12)', display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
+        <div style={{ marginTop: '48px', padding: '20px 24px', background: 'rgba(191,90,242,0.08)', borderRadius: '12px', border: '1px solid rgba(191,90,242,0.18)', display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
           <span style={{ fontSize: '18px', flexShrink: 0 }}>💡</span>
           <div>
-            <div style={{ fontWeight: 600, fontSize: '14px', color: 'var(--accent)', marginBottom: '4px' }}>Powered by DeepSeek AI</div>
+            <div style={{ fontWeight: 600, fontSize: '14px', color: '#BF5AF2', marginBottom: '4px' }}>Powered by DeepSeek AI</div>
             <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
               All content is generated fresh for your specific topic, product, or brand — not recycled templates. Copy, paste, post.
             </p>

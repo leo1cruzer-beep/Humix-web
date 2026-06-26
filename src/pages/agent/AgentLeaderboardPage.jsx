@@ -101,7 +101,7 @@ export default function AgentLeaderboardPage() {
               <div
                 key={agent.id}
                 style={{
-                  background: agent.id === agentId ? 'rgba(99,102,241,0.08)' : 'var(--bg-card)',
+                  background: agent.id === agentId ? 'rgba(0,196,140,0.08)' : 'var(--bg-card)',
                   border: `1px solid ${agent.id === agentId ? 'var(--accent)' : 'var(--border)'}`,
                   borderRadius: '14px', padding: '16px 20px',
                   display: 'flex', alignItems: 'center', gap: '14px',

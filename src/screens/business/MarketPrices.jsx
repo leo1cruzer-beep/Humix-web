@@ -148,7 +148,7 @@ Use realistic prices for the region. Local currency should be ${reg.currency}. T
 
         {/* AI Tip */}
         {aiTip && (
-          <div style={{ padding: '14px 18px', background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.2)', borderRadius: '12px', marginBottom: '20px', display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
+          <div style={{ padding: '14px 18px', background: 'rgba(0,196,140,0.08)', border: '1px solid rgba(0,196,140,0.15)', borderRadius: '12px', marginBottom: '20px', display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
             <span style={{ fontSize: '16px', flexShrink: 0 }}>🤖</span>
             <div>
               <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--accent-text)' }}>AI INSIGHT · </span>

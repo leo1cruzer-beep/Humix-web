@@ -108,11 +108,11 @@ This is AI-generated analysis based on training data. Validate with primary rese
               <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 <div>
                   <label style={labelStyle}>Industry / Niche</label>
-                  <input value={industry} onChange={e => setIndustry(e.target.value)} placeholder="e.g. Online grocery delivery, EdTech, Electric vehicles, Telemedicine" style={inputStyle} onFocus={e => e.target.style.borderColor='#6366F1'} onBlur={e => e.target.style.borderColor='var(--border)'} />
+                  <input value={industry} onChange={e => setIndustry(e.target.value)} placeholder="e.g. Online grocery delivery, EdTech, Electric vehicles, Telemedicine" style={inputStyle} onFocus={e => e.target.style.borderColor='rgba(255,255,255,0.24)'} onBlur={e => e.target.style.borderColor='var(--border)'} />
                 </div>
                 <div>
                   <label style={labelStyle}>Target Country / Region</label>
-                  <input value={country} onChange={e => setCountry(e.target.value)} placeholder="e.g. Indonesia, Sub-Saharan Africa, Latin America" style={inputStyle} onFocus={e => e.target.style.borderColor='#6366F1'} onBlur={e => e.target.style.borderColor='var(--border)'} />
+                  <input value={country} onChange={e => setCountry(e.target.value)} placeholder="e.g. Indonesia, Sub-Saharan Africa, Latin America" style={inputStyle} onFocus={e => e.target.style.borderColor='rgba(255,255,255,0.24)'} onBlur={e => e.target.style.borderColor='var(--border)'} />
                 </div>
                 <button className="btn btn-blue" onClick={generate} disabled={!canGenerate || loading} style={{ padding: '13px', fontSize: '15px', opacity: !canGenerate ? 0.6 : 1 }}>
                   {loading ? 'Researching…' : 'Start Market Research →'}

@@ -160,8 +160,8 @@ export default function PasskeyAuth({ onComplete, onClose }) {
   const doClose = () => onClose?.();
 
   const badgeColor =
-    phase === 'confirmed' ? '#10B981' :
-    phase === 'failed'    ? '#EF4444' : '#6366F1';
+    phase === 'confirmed' ? '#00C48C' :
+    phase === 'failed'    ? '#FF453A' : '#00C48C';
 
   const ringStyle = (() => {
     if (phase === 'confirmed') return {
@@ -173,11 +173,11 @@ export default function PasskeyAuth({ onComplete, onClose }) {
       animation: 'ringFadeGreen 0.4s ease forwards',
     };
     if (phase === 'registering' || phase === 'verifying') return {
-      background: 'conic-gradient(from 0deg, #6366F1 0%, rgba(99,102,241,0.4) 30%, transparent 55%, transparent 85%, rgba(99,102,241,0.3) 100%)',
+      background: 'conic-gradient(from 0deg, #00C48C 0%, rgba(0,196,140,0.4) 30%, transparent 55%, transparent 85%, rgba(0,196,140,0.3) 100%)',
       animation: 'scanRotate 1.8s linear infinite',
     };
     return {
-      background: 'conic-gradient(from 0deg, rgba(99,102,241,0.4) 0%, transparent 60%)',
+      background: 'conic-gradient(from 0deg, rgba(0,196,140,0.4) 0%, transparent 60%)',
       animation: 'scanRotate 3s linear infinite',
     };
   })();
@@ -237,8 +237,8 @@ export default function PasskeyAuth({ onComplete, onClose }) {
             {(phase === 'ready' || phase === 'registering' || phase === 'verifying' || phase === 'loading') && (
               <div style={s.centerOverlay}>
                 {mode === 'register' || phase === 'registering'
-                  ? <Fingerprint size={56} color="rgba(99,102,241,0.7)" strokeWidth={1.2} />
-                  : <Lock size={48} color="rgba(99,102,241,0.7)" strokeWidth={1.2} />
+                  ? <Fingerprint size={56} color="rgba(0,196,140,0.7)" strokeWidth={1.2} />
+                  : <Lock size={48} color="rgba(0,196,140,0.7)" strokeWidth={1.2} />
                 }
               </div>
             )}
@@ -305,7 +305,7 @@ export default function PasskeyAuth({ onComplete, onClose }) {
                 Try Again
               </button>
               <button className="btn btn-ghost"
-                style={{ padding: '10px 20px', fontSize: '13px', color: '#6366F1', borderColor: 'rgba(99,102,241,0.3)' }}
+                style={{ padding: '10px 20px', fontSize: '13px', color: '#00C48C', borderColor: 'rgba(0,196,140,0.3)' }}
                 onClick={() => { setMode('register'); setPhase('ready'); }}>
                 Register
               </button>
@@ -326,7 +326,7 @@ export default function PasskeyAuth({ onComplete, onClose }) {
           <div style={s.dotsRow}>
             {[0, 1, 2].map(i => (
               <span key={i} className="typing-dot"
-                style={{ animationDelay: `${i * 0.2}s`, background: '#6366F1' }} />
+                style={{ animationDelay: `${i * 0.2}s`, background: '#00C48C' }} />
             ))}
           </div>
         )}
@@ -342,10 +342,10 @@ function Corner({ top, right, bottom, left, borders }) {
   return (
     <div style={{
       position: 'absolute', top, right, bottom, left, width: 22, height: 22,
-      borderTop:    t ? '2.5px solid #6366F1' : 'none',
-      borderBottom: b ? '2.5px solid #6366F1' : 'none',
-      borderLeft:   l ? '2.5px solid #6366F1' : 'none',
-      borderRight:  r ? '2.5px solid #6366F1' : 'none',
+      borderTop:    t ? '2.5px solid #00C48C' : 'none',
+      borderBottom: b ? '2.5px solid #00C48C' : 'none',
+      borderLeft:   l ? '2.5px solid #00C48C' : 'none',
+      borderRight:  r ? '2.5px solid #00C48C' : 'none',
       borderRadius: radius,
     }} />
   );
@@ -386,8 +386,8 @@ const s = {
   scanLine: {
     position: 'absolute', left: '16px', right: '16px', top: '50%',
     height: '2px', zIndex: 3,
-    background: 'linear-gradient(90deg, transparent, rgba(99,102,241,0.8), transparent)',
-    borderRadius: '1px', boxShadow: '0 0 8px rgba(99,102,241,0.6)',
+    background: 'linear-gradient(90deg, transparent, rgba(0,196,140,0.8), transparent)',
+    borderRadius: '1px', boxShadow: '0 0 8px rgba(0,196,140,0.4)',
     animation: 'scanLine 2s ease-in-out infinite',
   },
   title: {
@@ -397,12 +397,12 @@ const s = {
   sub: { fontFamily: "'Inter', sans-serif", fontSize: '14px', color: '#64748B', fontWeight: 500 },
   actionBtn: {
     marginTop: '24px', padding: '12px 28px', fontSize: '16px', fontWeight: 700,
-    color: '#F8FAFC', background: '#6366F1', border: 'none', borderRadius: '10px',
+    color: '#000', background: '#00C48C', border: 'none', borderRadius: '8px',
     cursor: 'pointer', width: '100%',
   },
-  hint: { fontFamily: "'Inter', sans-serif", fontSize: '12px', color: '#475569', marginTop: '12px' },
+  hint: { fontFamily: "'Inter', sans-serif", fontSize: '12px', color: '#606060', marginTop: '12px' },
   hintLink: {
-    fontFamily: "'Inter', sans-serif", fontSize: '12px', color: '#6366F1',
+    fontFamily: "'Inter', sans-serif", fontSize: '12px', color: '#00C48C',
     marginTop: '12px', cursor: 'pointer', textDecoration: 'underline',
   },
   dotsRow: { display: 'flex', gap: '6px', marginTop: '24px' },

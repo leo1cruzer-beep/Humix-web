@@ -98,11 +98,11 @@ Make language strong and achievement-focused. Every bullet should start with an 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 <div>
                   <label style={labelStyle}>Job Title / Role</label>
-                  <input value={title} onChange={e => setTitle(e.target.value)} placeholder="e.g. Senior Software Engineer" style={inputStyle} onFocus={e => e.target.style.borderColor='#6366F1'} onBlur={e => e.target.style.borderColor='var(--border)'} />
+                  <input value={title} onChange={e => setTitle(e.target.value)} placeholder="e.g. Senior Software Engineer" style={inputStyle} onFocus={e => e.target.style.borderColor='rgba(255,255,255,0.24)'} onBlur={e => e.target.style.borderColor='var(--border)'} />
                 </div>
                 <div>
                   <label style={labelStyle}>Skills (comma-separated)</label>
-                  <textarea value={skills} onChange={e => setSkills(e.target.value)} placeholder="e.g. React, Node.js, Python, team leadership, agile" rows={3} style={{ ...inputStyle, resize: 'vertical', lineHeight: 1.6, paddingTop: '10px' }} onFocus={e => e.target.style.borderColor='#6366F1'} onBlur={e => e.target.style.borderColor='var(--border)'} />
+                  <textarea value={skills} onChange={e => setSkills(e.target.value)} placeholder="e.g. React, Node.js, Python, team leadership, agile" rows={3} style={{ ...inputStyle, resize: 'vertical', lineHeight: 1.6, paddingTop: '10px' }} onFocus={e => e.target.style.borderColor='rgba(255,255,255,0.24)'} onBlur={e => e.target.style.borderColor='var(--border)'} />
                 </div>
                 <div>
                   <label style={labelStyle}>Years of Experience</label>
@@ -112,7 +112,7 @@ Make language strong and achievement-focused. Every bullet should start with an 
                 </div>
                 <div>
                   <label style={labelStyle}>Target Country / Market</label>
-                  <input value={country} onChange={e => setCountry(e.target.value)} placeholder="e.g. United States, Pakistan, UAE" style={inputStyle} onFocus={e => e.target.style.borderColor='#6366F1'} onBlur={e => e.target.style.borderColor='var(--border)'} />
+                  <input value={country} onChange={e => setCountry(e.target.value)} placeholder="e.g. United States, Pakistan, UAE" style={inputStyle} onFocus={e => e.target.style.borderColor='rgba(255,255,255,0.24)'} onBlur={e => e.target.style.borderColor='var(--border)'} />
                 </div>
                 <button className="btn btn-blue" onClick={generate} disabled={!canGenerate || loading} style={{ padding: '13px', fontSize: '15px', opacity: !canGenerate ? 0.6 : 1 }}>
                   {loading ? 'Building Resume…' : 'Build My Resume →'}

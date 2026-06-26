@@ -282,7 +282,7 @@ const s = {
   switchLink: {
     background: 'none',
     border: 'none',
-    color: '#818CF8',
+    color: '#00C48C',
     fontWeight: 600,
     fontSize: '13px',
     cursor: 'pointer',
