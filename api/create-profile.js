@@ -5,7 +5,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { userId, phone } = req.body ?? {};
+  const { userId } = req.body ?? {};
   if (!userId || typeof userId !== 'string') {
     return res.status(400).json({ error: 'userId required' });
   }
@@ -21,11 +21,8 @@ export default async function handler(req, res) {
     auth: { autoRefreshToken: false, persistSession: false },
   });
 
-  const record = { id: userId, created_at: new Date().toISOString() };
-  if (phone && typeof phone === 'string') record.phone = phone;
-
   const { error } = await admin.from('profiles').upsert(
-    record,
+    { id: userId, created_at: new Date().toISOString() },
     { onConflict: 'id', ignoreDuplicates: true }
   );
 
