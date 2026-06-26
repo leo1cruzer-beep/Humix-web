@@ -5,6 +5,7 @@ import Navbar from './components/Navbar.jsx';
 import Footer from './components/Footer.jsx';
 import PasskeyAuth from './components/PasskeyAuth.jsx';
 import SignupModal from './components/SignupModal.jsx';
+import SupportChat from './components/SupportChat.jsx';
 import { useIdentity } from './hooks/useIdentity.jsx';
 import HomePage from './pages/HomePage.jsx';
 import ExplorePage from './pages/ExplorePage.jsx';
@@ -160,6 +161,7 @@ export default function App() {
         </div>
         <Footer />
       </div>
+      <SupportChat />
     </>
   );
 }
