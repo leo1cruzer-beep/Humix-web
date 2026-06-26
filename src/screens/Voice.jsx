@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { VOICE_RESPONSES } from '../data'
+import { LoanShield } from './LoanShield'
 
 const COLOR = '#EA580C'
 const BG = '#FFF7ED'
@@ -257,6 +258,7 @@ function VoiceLegal({ onBack }) {
     { icon: '🏡', label: 'Land Rights', key: 2 },
     { icon: '🛡️', label: 'Safety & Protection', key: 3 },
     { icon: '🛒', label: 'Consumer Rights', key: 4 },
+    { icon: '🔍', label: 'Loan Shield', key: 5 },
   ]
   return (
     <div>
@@ -275,8 +277,8 @@ function VoiceLegal({ onBack }) {
               <span style={{ color: 'var(--text2)', transform: selected === s.key ? 'rotate(90deg)' : '', transition: '0.2s' }}>›</span>
             </button>
             {selected === s.key && (
-              <div style={{ background: '#EEF2FF', borderRadius: 'var(--radius-sm)', padding: 16, marginBottom: 12, animation: 'fadeIn 0.25s ease', fontSize: 14, lineHeight: 1.7, borderLeft: '3px solid #6366f1' }}>
-                {VOICE_RESPONSES.legal[s.key]}
+              <div style={{ background: s.key === 5 ? 'rgba(0,196,140,0.05)' : '#EEF2FF', borderRadius: 'var(--radius-sm)', padding: s.key === 5 ? '0 0 8px 0' : 16, marginBottom: 12, animation: 'fadeIn 0.25s ease', fontSize: 14, lineHeight: 1.7, borderLeft: s.key === 5 ? '3px solid #00C48C' : '3px solid #6366f1' }}>
+                {s.key === 5 ? <LoanShield /> : VOICE_RESPONSES.legal[s.key]}
               </div>
             )}
           </div>
