@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { X, Fingerprint, Lock } from 'lucide-react';
+import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
+import { auth } from '../lib/firebase';
 import { useIdentity } from '../hooks/useIdentity';
 import { supabase } from '../lib/supabase';
 
@@ -131,15 +133,11 @@ export default function PasskeyAuth({ onComplete, onClose }) {
 
     setPhase('sending-otp');
     try {
-      const r = await fetch('/api/send-otp', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone }),
-      });
-      if (!r.ok) {
-        const body = await r.json().catch(() => ({}));
-        throw new Error(body.error ?? 'Failed to send code');
+      if (!window.recaptchaVerifier) {
+        window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', { size: 'invisible' });
       }
+      const confirmation = await signInWithPhoneNumber(auth, phone, window.recaptchaVerifier);
+      window.confirmationResult = confirmation;
       setPhase('otp-input');
     } catch (e) {
       setOtpError(e.message);
@@ -156,15 +154,7 @@ export default function PasskeyAuth({ onComplete, onClose }) {
 
     setPhase('verifying-otp');
     try {
-      const r = await fetch('/api/verify-otp', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone, code }),
-      });
-      if (!r.ok) {
-        const body = await r.json().catch(() => ({}));
-        throw new Error(body.error ?? 'Invalid or expired code');
-      }
+      await window.confirmationResult.confirm(code);
 
       // OTP verified — create profile with phone
       const { data: { user: authUser } } = await supabase.auth.getUser();
@@ -500,6 +490,7 @@ export default function PasskeyAuth({ onComplete, onClose }) {
           </div>
         )}
       </div>
+      <div id="recaptcha-container"></div>
     </div>
   );
 }
