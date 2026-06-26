@@ -53,7 +53,10 @@ export default function PasskeyAuth({ onComplete, onClose }) {
   const handleRegister = async () => {
     setPhase('registering');
     try {
+      // Self-generated UUID — never exists in auth.users. profiles.id must NOT
+      // have a FK constraint to auth.users.id or the profile insert will fail.
       const userId = crypto.randomUUID();
+      console.log('[PasskeyAuth] self-generated userId (not from auth.users):', userId);
       const userIdBytes = new TextEncoder().encode(userId);
 
       const credential = await navigator.credentials.create({
@@ -90,9 +93,11 @@ export default function PasskeyAuth({ onComplete, onClose }) {
 
       if (error) throw new Error(error.message);
 
-      // Debug: verify Supabase auth session state at registration time
+      // Debug: confirms auth.uid() is null here — no Supabase auth session exists.
+      // This is why profiles.id FK → auth.users.id must be removed.
       const { data: { user: authUser } } = await supabase.auth.getUser();
       console.log('[PasskeyAuth] supabase.auth.getUser() at registration:', authUser);
+      console.log('[PasskeyAuth] sending userId to create-profile:', userId);
 
       const profileRes = await fetch('/api/create-profile', {
         method: 'POST',
