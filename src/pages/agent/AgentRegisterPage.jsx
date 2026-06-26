@@ -53,6 +53,22 @@ export default function AgentRegisterPage() {
         .select()
         .single()
       if (err) throw err
+
+      // Create profile record and log registration in conversations table
+      await fetch('/api/create-profile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: data.id, phone: form.phone.trim() }),
+      }).catch(() => {})
+
+      await supabase.from('conversations').insert({
+        user_id: data.id,
+        service: 'agent_registration',
+        messages: [{ role: 'system', content: `Agent registered: ${form.name.trim()} from ${form.country}` }],
+        preview: `Agent registered: ${form.name.trim()} from ${form.country}`,
+        created_at: new Date().toISOString(),
+      })
+
       localStorage.setItem('humix_agent_id', data.id)
       navigate('/agent/dashboard')
     } catch (e) {

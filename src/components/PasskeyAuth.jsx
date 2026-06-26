@@ -110,6 +110,28 @@ export default function PasskeyAuth({ onComplete, onClose }) {
       }
 
       localStorage.setItem(USER_ID_KEY, userId);
+
+      // Handle referral earnings
+      const pendingReferral = localStorage.getItem('humix_pending_referral');
+      console.log('[PasskeyAuth] pending referral code from localStorage:', pendingReferral);
+      if (pendingReferral) {
+        const { data: agentData, error: agentLookupErr } = await supabase
+          .from('agents')
+          .select('id, total_earnings, referral_code')
+          .eq('referral_code', pendingReferral)
+          .single();
+        console.log('[PasskeyAuth] agent lookup result:', agentData, agentLookupErr);
+        if (agentData) {
+          const newEarnings = (agentData.total_earnings || 0) + 0.25;
+          const { error: updateErr } = await supabase
+            .from('agents')
+            .update({ total_earnings: newEarnings })
+            .eq('id', agentData.id);
+          console.log('[PasskeyAuth] earnings update result — newEarnings:', newEarnings, 'error:', updateErr);
+          if (!updateErr) localStorage.removeItem('humix_pending_referral');
+        }
+      }
+
       setPhase('confirmed');
       setTimeout(() => { verify(); onComplete(); }, 1300);
     } catch (e) {
