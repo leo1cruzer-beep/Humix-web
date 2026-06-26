@@ -64,7 +64,7 @@ export default function EmailGateModal({ isOpen, onClose }) {
         </h2>
         <p style={s.subtitle}>
           {sent
-            ? 'Check your inbox and click the link to unlock unlimited access — free forever.'
+            ? 'Check your inbox and click the link to unlock unlimited access — free to get started.'
             : "You've used your free quota. Add your email to continue — it takes 10 seconds."}
         </p>
 

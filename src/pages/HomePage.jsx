@@ -121,7 +121,7 @@ function HeroSection({ onScanToEnter }) {
           <div style={s.trustDivider} />
           <TrustItem value="150+" label="countries" />
           <div style={s.trustDivider} />
-          <TrustItem value="Free" label="forever" />
+          <TrustItem value="Free" label="to get started" />
         </div>
       </div>
     </section>
@@ -299,56 +299,80 @@ function ProblemSection() {
 function HealthIllustration() {
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '20px 0' }}>
+      {/* Phone frame */}
       <div style={{
-        width: '180px', height: '300px', borderRadius: '24px',
-        border: '2px solid rgba(0,196,140,0.35)', background: '#141415',
-        padding: '0 12px 12px', display: 'flex', flexDirection: 'column', gap: '8px',
-        boxShadow: '0 0 60px rgba(0,196,140,0.08), 0 20px 60px rgba(0,0,0,0.5)',
+        width: '190px', height: '340px', borderRadius: '28px',
+        border: '2px solid rgba(255,255,255,0.1)', background: '#0E0E10',
+        display: 'flex', flexDirection: 'column', overflow: 'hidden',
+        boxShadow: '0 0 60px rgba(0,196,140,0.07), 0 24px 64px rgba(0,0,0,0.65)',
         position: 'relative',
       }}>
-        {/* Notch */}
-        <div style={{ height: '4px', width: '40px', borderRadius: '2px', background: 'rgba(255,255,255,0.12)', margin: '10px auto 6px', flexShrink: 0 }} />
-        {/* Header bar */}
+        {/* Status bar */}
+        <div style={{ height: '28px', background: '#0E0E10', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+          <div style={{ width: '44px', height: '5px', borderRadius: '3px', background: 'rgba(255,255,255,0.12)' }} />
+        </div>
+        {/* Chat header */}
         <div style={{
-          display: 'flex', alignItems: 'center', gap: '7px',
-          paddingBottom: '10px', borderBottom: '1px solid rgba(255,255,255,0.07)', flexShrink: 0,
+          display: 'flex', alignItems: 'center', gap: '8px',
+          padding: '8px 12px 10px',
+          borderBottom: '1px solid rgba(255,255,255,0.07)', flexShrink: 0,
+          background: '#111113',
         }}>
-          <div style={{ width: '24px', height: '24px', borderRadius: '6px', background: 'rgba(0,196,140,0.18)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-            <Heart size={11} color="#00C48C" fill="rgba(0,196,140,0.4)" />
+          <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: 'rgba(0,196,140,0.16)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <Heart size={13} color="#00C48C" fill="rgba(0,196,140,0.35)" />
           </div>
           <div>
-            <div style={{ height: '5px', width: '55px', borderRadius: '3px', background: 'rgba(255,255,255,0.25)', marginBottom: '4px' }} />
-            <div style={{ height: '3px', width: '35px', borderRadius: '2px', background: 'rgba(255,255,255,0.1)' }} />
+            <div style={{ fontSize: '11px', fontWeight: 700, color: '#F0F0F0', fontFamily: "'Inter', sans-serif", lineHeight: 1.2 }}>Life Assistant</div>
+            <div style={{ fontSize: '9px', color: '#00C48C', fontFamily: "'Inter', sans-serif", fontWeight: 500 }}>● online</div>
           </div>
         </div>
-        {/* User bubble */}
-        <div style={{ alignSelf: 'flex-end', background: 'rgba(0,196,140,0.14)', border: '1px solid rgba(0,196,140,0.22)', borderRadius: '10px 10px 2px 10px', padding: '6px 10px', maxWidth: '80%' }}>
-          <div style={{ height: '3px', width: '88px', borderRadius: '2px', background: 'rgba(0,196,140,0.5)', marginBottom: '4px' }} />
-          <div style={{ height: '3px', width: '60px', borderRadius: '2px', background: 'rgba(0,196,140,0.3)' }} />
-        </div>
-        {/* AI bubble */}
-        <div style={{ alignSelf: 'flex-start', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '10px 10px 10px 2px', padding: '8px 10px', maxWidth: '90%' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '5px', marginBottom: '6px' }}>
-            {/* Medical cross */}
-            <div style={{ position: 'relative', width: '12px', height: '12px', flexShrink: 0 }}>
-              <div style={{ position: 'absolute', top: '5px', left: '0', width: '12px', height: '2px', background: '#00C48C', borderRadius: '1px' }} />
-              <div style={{ position: 'absolute', top: '0', left: '5px', width: '2px', height: '12px', background: '#00C48C', borderRadius: '1px' }} />
+        {/* Messages */}
+        <div style={{ flex: 1, overflowY: 'hidden', padding: '10px 10px 6px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          {/* User message — Urdu (RTL) */}
+          <div style={{ alignSelf: 'flex-end', maxWidth: '82%' }}>
+            <div style={{
+              background: 'rgba(0,196,140,0.14)', border: '1px solid rgba(0,196,140,0.22)',
+              borderRadius: '12px 12px 3px 12px', padding: '7px 10px',
+              fontSize: '11px', color: '#E8F8F4', lineHeight: 1.55,
+              fontFamily: "'Noto Nastaliq Urdu', 'Jameel Noori Nastaleeq', serif",
+              direction: 'rtl', textAlign: 'right',
+            }}>
+              میرے سر میں تیز درد ہے
             </div>
-            <div style={{ height: '5px', width: '45px', borderRadius: '2px', background: 'rgba(255,255,255,0.3)' }} />
           </div>
-          <div style={{ height: '3px', width: '100px', borderRadius: '2px', background: 'rgba(255,255,255,0.15)', marginBottom: '4px' }} />
-          <div style={{ height: '3px', width: '80px', borderRadius: '2px', background: 'rgba(255,255,255,0.1)', marginBottom: '4px' }} />
-          <div style={{ height: '3px', width: '90px', borderRadius: '2px', background: 'rgba(255,255,255,0.12)' }} />
-        </div>
-        {/* User bubble 2 */}
-        <div style={{ alignSelf: 'flex-end', background: 'rgba(0,196,140,0.1)', border: '1px solid rgba(0,196,140,0.18)', borderRadius: '10px 10px 2px 10px', padding: '5px 8px' }}>
-          <div style={{ height: '3px', width: '64px', borderRadius: '2px', background: 'rgba(0,196,140,0.4)' }} />
+          {/* AI response */}
+          <div style={{ alignSelf: 'flex-start', maxWidth: '88%' }}>
+            <div style={{
+              background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.09)',
+              borderRadius: '12px 12px 12px 3px', padding: '7px 10px',
+              fontSize: '10px', color: 'rgba(255,255,255,0.75)', lineHeight: 1.6,
+              fontFamily: "'Inter', sans-serif",
+            }}>
+              پانی کی کمی سر درد کی عام وجہ ہے۔ ابھی ۲ گلاس پانی پیئں اور ۳۰ منٹ آرام کریں۔
+            </div>
+          </div>
+          {/* User follow-up */}
+          <div style={{ alignSelf: 'flex-end', maxWidth: '80%' }}>
+            <div style={{
+              background: 'rgba(0,196,140,0.10)', border: '1px solid rgba(0,196,140,0.16)',
+              borderRadius: '12px 12px 3px 12px', padding: '6px 9px',
+              fontSize: '10px', color: '#D4F5EC', lineHeight: 1.5,
+              fontFamily: "'Noto Nastaliq Urdu', 'Jameel Noori Nastaleeq', serif",
+              direction: 'rtl', textAlign: 'right',
+            }}>
+              شکریہ
+            </div>
+          </div>
         </div>
         {/* Input bar */}
-        <div style={{ marginTop: 'auto', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '8px', padding: '7px 8px', display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
-          <div style={{ height: '3px', flex: 1, borderRadius: '2px', background: 'rgba(255,255,255,0.08)' }} />
-          <div style={{ width: '20px', height: '20px', borderRadius: '5px', flexShrink: 0, background: '#00C48C', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <ArrowRight size={10} color="#000" />
+        <div style={{
+          margin: '0 10px 10px', background: 'rgba(255,255,255,0.05)',
+          border: '1px solid rgba(255,255,255,0.09)', borderRadius: '20px',
+          padding: '7px 8px 7px 12px', display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0,
+        }}>
+          <span style={{ fontSize: '9px', color: 'rgba(255,255,255,0.25)', flex: 1, fontFamily: "'Inter', sans-serif" }}>پیغام لکھیں…</span>
+          <div style={{ width: '20px', height: '20px', borderRadius: '50%', flexShrink: 0, background: '#00C48C', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <ArrowRight size={9} color="#000" />
           </div>
         </div>
       </div>
@@ -924,7 +948,7 @@ const JOIN_STEPS = [
   {
     Icon: <CheckCircle2 size={28} color="#00C48C" strokeWidth={1.5} />,
     title: 'Access all services instantly — free',
-    desc: 'Health, legal, finance, career, and more. All free, forever.',
+    desc: 'Health, legal, finance, career, and more. Free to get started.',
   },
 ];
 

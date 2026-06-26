@@ -1,13 +1,19 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, UserCircle } from 'lucide-react';
+import { Menu, X, UserCircle, ChevronDown } from 'lucide-react';
 
 const NAV_LINKS = [
-  { label: 'Home',           to: '/' },
-  { label: 'Services',       to: '/services' },
-  { label: 'Life Assistant', to: '/life-assistant' },
-  { label: 'Community',      to: '/community' },
+  { label: 'Home',      to: '/' },
+  { label: 'Services',  to: '/services' },
+  { label: 'Community', to: '/community' },
+];
+
+const TOOLS_LINKS = [
+  { label: 'Finance',        to: '/finance' },
+  { label: 'Business',       to: '/business' },
+  { label: 'Creative',       to: '/creative' },
   { label: 'Career',         to: '/career' },
+  { label: 'Life Assistant', to: '/life-assistant' },
 ];
 
 export default function Navbar({ onScanToEnter, isVerified }) {
@@ -33,6 +39,7 @@ export default function Navbar({ onScanToEnter, isVerified }) {
             {NAV_LINKS.map(({ label, to }) => (
               <NavLink key={to} to={to} label={label} active={pathname === to} />
             ))}
+            <ToolsDropdown pathname={pathname} />
           </div>
 
           <div className="nav-right-buttons" style={s.rightButtons}>
@@ -96,8 +103,30 @@ export default function Navbar({ onScanToEnter, isVerified }) {
                 ...s.drawerLink,
                 color: active ? '#F5F5F5' : '#A0A0A0',
                 fontWeight: active ? 600 : 400,
-                borderLeft: active ? '2px solid #00C48C' : '2px solid transparent',
+                borderLeft: active ? '2px solid #6366F1' : '2px solid transparent',
                 paddingLeft: active ? '22px' : '24px',
+              }}
+            >
+              {label}
+            </Link>
+          );
+        })}
+        <div style={{ padding: '6px 24px 4px', fontSize: '10px', fontWeight: 700, color: '#3A3A3A', letterSpacing: '0.1em', textTransform: 'uppercase', fontFamily: "'Inter', sans-serif" }}>
+          Tools
+        </div>
+        {TOOLS_LINKS.map(({ label, to }) => {
+          const active = pathname === to;
+          return (
+            <Link
+              key={to}
+              to={to}
+              style={{
+                ...s.drawerLink,
+                color: active ? '#F5F5F5' : '#A0A0A0',
+                fontWeight: active ? 600 : 400,
+                borderLeft: active ? '2px solid #6366F1' : '2px solid transparent',
+                paddingLeft: active ? '36px' : '38px',
+                fontSize: '14px',
               }}
             >
               {label}
@@ -146,6 +175,64 @@ function NavLink({ to, label, active }) {
     >
       {label}
     </Link>
+  );
+}
+
+function ToolsDropdown({ pathname }) {
+  const [open, setOpen] = useState(false);
+  const timerRef = useRef(null);
+  const isActive = TOOLS_LINKS.some(l => l.to === pathname);
+
+  const show = () => { clearTimeout(timerRef.current); setOpen(true); };
+  const hide = () => { timerRef.current = setTimeout(() => setOpen(false), 120); };
+
+  return (
+    <div style={{ position: 'relative' }} onMouseEnter={show} onMouseLeave={hide}>
+      <button style={{
+        background: 'none', border: 'none', cursor: 'pointer', padding: 0,
+        fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: '14px',
+        letterSpacing: '-0.01em',
+        color: isActive ? '#F5F5F5' : (open ? '#F5F5F5' : '#A0A0A0'),
+        display: 'inline-flex', alignItems: 'center', gap: '3px',
+        transition: 'color 0.15s ease',
+      }}>
+        Tools
+        <ChevronDown size={12} strokeWidth={2} style={{ transition: 'transform 0.15s ease', transform: open ? 'rotate(180deg)' : 'rotate(0deg)' }} />
+      </button>
+      {open && (
+        <div style={{
+          position: 'absolute', top: '100%', left: '50%', transform: 'translateX(-50%)',
+          marginTop: '10px',
+          background: 'rgba(17,17,17,0.96)', backdropFilter: 'blur(16px)',
+          border: '1px solid rgba(255,255,255,0.08)',
+          borderRadius: '12px', padding: '6px',
+          minWidth: '160px',
+          boxShadow: '0 16px 48px rgba(0,0,0,0.6)',
+          zIndex: 200,
+        }}>
+          {TOOLS_LINKS.map(({ label, to }) => (
+            <Link
+              key={to}
+              to={to}
+              onClick={() => setOpen(false)}
+              style={{
+                display: 'block', padding: '9px 14px',
+                fontFamily: "'Inter', sans-serif", fontSize: '13px', fontWeight: 400,
+                color: pathname === to ? '#F5F5F5' : '#A0A0A0',
+                textDecoration: 'none', borderRadius: '8px',
+                background: pathname === to ? 'rgba(255,255,255,0.06)' : 'transparent',
+                transition: 'background 0.12s ease, color 0.12s ease',
+                letterSpacing: '-0.01em',
+              }}
+              onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.06)'; e.currentTarget.style.color = '#F5F5F5'; }}
+              onMouseLeave={e => { e.currentTarget.style.background = pathname === to ? 'rgba(255,255,255,0.06)' : 'transparent'; e.currentTarget.style.color = pathname === to ? '#F5F5F5' : '#A0A0A0'; }}
+            >
+              {label}
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
 

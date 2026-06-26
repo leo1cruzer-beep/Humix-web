@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { MessageCircle, X, Send } from 'lucide-react';
+import { Headphones, X, Send } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
 // SQL to create the support_inquiries table in Supabase:
@@ -149,7 +149,7 @@ export default function SupportChat() {
               <div style={{ ...s.aiBubble, display: 'flex', alignItems: 'center', gap: '4px', padding: '12px 16px' }}>
                 {[0, 1, 2].map(i => (
                   <span key={i} className="typing-dot"
-                    style={{ animationDelay: `${i * 0.2}s`, background: '#00C48C' }} />
+                    style={{ animationDelay: `${i * 0.2}s`, background: '#6366F1' }} />
                 ))}
               </div>
             </div>
@@ -176,7 +176,7 @@ export default function SupportChat() {
             disabled={loading || !input.trim()}
             aria-label="Send message"
           >
-            <Send size={14} color="#000" strokeWidth={2.5} />
+            <Send size={14} color="#fff" strokeWidth={2.5} />
           </button>
         </div>
       </div>
@@ -189,8 +189,8 @@ export default function SupportChat() {
       >
         <div style={{ transition: 'transform 0.2s ease', transform: isOpen ? 'rotate(90deg)' : 'rotate(0deg)' }}>
           {isOpen
-            ? <X size={22} color="#fff" strokeWidth={2.5} />
-            : <MessageCircle size={22} color="#fff" strokeWidth={2} />
+            ? <X size={18} color="#fff" strokeWidth={2} />
+            : <Headphones size={18} color="#fff" strokeWidth={1.8} />
           }
         </div>
       </button>
@@ -201,12 +201,15 @@ export default function SupportChat() {
 const s = {
   floatBtn: {
     position: 'fixed', bottom: '24px', right: '24px',
-    width: '52px', height: '52px', borderRadius: '50%',
-    background: '#00C48C', border: 'none', cursor: 'pointer',
+    width: '48px', height: '48px', borderRadius: '50%',
+    background: 'rgba(255,255,255,0.08)',
+    border: '1px solid rgba(255,255,255,0.12)',
+    backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)',
+    cursor: 'pointer',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
-    boxShadow: '0 4px 20px rgba(0,0,0,0.4)',
+    boxShadow: '0 4px 24px rgba(0,0,0,0.5)',
     zIndex: 350,
-    transition: 'background 0.15s ease',
+    transition: 'background 0.15s ease, border-color 0.15s ease',
   },
   panel: {
     position: 'fixed', bottom: '92px', right: '24px',
@@ -253,8 +256,8 @@ const s = {
   },
   userBubble: {
     maxWidth: '80%', padding: '10px 14px',
-    background: 'rgba(0,196,140,0.14)',
-    border: '1px solid rgba(0,196,140,0.22)',
+    background: 'rgba(99,102,241,0.16)',
+    border: '1px solid rgba(99,102,241,0.24)',
     borderRadius: '16px 16px 4px 16px',
     fontFamily: "'Inter', sans-serif", fontSize: '13px',
     color: '#F5F5F5', lineHeight: 1.5,
@@ -284,7 +287,7 @@ const s = {
   },
   sendBtn: {
     flexShrink: 0, width: '36px', height: '36px', borderRadius: '50%',
-    background: '#00C48C', border: 'none', cursor: 'pointer',
+    background: '#6366F1', border: 'none', cursor: 'pointer',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
     boxShadow: 'none',
     transition: 'opacity 0.15s ease',
