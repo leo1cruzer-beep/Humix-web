@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ScanFace, UserCircle } from 'lucide-react';
+import { Menu, X, UserCircle, LogOut } from 'lucide-react';
+import { useIdentity } from '../hooks/useIdentity';
 
 const NAV_LINKS = [
   { label: 'Explore',        to: '/explore' },
@@ -11,11 +12,10 @@ const NAV_LINKS = [
   { label: 'Career',         to: '/career' },
 ];
 
-export default function Navbar({ onScanToEnter, isVerified }) {
+export default function Navbar() {
+  const { user, clearIdentity } = useIdentity();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const { pathname } = useLocation();
-
-  const handleScan = () => { setDrawerOpen(false); onScanToEnter?.(); };
 
   useEffect(() => {
     document.body.style.overflow = drawerOpen ? 'hidden' : '';
@@ -37,22 +37,14 @@ export default function Navbar({ onScanToEnter, isVerified }) {
           </div>
 
           <div className="nav-right-buttons" style={s.rightButtons}>
-            {isVerified ? (
-              <Link to="/profile" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: '#10B981', fontWeight: 600, fontFamily: "'Inter', sans-serif", textDecoration: 'none' }}>
-                <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#10B981', boxShadow: '0 0 6px #10B981', display: 'inline-block' }} />
-                Verified
-                <UserCircle size={16} color="#10B981" strokeWidth={1.8} />
-              </Link>
-            ) : (
-              <button
-                className="btn btn-blue"
-                style={{ padding: '8px 20px', display: 'flex', alignItems: 'center', gap: '8px' }}
-                onClick={handleScan}
-              >
-                <ScanFace size={16} strokeWidth={2} />
-                Scan to Enter
-              </button>
-            )}
+            <Link to="/profile" style={s.profileLink}>
+              <span style={s.onlineDot} />
+              {user?.email ?? 'Profile'}
+              <UserCircle size={16} color="#10B981" strokeWidth={1.8} />
+            </Link>
+            <button style={s.logoutBtn} onClick={clearIdentity} title="Sign out">
+              <LogOut size={15} strokeWidth={2} />
+            </button>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginLeft: 'auto' }} className="nav-hamburger-group">
@@ -108,23 +100,19 @@ export default function Navbar({ onScanToEnter, isVerified }) {
           );
         })}
 
-        <div style={{ padding: '16px 24px', marginTop: 'auto', borderTop: '1px solid #1A1A1A' }}>
-          {isVerified ? (
-            <Link to="/profile" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '13px 16px', fontSize: '14px', color: '#10B981', fontWeight: 600, fontFamily: "'Inter', sans-serif", textDecoration: 'none' }}>
-              <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#10B981', boxShadow: '0 0 8px #10B981', display: 'inline-block' }} />
-              Identity Verified
-              <UserCircle size={16} color="#10B981" strokeWidth={1.8} />
-            </Link>
-          ) : (
-            <button
-              className="btn btn-blue"
-              style={{ width: '100%', justifyContent: 'center', padding: '13px 16px', fontSize: '15px', gap: '8px' }}
-              onClick={handleScan}
-            >
-              <ScanFace size={17} strokeWidth={2} />
-              Scan to Enter
-            </button>
-          )}
+        <div style={{ padding: '16px 24px', marginTop: 'auto', borderTop: '1px solid #1A1A1A', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          <Link to="/profile" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', color: '#10B981', fontWeight: 600, fontFamily: "'Inter', sans-serif", textDecoration: 'none' }}>
+            <span style={s.onlineDot} />
+            {user?.email ?? 'Profile'}
+            <UserCircle size={16} color="#10B981" strokeWidth={1.8} />
+          </Link>
+          <button
+            onClick={clearIdentity}
+            style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'none', border: 'none', color: '#64748B', fontSize: '14px', fontFamily: "'Inter', sans-serif", cursor: 'pointer', padding: 0 }}
+          >
+            <LogOut size={15} strokeWidth={2} />
+            Sign Out
+          </button>
         </div>
       </div>
     </>
@@ -196,8 +184,44 @@ const s = {
   rightButtons: {
     display: 'flex',
     alignItems: 'center',
-    gap: '8px',
+    gap: '12px',
     flexShrink: 0,
+  },
+  profileLink: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '6px',
+    fontSize: '13px',
+    color: '#10B981',
+    fontWeight: 600,
+    fontFamily: "'Inter', sans-serif",
+    textDecoration: 'none',
+    maxWidth: '180px',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+  },
+  onlineDot: {
+    width: 7,
+    height: 7,
+    borderRadius: '50%',
+    background: '#10B981',
+    boxShadow: '0 0 6px #10B981',
+    display: 'inline-block',
+    flexShrink: 0,
+  },
+  logoutBtn: {
+    background: 'rgba(255,255,255,0.05)',
+    border: '1px solid rgba(255,255,255,0.08)',
+    borderRadius: '8px',
+    width: '32px',
+    height: '32px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    cursor: 'pointer',
+    color: '#64748B',
+    transition: 'color 0.15s ease',
   },
   hamburger: {
     background: 'none',

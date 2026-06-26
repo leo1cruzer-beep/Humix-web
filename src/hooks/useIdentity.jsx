@@ -1,34 +1,46 @@
-import { createContext, useContext, useState } from 'react';
-
-const CONFIRMED_KEY = 'humix_identity_confirmed';
-const USER_ID_KEY   = 'humix_user_id';
+import { createContext, useContext, useState, useEffect } from 'react';
+import { supabase } from '../lib/supabase';
 
 const IdentityCtx = createContext(null);
 
 export function IdentityProvider({ children }) {
-  const [isVerified, setIsVerified] = useState(
-    () => localStorage.getItem(CONFIRMED_KEY) === 'true',
-  );
-  const [userId, setUserId] = useState(
-    () => localStorage.getItem(USER_ID_KEY) ?? null,
-  );
+  const [user, setUser]       = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const verify = () => {
-    localStorage.setItem(CONFIRMED_KEY, 'true');
-    setIsVerified(true);
-    const id = localStorage.getItem(USER_ID_KEY);
-    if (id) setUserId(id);
-  };
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+      setLoading(false);
+    });
 
-  const clearIdentity = () => {
-    localStorage.removeItem(CONFIRMED_KEY);
-    localStorage.removeItem(USER_ID_KEY);
-    setIsVerified(false);
-    setUserId(null);
-  };
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        const u = session?.user ?? null;
+        setUser(u);
+
+        // Auto-create profile on first sign-in
+        if (event === 'SIGNED_IN' && u) {
+          await supabase.from('profiles').upsert(
+            { id: u.id, email: u.email, created_at: new Date().toISOString() },
+            { onConflict: 'id', ignoreDuplicates: true },
+          );
+        }
+      },
+    );
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const clearIdentity = () => supabase.auth.signOut();
 
   return (
-    <IdentityCtx.Provider value={{ isVerified, userId, verify, clearIdentity }}>
+    <IdentityCtx.Provider value={{
+      isVerified: !!user,
+      userId: user?.id ?? null,
+      user,
+      loading,
+      clearIdentity,
+    }}>
       {children}
     </IdentityCtx.Provider>
   );
