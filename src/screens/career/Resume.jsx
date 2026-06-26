@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { callAI } from '../../utils/ai.js'
 import { useActivityLogger } from '../../hooks/useActivityLogger'
@@ -20,11 +20,16 @@ export default function Resume() {
   const [skills, setSkills] = useState('')
   const [years, setYears] = useState('3')
   const [country, setCountry] = useState('')
-  const { state } = useLocation()
-  const [result, setResult] = useState(state?.previousContent || '')
+  const [result, setResult] = useState('')
   const [loading, setLoading] = useState(false)
 
   const { logActivity } = useActivityLogger()
+  const location = useLocation()
+  const previousContent = location.state?.previousContent
+
+  useEffect(() => {
+    if (previousContent) setResult(previousContent)
+  }, [])
   const canGenerate = title.trim() && skills.trim() && country.trim()
 
   async function generate() {

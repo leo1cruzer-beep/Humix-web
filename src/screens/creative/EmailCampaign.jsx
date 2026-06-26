@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { callAI } from '../../utils/ai.js'
 import { useActivityLogger } from '../../hooks/useActivityLogger'
@@ -19,11 +19,16 @@ export default function EmailCampaign() {
   const [product, setProduct] = useState('')
   const [offer, setOffer] = useState('')
   const [audience, setAudience] = useState('')
-  const { state } = useLocation()
-  const [result, setResult] = useState(state?.previousContent || '')
+  const [result, setResult] = useState('')
   const [loading, setLoading] = useState(false)
 
   const { logActivity } = useActivityLogger()
+  const location = useLocation()
+  const previousContent = location.state?.previousContent
+
+  useEffect(() => {
+    if (previousContent) setResult(previousContent)
+  }, [])
   const canGenerate = product.trim() && offer.trim() && audience.trim()
 
   async function generate() {
