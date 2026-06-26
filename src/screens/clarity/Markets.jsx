@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useActivityLogger } from '../../hooks/useActivityLogger'
+import { useEmailGate } from '../../hooks/useEmailGate'
 
 const INITIAL = {
   BTC: { price: 97450, name: 'Bitcoin',  symbol: '₿', color: '#F97316', mktCap: '$1.92T', vol24h: '$38.2B' },
@@ -80,6 +81,7 @@ export default function Markets() {
   const [aiLoading, setAiLoading] = useState(false)
   const [aiLoaded, setAiLoaded] = useState(false)
   const { logActivity } = useActivityLogger()
+  const { checkGate, recordUse } = useEmailGate()
   const [selected, setSelected] = useState(null)
 
   useEffect(() => {
@@ -120,6 +122,8 @@ export default function Markets() {
   }, [])
 
   async function getAiInsight() {
+    if (checkGate('finance')) return
+    recordUse('finance')
     setAiLoaded(true)
     setAiLoading(true)
     setAiSummary('')

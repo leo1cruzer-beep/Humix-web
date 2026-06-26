@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useActivityLogger } from '../hooks/useActivityLogger';
+import { useEmailGate } from '../hooks/useEmailGate';
 import { Heart, Scale, Sprout, GraduationCap, Briefcase, Send, ArrowLeft } from 'lucide-react';
 
 const SERVICES = [
@@ -38,6 +39,7 @@ export default function LifeAssistantPage() {
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
   const { logActivity } = useActivityLogger();
+  const { checkGate, recordUse } = useEmailGate();
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -92,6 +94,8 @@ export default function LifeAssistantPage() {
   const sendMessage = async () => {
     const text = inputText.trim();
     if (!text || isTyping || isInitializing || !sessionId) return;
+    if (checkGate('life-assistant')) return;
+    recordUse('life-assistant');
 
     setMessages(prev => [...prev, { role: 'user', text, id: Date.now() }]);
     setInputText('');

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useActivityLogger } from '../../hooks/useActivityLogger'
+import { useEmailGate } from '../../hooks/useEmailGate'
 import { Link } from 'react-router-dom'
 
 const REMITTANCE_API = 'http://localhost:3003'
@@ -135,6 +136,7 @@ export default function RemittanceOptimizer() {
 
   const [aiTip, setAiTip] = useState('')
   const { logActivity } = useActivityLogger()
+  const { checkGate, recordUse } = useEmailGate()
   const [aiLoading, setAiLoading] = useState(false)
 
   const [alertCurrency, setAlertCurrency] = useState('USD/PKR')
@@ -151,6 +153,8 @@ export default function RemittanceOptimizer() {
   async function handleCompare() {
     const amount = parseFloat(sendAmount)
     if (!amount || amount <= 0) return
+    if (checkGate('finance')) return
+    recordUse('finance')
     setLoading(true)
     setAiTip('')
     setHasCompared(false)

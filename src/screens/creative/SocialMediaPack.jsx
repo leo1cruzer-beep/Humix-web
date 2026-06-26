@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { callAI } from '../../utils/ai.js'
 import { useActivityLogger } from '../../hooks/useActivityLogger'
+import { useEmailGate } from '../../hooks/useEmailGate'
 
 function CopyButton({ text }) {
   const [copied, setCopied] = useState(false)
@@ -22,6 +23,7 @@ export default function SocialMediaPack() {
   const [loading, setLoading] = useState(false)
 
   const { logActivity } = useActivityLogger()
+  const { checkGate, recordUse } = useEmailGate()
   const location = useLocation()
   const previousContent = location.state?.previousContent
 
@@ -31,6 +33,8 @@ export default function SocialMediaPack() {
 
   async function generate() {
     if (!description.trim()) return
+    if (checkGate('creative')) return
+    recordUse('creative')
     setLoading(true)
     setResult('')
     const goalMap = {

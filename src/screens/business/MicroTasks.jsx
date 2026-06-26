@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { callAI } from '../../utils/ai'
+import { useEmailGate } from '../../hooks/useEmailGate'
 
 const CATEGORIES = [
   { id: 'image', icon: '🖼️', label: 'Image Labeling', desc: 'Describe what you see in photos', pay: '$0.05–0.25', time: '2 min' },
@@ -44,10 +45,13 @@ function TaskModal({ task, category, onClose }) {
   const [loading, setLoading] = useState(false)
   const [done, setDone] = useState(false)
   const [earned, setEarned] = useState('')
+  const { checkGate, recordUse } = useEmailGate()
 
   async function submit(e) {
     e.preventDefault()
     if (!answer.trim() || loading) return
+    if (checkGate('business')) return
+    recordUse('business')
     setLoading(true)
     try {
       const prompt = `A user completed a micro-task in the "${category.label}" category.

@@ -25,9 +25,10 @@ function checkAndRefresh() {
 const IdentityCtx = createContext(null);
 
 export function IdentityProvider({ children }) {
-  const [isVerified, setIsVerified] = useState(() => checkAndRefresh());
-  const [userId, setUserId]         = useState(() => localStorage.getItem(USER_ID_KEY) ?? null);
-  const [guestUses, setGuestUses]   = useState(() =>
+  const [isVerified, setIsVerified]   = useState(() => checkAndRefresh());
+  const [userId, setUserId]           = useState(() => localStorage.getItem(USER_ID_KEY) ?? null);
+  const [userHasEmail, setUserHasEmail] = useState(false);
+  const [guestUses, setGuestUses]     = useState(() =>
     parseInt(localStorage.getItem(GUEST_USES_KEY) || '0', 10),
   );
 
@@ -43,6 +44,7 @@ export function IdentityProvider({ children }) {
         localStorage.setItem(LAST_ACTIVE_KEY, Date.now().toString());
         setIsVerified(true);
         setUserId(session.user.id);
+        if (session.user.email) setUserHasEmail(true);
       }
       if (event === 'SIGNED_OUT') {
         localStorage.removeItem(CONFIRMED_KEY);
@@ -50,6 +52,7 @@ export function IdentityProvider({ children }) {
         localStorage.removeItem(LAST_ACTIVE_KEY);
         setIsVerified(false);
         setUserId(null);
+        setUserHasEmail(false);
       }
     });
     return () => subscription.unsubscribe();
@@ -78,7 +81,7 @@ export function IdentityProvider({ children }) {
   };
 
   return (
-    <IdentityCtx.Provider value={{ isVerified, userId, guestUses, verify, clearIdentity, incrementGuestUse }}>
+    <IdentityCtx.Provider value={{ isVerified, userId, userHasEmail, guestUses, verify, clearIdentity, incrementGuestUse }}>
       {children}
     </IdentityCtx.Provider>
   );

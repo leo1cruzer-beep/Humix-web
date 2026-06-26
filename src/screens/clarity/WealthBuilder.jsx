@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { useActivityLogger } from '../../hooks/useActivityLogger'
+import { useEmailGate } from '../../hooks/useEmailGate'
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts'
 
 async function callAI(prompt) {
@@ -53,6 +54,7 @@ export default function WealthBuilder() {
   const [aiLoading, setAiLoading] = useState(false)
   const [calculated, setCalculated] = useState(false)
   const { logActivity } = useActivityLogger()
+  const { checkGate, recordUse } = useEmailGate()
 
   const monthlyNum = parseFloat(monthly) || 0
   const initialNum = parseFloat(initial) || 0
@@ -85,6 +87,8 @@ export default function WealthBuilder() {
   })
 
   async function calculate() {
+    if (checkGate('finance')) return
+    recordUse('finance')
     setCalculated(true)
     setAiAdvice('')
     setAiLoading(true)

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { callAI } from '../../utils/ai'
+import { useEmailGate } from '../../hooks/useEmailGate'
 
 const REGIONS = [
   { id: 'south_asia', label: 'South Asia', currency: 'PKR/INR', flag: '🇵🇰' },
@@ -57,6 +58,7 @@ export default function MarketPrices() {
   const [aiTip, setAiTip] = useState('')
   const [cache, setCache] = useState({})
   const [lastUpdate] = useState(() => new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }))
+  const { checkGate, recordUse } = useEmailGate()
 
   const reg = REGIONS.find(r => r.id === region)
 
@@ -182,7 +184,7 @@ Use realistic prices for the region. Local currency should be ${reg.currency}. T
           </p>
         </div>
 
-        <button className="btn btn-ghost" onClick={loadPrices} disabled={loading} style={{ marginTop: '16px', padding: '11px 22px', fontSize: '13px', opacity: loading ? 0.5 : 1 }}>
+        <button className="btn btn-ghost" onClick={() => { if (checkGate('finance')) return; recordUse('finance'); loadPrices(); }} disabled={loading} style={{ marginTop: '16px', padding: '11px 22px', fontSize: '13px', opacity: loading ? 0.5 : 1 }}>
           🔄 Refresh Prices
         </button>
       </div>

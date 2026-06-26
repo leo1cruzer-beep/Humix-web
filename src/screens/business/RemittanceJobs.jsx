@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { callAI } from '../../utils/ai'
+import { useEmailGate } from '../../hooks/useEmailGate'
 
 const JOBS = [
   {
@@ -124,8 +125,11 @@ function PlanModal({ job, onClose }) {
   const [plan, setPlan] = useState('')
   const [loading, setLoading] = useState(false)
   const [generated, setGenerated] = useState(false)
+  const { checkGate, recordUse } = useEmailGate()
 
   async function generate() {
+    if (checkGate('business')) return
+    recordUse('business')
     setLoading(true)
     try {
       const prompt = `Create a realistic 30-day learning plan for someone in a developing country who wants to get their first paying client as a "${job.title}" earning ${job.pay} in USD.

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useActivityLogger } from '../../hooks/useActivityLogger'
+import { useEmailGate } from '../../hooks/useEmailGate'
 import { Link } from 'react-router-dom'
 
 const CURRENCIES = {
@@ -65,10 +66,13 @@ export default function DebtFreedom() {
   const [aiLoading, setAiLoading] = useState(false)
   const [error, setError] = useState('')
   const { logActivity } = useActivityLogger()
+  const { checkGate, recordUse } = useEmailGate()
 
   const cur = CURRENCIES[currency]
 
   async function calculate() {
+    if (checkGate('finance')) return
+    recordUse('finance')
     setError('')
     const s = parseFloat(salary) || 0
     const e = parseFloat(expenses) || 0

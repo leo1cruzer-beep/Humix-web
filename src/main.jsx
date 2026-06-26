@@ -5,6 +5,7 @@ import './index.css'
 import App from './App.jsx'
 import { ThemeProvider } from './hooks/useTheme.jsx'
 import { IdentityProvider } from './hooks/useIdentity.jsx'
+import { EmailGateProvider } from './hooks/useEmailGate.jsx'
 
 window.history.scrollRestoration = 'manual'
 
@@ -13,7 +14,9 @@ createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <ThemeProvider>
         <IdentityProvider>
-          <App />
+          <EmailGateProvider>
+            <App />
+          </EmailGateProvider>
         </IdentityProvider>
       </ThemeProvider>
     </BrowserRouter>

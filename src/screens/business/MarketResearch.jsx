@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { callAI } from '../../utils/ai.js'
 import { useActivityLogger } from '../../hooks/useActivityLogger'
+import { useEmailGate } from '../../hooks/useEmailGate'
 
 function CopyButton({ text }) {
   const [copied, setCopied] = useState(false)
@@ -22,6 +23,7 @@ export default function MarketResearch() {
   const [loading, setLoading] = useState(false)
 
   const { logActivity } = useActivityLogger()
+  const { checkGate, recordUse } = useEmailGate()
   const location = useLocation()
   const previousContent = location.state?.previousContent
 
@@ -32,6 +34,8 @@ export default function MarketResearch() {
 
   async function generate() {
     if (!canGenerate) return
+    if (checkGate('business')) return
+    recordUse('business')
     setLoading(true)
     setResult('')
     const prompt = `Conduct comprehensive market research for the ${industry} industry in ${country}.

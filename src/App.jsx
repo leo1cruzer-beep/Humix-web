@@ -6,6 +6,8 @@ import Footer from './components/Footer.jsx';
 import PasskeyAuth from './components/PasskeyAuth.jsx';
 import SignupModal from './components/SignupModal.jsx';
 import SupportChat from './components/SupportChat.jsx';
+import EmailGateModal from './components/EmailGateModal.jsx';
+import { useEmailGate } from './hooks/useEmailGate.jsx';
 import { useIdentity } from './hooks/useIdentity.jsx';
 import HomePage from './pages/HomePage.jsx';
 import ExplorePage from './pages/ExplorePage.jsx';
@@ -62,6 +64,7 @@ export default function App() {
   const { pathname, search } = useLocation();
   const navigate = useNavigate();
   const { isVerified, guestUses, incrementGuestUse } = useIdentity();
+  const { gateOpen, setGateOpen } = useEmailGate();
   const [scanOpen, setScanOpen]     = useState(false);
   const [signupOpen, setSignupOpen] = useState(false);
 
@@ -162,6 +165,7 @@ export default function App() {
         <Footer />
       </div>
       <SupportChat />
+      <EmailGateModal isOpen={gateOpen} onClose={() => setGateOpen(false)} />
     </>
   );
 }

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { callAI } from '../../utils/ai'
+import { useEmailGate } from '../../hooks/useEmailGate'
 
 const STEPS = [
   { n: 1, label: 'Skill Assessment', icon: '🎯' },
@@ -59,11 +60,14 @@ export default function Freelance() {
   const [answers, setAnswers] = useState(['', '', '', '', ''])
   const [results, setResults] = useState({})
   const [loading, setLoading] = useState(false)
+  const { checkGate, recordUse } = useEmailGate()
 
   function setAnswer(i, v) { setAnswers(a => { const n = [...a]; n[i] = v; return n }) }
 
   async function runStep1() {
     if (answers.some(a => !a.trim())) return
+    if (checkGate('business')) return
+    recordUse('business')
     setLoading(true)
     try {
       const prompt = `Based on these answers from someone in a developing country who wants to freelance online, identify their #1 strongest marketable skill:
