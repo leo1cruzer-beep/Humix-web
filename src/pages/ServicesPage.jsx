@@ -88,7 +88,7 @@ export default function ServicesPage() {
   });
 
   return (
-    <main className="page-enter" style={{ paddingBottom: '80px' }}>
+    <main className="page-enter page-transition" style={{ paddingBottom: '80px' }}>
       {/* Hero Banner */}
       <section style={s.heroBanner}>
         <div style={s.heroInner}>

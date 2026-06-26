@@ -126,7 +126,7 @@ export default function LifeAssistantPage() {
   const busy = isTyping || isInitializing;
 
   return (
-    <div className="life-assistant-page">
+    <div className="life-assistant-page page-transition">
       {/* ── TOP: Service selector ── */}
       <div className="service-cards-section">
         {/* Topbar */}

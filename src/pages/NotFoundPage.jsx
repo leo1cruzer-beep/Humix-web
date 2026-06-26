@@ -3,7 +3,7 @@ import { Search } from 'lucide-react';
 
 export default function NotFoundPage() {
   return (
-    <main className="page-enter" style={{ padding: '120px 24px', textAlign: 'center' }}>
+    <main className="page-enter page-transition" style={{ padding: '120px 24px', textAlign: 'center' }}>
       <div style={{
         width: '72px', height: '72px', borderRadius: '50%',
         background: 'rgba(99,102,241,0.12)', border: '1px solid rgba(99,102,241,0.2)',

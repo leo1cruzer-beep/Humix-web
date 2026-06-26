@@ -103,7 +103,7 @@ export default function IdentityProfile() {
   }
 
   return (
-    <div style={s.page}>
+    <div className="page-transition" style={s.page}>
       <div style={s.container}>
 
         {/* ── Identity Card ───────────────────────────────────── */}

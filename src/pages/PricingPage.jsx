@@ -61,7 +61,7 @@ export default function PricingPage() {
   const bizMonthly = yearly ? '$31.20' : '$39';
 
   return (
-    <main className="page-enter" style={{ paddingBottom: '80px' }}>
+    <main className="page-enter page-transition" style={{ paddingBottom: '80px' }}>
       {/* Header */}
       <section style={s.header}>
         <div style={s.container}>

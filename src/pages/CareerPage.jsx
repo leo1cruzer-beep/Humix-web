@@ -41,7 +41,7 @@ export default function CareerPage() {
   const [hov, setHov] = useState(null)
 
   return (
-    <main className="page-enter" style={{ paddingBottom: '80px' }}>
+    <main className="page-enter page-transition" style={{ paddingBottom: '80px' }}>
       <div style={{ background: 'var(--bg-card)', borderBottom: '1px solid var(--border)', padding: '48px 0 40px', marginBottom: '48px' }}>
         <div style={container}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>

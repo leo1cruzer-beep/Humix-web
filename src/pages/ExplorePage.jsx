@@ -72,7 +72,7 @@ export default function ExplorePage() {
   const toggleFilter = (key) => setOpenFilters(prev => ({ ...prev, [key]: !prev[key] }));
 
   return (
-    <main className="page-enter" style={{ paddingBottom: '80px' }}>
+    <main className="page-enter page-transition" style={{ paddingBottom: '80px' }}>
       {/* Page Header */}
       <div style={s.pageHeader}>
         <div style={s.container}>

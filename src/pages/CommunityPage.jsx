@@ -48,7 +48,7 @@ export default function CommunityPage() {
   const toggleJoin = (id) => setJoined(prev => ({ ...prev, [id]: !prev[id] }));
 
   return (
-    <main className="page-enter" style={{ paddingBottom: '80px' }}>
+    <main className="page-enter page-transition" style={{ paddingBottom: '80px' }}>
       {/* Header */}
       <section style={s.header}>
         <div style={s.container}>

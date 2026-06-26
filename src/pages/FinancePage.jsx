@@ -54,7 +54,7 @@ function FinanceHome() {
   const [hov, setHov] = useState(null)
 
   return (
-    <main className="page-enter" style={{ paddingBottom: '80px' }}>
+    <main className="page-enter page-transition" style={{ paddingBottom: '80px' }}>
       {/* Page header */}
       <div style={{
         background: 'var(--bg-card)',

@@ -352,6 +352,7 @@ ul { list-style: none; }
   to   { opacity: 1; transform: translateY(0); }
 }
 .page-enter { animation: pageFadeIn 0.15s ease; overflow-x: hidden; width: 100%; }
+.page-transition { animation: pageFadeIn 0.25s ease forwards; }
 
 /* ─── Homepage responsive ───────────────────────────────────── */
 @media (max-width: 1024px) {

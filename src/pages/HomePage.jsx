@@ -22,7 +22,7 @@ const STEPS = [
 export default function HomePage({ onScanToEnter }) {
   const navigate = useNavigate();
   return (
-    <main className="page-enter">
+    <main className="page-enter page-transition">
       <HeroSection navigate={navigate} onScanToEnter={onScanToEnter} />
       <ServiceCardsSection navigate={navigate} />
       <HowItWorksSection />
