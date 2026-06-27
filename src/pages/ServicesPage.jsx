@@ -129,25 +129,11 @@ export default function ServicesPage() {
       </div>
 
       <div style={s.container}>
-        {/* Service Cards Grid */}
-        <div className="service-grid" style={s.serviceGrid}>
-          {filtered.map(svc => <ServiceCard key={svc.id} svc={svc} />)}
+        <div style={{ textAlign: 'center', padding: '60px 20px', color: 'var(--text-muted)' }}>
+          <div style={{ fontSize: '32px', marginBottom: '12px' }}>🛠️</div>
+          <div style={{ fontWeight: 700, fontSize: '18px', marginBottom: '8px', color: 'var(--text-primary)' }}>Coming Soon</div>
+          <div style={{ fontSize: '14px', lineHeight: 1.6 }}>Real service providers are being verified. Check back soon.</div>
         </div>
-
-        {filtered.length === 0 && (
-          <div style={{ textAlign: 'center', padding: '80px 0' }}>
-            <h3 style={{ fontWeight: 700, fontSize: '18px', color: 'var(--text-primary)', marginBottom: '8px' }}>No services found</h3>
-            <p style={{ color: 'var(--text-secondary)' }}>Try a different category or search term</p>
-          </div>
-        )}
-
-        {/* Featured Experts Strip */}
-        <section style={{ marginTop: '64px' }}>
-          <h2 className="section-heading" style={{ marginBottom: '24px' }}>Top-Rated Experts This Week</h2>
-          <div style={s.expertsStrip}>
-            {TOP_EXPERTS.map(expert => <ExpertCard key={expert.name} expert={expert} />)}
-          </div>
-        </section>
       </div>
     </main>
   );

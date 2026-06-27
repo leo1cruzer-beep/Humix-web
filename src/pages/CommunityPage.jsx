@@ -157,7 +157,7 @@ function CatCard({ id, label, Icon, members, joined, onJoin }) {
         <Icon size={22} color="var(--text-secondary)" strokeWidth={1.5} />
       </div>
       <h3 style={{ fontWeight: 600, fontSize: '16px', color: 'var(--text-primary)', margin: '14px 0 4px' }}>{label}</h3>
-      <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '14px' }}>{members} members</p>
+      <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '14px' }}>Be the first to join</p>
       <button
         className={joined ? 'btn btn-ghost' : 'btn btn-blue'}
         style={{ width: '100%', justifyContent: 'center', padding: '8px 12px', fontSize: '13px' }}
