@@ -46,18 +46,18 @@ export default function FlowPage() {
     setLoading(true);
     setError('');
     try {
-      const res = await fetch('https://api.anthropic.com/v1/messages', {
+      const res = await fetch('/api/openrouter', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          model: 'claude-sonnet-4-6',
+          model: 'deepseek/deepseek-r1',
           max_tokens: 1000,
           system: SYSTEM_PROMPT,
           messages: [{ role: 'user', content: input.trim() }]
         })
       });
       const data = await res.json();
-      const raw = data.content?.[0]?.text || '';
+      const raw = data.choices?.[0]?.message?.content || '';
       const clean = raw.replace(/```json|```/g, '').trim();
       const parsed = JSON.parse(clean);
       setFlows(prev => [{ ...parsed, id: Date.now(), active: false }, ...prev]);
