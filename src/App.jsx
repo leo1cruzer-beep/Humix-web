@@ -89,6 +89,10 @@ export default function App() {
       if (session?.user) {
         localStorage.setItem('havro_email_verified', 'true');
         window.history.replaceState(null, '', window.location.pathname + window.location.search);
+        // If the gate fired mid-session, send user back to pick up where they left off
+        if (localStorage.getItem('havro_pending_session')) {
+          navigate('/life-assistant');
+        }
       }
     });
   }, []);

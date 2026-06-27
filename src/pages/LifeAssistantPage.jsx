@@ -46,6 +46,21 @@ export default function LifeAssistantPage() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isTyping]);
 
+  // After magic link auth, restore the session that was interrupted by the gate
+  useEffect(() => {
+    const pendingId  = localStorage.getItem('havro_pending_session');
+    const pendingSvc = localStorage.getItem('havro_pending_service');
+    if (pendingId && pendingSvc) {
+      const svc = SERVICES.find(s => s.id === pendingSvc);
+      if (svc) {
+        setActiveService(svc);
+        setSessionId(pendingId);
+      }
+      localStorage.removeItem('havro_pending_session');
+      localStorage.removeItem('havro_pending_service');
+    }
+  }, []);
+
   const selectService = async (svc) => {
     setActiveService(svc);
     setMessages([]);
@@ -95,7 +110,13 @@ export default function LifeAssistantPage() {
   const sendMessage = async () => {
     const text = inputText.trim();
     if (!text || isTyping || isInitializing || !sessionId) return;
-    if (checkGate('life-assistant')) return;
+    if (checkGate('life-assistant')) {
+      if (sessionId && activeService) {
+        localStorage.setItem('havro_pending_session', sessionId);
+        localStorage.setItem('havro_pending_service', activeService.id);
+      }
+      return;
+    }
     recordUse('life-assistant');
 
     setMessages(prev => [...prev, { role: 'user', text, id: Date.now() }]);
