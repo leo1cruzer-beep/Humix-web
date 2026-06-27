@@ -9,8 +9,12 @@ export default function EmailGateModal({ isOpen, onClose }) {
   const [error, setError]       = useState('');
 
   useEffect(() => {
+    if (isOpen && localStorage.getItem('havro_email_verified') === 'true') {
+      onClose();
+      return;
+    }
     if (isOpen) { setEmail(''); setSent(false); setError(''); }
-  }, [isOpen]);
+  }, [isOpen, onClose]);
 
   useEffect(() => {
     if (!isOpen) return;

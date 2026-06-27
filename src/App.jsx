@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { supabase } from './lib/supabase';
 import ScrollManager from './components/ScrollManager.jsx';
 import Navbar from './components/Navbar.jsx';
 import Footer from './components/Footer.jsx';
@@ -79,6 +80,18 @@ export default function App() {
     const ref = params.get('ref');
     if (ref) localStorage.setItem('havro_pending_referral', ref.toUpperCase());
   }, [search]);
+
+  // Catch magic link callback: access_token is in the URL hash after redirect
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (!hash.includes('access_token')) return;
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) {
+        localStorage.setItem('havro_email_verified', 'true');
+        window.history.replaceState(null, '', window.location.pathname + window.location.search);
+      }
+    });
+  }, []);
 
   // Auto-close signup modal when auth completes
   useEffect(() => {
