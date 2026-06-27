@@ -4,6 +4,7 @@ import { useActivityLogger } from '../hooks/useActivityLogger';
 import { useEmailGate } from '../hooks/useEmailGate';
 import { Heart, Scale, Sprout, GraduationCap, Briefcase, Send, ArrowLeft } from 'lucide-react';
 import { LoanShield } from '../screens/LoanShield';
+import { supabase } from '../lib/supabase';
 
 const SERVICES = [
   { id: 'health',      label: 'Health',      Icon: Heart,         desc: 'Medical guidance for you and your family' },
@@ -22,7 +23,9 @@ const LANGUAGES = [
   { code: 'bn', label: 'বাংলা',   content: 'Bengali' },
 ];
 
-function getDeviceId() {
+async function getDeviceId() {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (session?.user?.id) return session.user.id;
   let id = localStorage.getItem('havro_device_id');
   if (!id) {
     id = crypto.randomUUID();
@@ -82,7 +85,7 @@ export default function LifeAssistantPage() {
     setIsInitializing(true);
 
     try {
-      const sessionData = await apiPost('/api/proxy/api/chat/session', { service: svc.id, userId: getDeviceId() });
+      const sessionData = await apiPost('/api/proxy/api/chat/session', { service: svc.id, userId: await getDeviceId() });
       const newId = sessionData.sessionId;
       setSessionId(newId);
       // Complete all 4 onboarding steps so real AI kicks in immediately
@@ -106,7 +109,7 @@ export default function LifeAssistantPage() {
     setIsInitializing(true);
 
     try {
-      const sessionData = await apiPost('/api/proxy/api/chat/session', { service: activeService.id, userId: getDeviceId() });
+      const sessionData = await apiPost('/api/proxy/api/chat/session', { service: activeService.id, userId: await getDeviceId() });
       const newId = sessionData.sessionId;
       setSessionId(newId);
       await apiPost('/api/proxy/api/chat/message', { sessionId: newId, content: lang.content }); // step 0 → language
