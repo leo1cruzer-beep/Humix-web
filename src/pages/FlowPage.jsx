@@ -59,7 +59,9 @@ export default function FlowPage() {
       const data = await res.json();
       const raw = data.choices?.[0]?.message?.content || '';
       const clean = raw.replace(/```json|```/g, '').trim();
-      const parsed = JSON.parse(clean);
+      const jsonMatch = clean.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) throw new Error('No JSON found');
+      const parsed = JSON.parse(jsonMatch[0]);
       setFlows(prev => [{ ...parsed, id: Date.now(), active: false }, ...prev]);
       setInput('');
     } catch {
