@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useActivityLogger } from '../hooks/useActivityLogger';
 import { useEmailGate } from '../hooks/useEmailGate';
 import { Heart, Scale, Sprout, GraduationCap, Briefcase, Send, ArrowLeft } from 'lucide-react';
+import { LoanShield } from '../screens/LoanShield';
 
 const SERVICES = [
   { id: 'health',      label: 'Health',      Icon: Heart,         desc: 'Medical guidance for you and your family' },
@@ -14,8 +15,8 @@ const SERVICES = [
 
 const LANGUAGES = [
   { code: 'en', label: 'English', content: 'English' },
-  { code: 'ur', label: 'اردو',   content: 'اردو'   },
-  { code: 'pa', label: 'پنجابی', content: 'پنجابی' },
+  { code: 'ur', label: 'اردو',    content: 'اردو'   },
+  { code: 'ar', label: 'العربية', content: 'Arabic'  },
 ];
 
 async function apiPost(path, body) {
@@ -199,9 +200,15 @@ export default function LifeAssistantPage() {
             {/* Messages */}
             <div className="chat-messages">
               {messages.length === 0 && !busy && (
-                <div style={{ textAlign: 'center', padding: '48px 24px', color: 'var(--text-muted)', fontSize: '14px' }}>
-                  Ask anything about {activeService.label.toLowerCase()} guidance.
-                </div>
+                activeService?.id === 'legal' ? (
+                  <div style={{ padding: '16px' }}>
+                    <LoanShield />
+                  </div>
+                ) : (
+                  <div style={{ textAlign: 'center', padding: '48px 24px', color: 'var(--text-muted)', fontSize: '14px' }}>
+                    Ask anything about {activeService.label.toLowerCase()} guidance.
+                  </div>
+                )
               )}
               {messages.map(msg => (
                 <div
