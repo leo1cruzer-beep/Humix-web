@@ -40,6 +40,7 @@ import BrandVoice from './screens/creative/BrandVoice.jsx';
 import AgentRegisterPage from './pages/agent/AgentRegisterPage.jsx';
 import AgentDashboardPage from './pages/agent/AgentDashboardPage.jsx';
 import AgentLeaderboardPage from './pages/agent/AgentLeaderboardPage.jsx';
+import FlowPage from './pages/FlowPage.jsx';
 
 // Allows up to 2 guest tool accesses; prompts signup on the 3rd attempt.
 function ProtectedRoute({ children, isVerified, guestUses, onGuestAccess, openSignup }) {
@@ -158,6 +159,7 @@ export default function App() {
             <Route path="/creative/social"     element={guard(<SocialMediaPack />)} />
             <Route path="/creative/email"      element={guard(<EmailCampaign />)} />
             <Route path="/creative/brand"      element={guard(<BrandVoice />)} />
+            <Route path="/flow"                element={guard(<FlowPage />)} />
             <Route path="/profile"             element={guard(<IdentityProfile />)} />
             <Route path="*"                    element={<NotFoundPage />} />
           </Routes>

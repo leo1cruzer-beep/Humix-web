@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  TrendingUp, Briefcase, Gem, Pencil, Heart, Users, ArrowRight,
+  TrendingUp, Briefcase, Gem, Pencil, Heart, Users, ArrowRight, Zap,
   Smartphone, Phone, GraduationCap, Scale, Shield, Fingerprint,
   CheckCircle2, Globe, User, Wifi,
 } from 'lucide-react';
@@ -44,6 +44,7 @@ function useCountUp(target, decimals = 0, duration = 2200) {
 /* ─── Static data ────────────────────────────────────────────────── */
 const SERVICE_CARDS = [
   { id: 'life-assistant', label: 'Life Assistant', desc: 'Health checks, legal docs & daily guidance',       Icon: Heart,      to: '/life-assistant', color: '#00C48C' },
+  { id: 'flow',           label: 'Flow',           desc: 'Automate your digital life with AI',               Icon: Zap,        to: '/flow',           color: '#2563EB' },
   { id: 'finance',        label: 'Finance',        desc: 'Smart budgeting, debt payoff & wealth tools',      Icon: TrendingUp, to: '/finance',        color: '#FFB340' },
   { id: 'career',         label: 'Career',         desc: 'AI résumés, interview prep & salary insights',     Icon: Briefcase,  to: '/career',         color: '#0A84FF' },
   { id: 'business',       label: 'Business',       desc: 'Business plans, pitch decks & market research',    Icon: Gem,        to: '/business',       color: '#FF6B35' },
