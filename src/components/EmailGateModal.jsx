@@ -40,6 +40,18 @@ export default function EmailGateModal({ isOpen, onClose }) {
         options: { emailRedirectTo: redirectUrl.toString() },
       });
       if (err) throw err;
+
+      // Persist email→device_id on the server so iOS magic link
+      // (which opens in a fresh context with empty localStorage) can
+      // recover the original device after Supabase verifies the session.
+      if (deviceId) {
+        fetch('/api/bind-device', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, deviceId }),
+        }).catch(() => {});
+      }
+
       setSent(true);
     } catch (err) {
       const msg = err.message ?? '';

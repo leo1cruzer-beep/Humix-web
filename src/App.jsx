@@ -93,14 +93,28 @@ export default function App() {
     const restoredId = deviceIdFromUrl || deviceIdBackup;
     if (restoredId) localStorage.setItem('havro_device_id', restoredId);
     if (deviceIdBackup) localStorage.removeItem('havro_device_id_backup');
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session?.user) {
-        localStorage.setItem('havro_email_verified', 'true');
-        window.history.replaceState(null, '', window.location.pathname);
-        // If the gate fired mid-session, send user back to pick up where they left off
-        if (localStorage.getItem('havro_pending_session')) {
-          navigate('/life-assistant');
-        }
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
+      if (!session?.user) return;
+      localStorage.setItem('havro_email_verified', 'true');
+      window.history.replaceState(null, '', window.location.pathname);
+
+      // On iOS the magic link opens in a fresh Safari context (empty
+      // localStorage), so the URL param and backup key are both missing.
+      // Recover the original device_id from the server binding saved when
+      // the user submitted their email.
+      if (!restoredId && session.user.email) {
+        try {
+          const r = await fetch(`/api/bind-device?email=${encodeURIComponent(session.user.email)}`);
+          if (r.ok) {
+            const { deviceId } = await r.json();
+            if (deviceId) localStorage.setItem('havro_device_id', deviceId);
+          }
+        } catch { /* non-critical — user gets a new device_id at worst */ }
+      }
+
+      // If the gate fired mid-session, send user back to pick up where they left off
+      if (localStorage.getItem('havro_pending_session')) {
+        navigate('/life-assistant');
       }
     });
   }, []);
