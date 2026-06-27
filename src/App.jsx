@@ -140,6 +140,7 @@ export default function App() {
         <Routes>
           <Route path="/life-assistant" element={guard(<LifeAssistantPage />)} />
         </Routes>
+        <EmailGateModal isOpen={gateOpen} onClose={() => setGateOpen(false)} />
       </>
     );
   }

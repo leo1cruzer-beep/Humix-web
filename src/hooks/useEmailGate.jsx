@@ -33,6 +33,7 @@ export function EmailGateProvider({ children }) {
   // Call this BEFORE the AI action; if it returns true, abort.
   const checkGate = (category) => {
     if (userHasEmail) return false;
+    if (localStorage.getItem('havro_email_verified') === 'true') return false;
     const isLife = category === 'life-assistant';
     const limit  = isLife ? LIFE_LIMIT : TOOL_LIMIT;
     const uses   = isLife ? lifeUses : (toolUses[category] ?? 0);
