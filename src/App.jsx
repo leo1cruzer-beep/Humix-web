@@ -85,10 +85,14 @@ export default function App() {
   useEffect(() => {
     const hash = window.location.hash;
     if (!hash.includes('access_token')) return;
+    // Restore original device ID if it was embedded in the redirect URL
+    const params = new URLSearchParams(window.location.search);
+    const deviceId = params.get('device_id');
+    if (deviceId) localStorage.setItem('havro_device_id', deviceId);
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session?.user) {
         localStorage.setItem('havro_email_verified', 'true');
-        window.history.replaceState(null, '', window.location.pathname + window.location.search);
+        window.history.replaceState(null, '', window.location.pathname);
         // If the gate fired mid-session, send user back to pick up where they left off
         if (localStorage.getItem('havro_pending_session')) {
           navigate('/life-assistant');
