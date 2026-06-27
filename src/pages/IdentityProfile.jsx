@@ -50,6 +50,7 @@ export default function IdentityProfile() {
   const [passkey, setPasskey]           = useState(null);
   const [activity, setActivity]         = useState([]);
   const [serviceCount, setServiceCount] = useState(0);
+  const [totalUses, setTotalUses]       = useState(0);
   const [loading, setLoading]           = useState(true);
   const [confirmReset, setConfirmReset] = useState(false);
   const [hoveredActivity, setHoveredActivity] = useState(null);
@@ -59,9 +60,10 @@ export default function IdentityProfile() {
     let alive = true;
 
     async function load() {
-      const [pkRes, convRes] = await Promise.all([
+      const [pkRes, convRes, countRes] = await Promise.all([
         supabase.from('passkeys').select('created_at').eq('user_id', userId).limit(1).single(),
         supabase.from('conversations').select('id, service, created_at, preview, messages').eq('user_id', userId).order('created_at', { ascending: false }).limit(5),
+        supabase.from('conversations').select('*', { count: 'exact', head: true }).eq('user_id', userId),
       ]);
 
       if (!alive) return;
@@ -70,6 +72,7 @@ export default function IdentityProfile() {
         setActivity(convRes.data);
         setServiceCount(new Set(convRes.data.map(r => r.service)).size);
       }
+      setTotalUses(countRes.count ?? 0);
       setLoading(false);
     }
 
@@ -135,7 +138,7 @@ export default function IdentityProfile() {
 
         {/* ── Stats Row ───────────────────────────────────────── */}
         <div style={s.statsRow}>
-          <StatCard icon={<Activity size={20} color="#00C48C" strokeWidth={1.8} />} label="Services Used" value={serviceCount} />
+          <StatCard icon={<Activity size={20} color="#00C48C" strokeWidth={1.8} />} label="AI Messages" value={totalUses} />
           <StatCard icon={<Calendar size={20} color="#10B981" strokeWidth={1.8} />} label="Days Active" value={daysActive} valueColor="#10B981" />
           <StatCard icon={<Star size={20} color="#F59E0B" strokeWidth={1.8} />} label="Identity Score" value={identityScore} valueColor="#00C48C" glow />
         </div>
