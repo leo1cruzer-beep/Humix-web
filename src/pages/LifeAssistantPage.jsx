@@ -17,6 +17,9 @@ const LANGUAGES = [
   { code: 'en', label: 'English', content: 'English' },
   { code: 'ur', label: 'اردو',    content: 'اردو'   },
   { code: 'ar', label: 'العربية', content: 'Arabic'  },
+  { code: 'sw', label: 'Swahili', content: 'Swahili' },
+  { code: 'hi', label: 'हिंदी',   content: 'Hindi'   },
+  { code: 'bn', label: 'বাংলা',   content: 'Bengali' },
 ];
 
 function getDeviceId() {
@@ -45,7 +48,7 @@ export default function LifeAssistantPage() {
   const [isTyping, setIsTyping]             = useState(false);
   const [isInitializing, setIsInitializing] = useState(false);
   const [sessionId, setSessionId]           = useState(null);
-  const [selectedLang, setSelectedLang]     = useState('en');
+  const [selectedLang, setSelectedLang]     = useState(LANGUAGES[0]);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
   const { logActivity } = useActivityLogger();
@@ -76,7 +79,6 @@ export default function LifeAssistantPage() {
     setInputText('');
     setIsTyping(false);
     setSessionId(null);
-    setSelectedLang('en');
     setIsInitializing(true);
 
     try {
@@ -84,7 +86,7 @@ export default function LifeAssistantPage() {
       const newId = sessionData.sessionId;
       setSessionId(newId);
       // Complete all 4 onboarding steps so real AI kicks in immediately
-      await apiPost('/api/proxy/api/chat/message', { sessionId: newId, content: 'English' }); // step 0 → set language
+      await apiPost('/api/proxy/api/chat/message', { sessionId: newId, content: selectedLang.content }); // step 0 → set language
       await apiPost('/api/proxy/api/chat/message', { sessionId: newId, content: 'no' });       // step 1 → farmer
       await apiPost('/api/proxy/api/chat/message', { sessionId: newId, content: 'no' });       // step 2 → children
       await apiPost('/api/proxy/api/chat/message', { sessionId: newId, content: 'male' });     // step 3 → gender → complete
@@ -95,8 +97,8 @@ export default function LifeAssistantPage() {
   };
 
   const switchLanguage = async (lang) => {
-    if (isInitializing || selectedLang === lang.code) return;
-    setSelectedLang(lang.code);
+    if (isInitializing || selectedLang.code === lang.code) return;
+    setSelectedLang(lang);
     setMessages([]);
     setInputText('');
     setIsTyping(false);
@@ -217,8 +219,8 @@ export default function LifeAssistantPage() {
                     disabled={busy}
                     style={{
                       ...s.langBtn,
-                      background: selectedLang === lang.code ? '#00C48C' : 'transparent',
-                      color: selectedLang === lang.code ? '#000' : 'var(--text-secondary)',
+                      background: selectedLang.code === lang.code ? '#00C48C' : 'transparent',
+                      color: selectedLang.code === lang.code ? '#000' : 'var(--text-secondary)',
                     }}
                   >
                     {lang.label}
