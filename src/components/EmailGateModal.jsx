@@ -38,7 +38,12 @@ export default function EmailGateModal({ isOpen, onClose }) {
       if (err) throw err;
       setSent(true);
     } catch (err) {
-      setError(err.message);
+      const msg = err.message ?? '';
+      setError(
+        msg.toLowerCase().includes('rate limit') || msg.toLowerCase().includes('too many')
+          ? 'Too many attempts. Please wait a few minutes and try again.'
+          : msg,
+      );
     } finally {
       setLoading(false);
     }
