@@ -3,9 +3,11 @@ import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, UserCircle, ChevronDown } from 'lucide-react';
 
 const NAV_LINKS = [
-  { label: 'Home',      to: '/' },
-  { label: 'Services',  to: '/services' },
-  { label: 'Community', to: '/community' },
+  { label: 'Home',         to: '/' },
+  { label: 'Services',     to: '/services' },
+  { label: 'Community',    to: '/community' },
+  { label: 'Partner',      to: '/partner' },
+  { label: 'Developers',   to: '/developers' },
 ];
 
 const TOOLS_LINKS = [

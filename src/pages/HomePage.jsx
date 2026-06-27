@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  TrendingUp, Briefcase, Gem, Pencil, Heart, Users, ArrowRight, Zap,
+  TrendingUp, Briefcase, Gem, Pencil, Heart, Users, ArrowRight,
   Smartphone, Phone, GraduationCap, Scale, Shield, Fingerprint,
   CheckCircle2, Globe, User, Wifi,
 } from 'lucide-react';
@@ -43,13 +43,12 @@ function useCountUp(target, decimals = 0, duration = 2200) {
 
 /* ─── Static data ────────────────────────────────────────────────── */
 const SERVICE_CARDS = [
-  { id: 'life-assistant', label: 'Life Assistant', desc: 'Health checks, legal docs & daily guidance',       Icon: Heart,      to: '/life-assistant', color: '#00C48C' },
-  { id: 'flow',           label: 'Flow',           desc: 'Automate your digital life with AI',               Icon: Zap,        to: '/flow',           color: '#2563EB' },
-  { id: 'finance',        label: 'Finance',        desc: 'Smart budgeting, debt payoff & wealth tools',      Icon: TrendingUp, to: '/finance',        color: '#FFB340' },
-  { id: 'career',         label: 'Career',         desc: 'AI résumés, interview prep & salary insights',     Icon: Briefcase,  to: '/career',         color: '#0A84FF' },
-  { id: 'business',       label: 'Business',       desc: 'Business plans, pitch decks & market research',    Icon: Gem,        to: '/business',       color: '#FF6B35' },
-  { id: 'creative',       label: 'Creative',       desc: 'Content writing, social media & brand voice',      Icon: Pencil,     to: '/creative',       color: '#BF5AF2' },
-  { id: 'community',      label: 'Community',      desc: 'Connect with 24K+ members worldwide',              Icon: Users,      to: '/community',      color: '#FF375F' },
+  { id: 'life-assistant', label: 'Life Assistant', desc: 'Health checks, legal docs & daily guidance',    Icon: Heart,      to: '/life-assistant', color: '#00C48C' },
+  { id: 'finance',        label: 'Finance',        desc: 'Smart budgeting, debt payoff & wealth tools',   Icon: TrendingUp, to: '/finance',        color: '#FFB340' },
+  { id: 'career',         label: 'Career',         desc: 'AI résumés, interview prep & salary insights',  Icon: Briefcase,  to: '/career',         color: '#0A84FF' },
+  { id: 'business',       label: 'Business',       desc: 'Business plans, pitch decks & market research', Icon: Gem,        to: '/business',       color: '#FF6B35' },
+  { id: 'creative',       label: 'Creative',       desc: 'Content writing, social media & brand voice',   Icon: Pencil,     to: '/creative',       color: '#BF5AF2' },
+  { id: 'community',      label: 'Community',      desc: 'Growing community',                             Icon: Users,      comingSoon: true,      color: '#FF375F' },
 ];
 
 const STEPS = [
@@ -59,19 +58,19 @@ const STEPS = [
 ];
 
 /* ─── Root component ─────────────────────────────────────────────── */
-export default function HomePage({ onScanToEnter }) {
+export default function HomePage({ onScanToEnter, openWaitlist }) {
   const navigate = useNavigate();
   return (
     <main className="page-enter page-transition">
-      <HeroSection onScanToEnter={onScanToEnter} navigate={navigate} />
-      <ServiceCardsSection navigate={navigate} />
+      <HeroSection openWaitlist={openWaitlist} />
+      <ServiceCardsSection navigate={navigate} openWaitlist={openWaitlist} />
       <HowItWorksSection />
       <ProblemSection />
       <HowHavroWorksSection />
-      <AgentModelSection navigate={navigate} />
+      <AgentModelSection openWaitlist={openWaitlist} />
       <ConnectivitySection />
       <ImpactNumbersSection />
-      <VisionStatementSection onScanToEnter={onScanToEnter} navigate={navigate} />
+      <VisionStatementSection openWaitlist={openWaitlist} />
       <HowToJoinSection onScanToEnter={onScanToEnter} />
     </main>
   );
@@ -81,7 +80,7 @@ export default function HomePage({ onScanToEnter }) {
    EXISTING SECTIONS (unchanged)
 ══════════════════════════════════════════════════════════════════ */
 
-function HeroSection({ onScanToEnter, navigate }) {
+function HeroSection({ openWaitlist }) {
 
   return (
     <section style={s.hero}>
@@ -106,14 +105,14 @@ function HeroSection({ onScanToEnter, navigate }) {
         </p>
 
         <div style={s.ctaRow}>
-          <button onClick={onScanToEnter} style={s.btnPrimary}>Start Earning Today</button>
-          <button onClick={() => navigate('/agent/register')} style={s.btnGhost}>
+          <button onClick={() => openWaitlist?.('User')} style={s.btnPrimary}>Start Earning Today</button>
+          <button onClick={() => openWaitlist?.('Agent')} style={s.btnGhost}>
             Become an Agent <ArrowRight size={15} strokeWidth={2} />
           </button>
         </div>
 
         <div style={s.trustRow}>
-          <TrustItem value="4B+" label="people served" />
+          <TrustItem value="4B+" label="people we're building for" />
           <div style={s.trustDivider} />
           <TrustItem value="150+" label="countries" />
           <div style={s.trustDivider} />
@@ -133,18 +132,22 @@ function TrustItem({ value, label }) {
   );
 }
 
-function ServiceCardsSection({ navigate }) {
+function ServiceCardsSection({ navigate, openWaitlist }) {
   return (
     <section id="services-section" style={s.cardsSection}>
       <div className="container">
         <div style={s.cardsSectionHeader}>
           <p style={s.sectionEyebrow}>EVERYTHING IN ONE PLACE</p>
-          <h2 style={s.cardsSectionTitle}>Six tools. One platform.</h2>
+          <h2 style={s.cardsSectionTitle}>Five tools. One platform.</h2>
           <p style={s.cardsSectionSub}>AI services built for real people with real needs.</p>
         </div>
         <div className="cat-grid" style={s.cardsGrid}>
           {SERVICE_CARDS.map(card => (
-            <ServiceCard key={card.id} card={card} navigate={navigate} />
+            <ServiceCard
+              key={card.id}
+              card={card}
+              onClick={card.comingSoon ? () => openWaitlist?.('User') : () => navigate(card.to)}
+            />
           ))}
         </div>
       </div>
@@ -152,11 +155,11 @@ function ServiceCardsSection({ navigate }) {
   );
 }
 
-function ServiceCard({ card, navigate }) {
+function ServiceCard({ card, onClick }) {
   const [hov, setHov] = useState(false);
   return (
     <button
-      onClick={() => navigate(card.to)}
+      onClick={onClick}
       style={{
         background: hov ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.04)',
         backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
@@ -166,6 +169,7 @@ function ServiceCard({ card, navigate }) {
         transform: hov ? 'translateY(-3px)' : 'none',
         boxShadow: hov ? '0 8px 24px rgba(0,0,0,0.3)' : 'none',
         display: 'flex', flexDirection: 'column', gap: '16px', width: '100%',
+        opacity: card.comingSoon ? 0.75 : 1,
       }}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
@@ -175,21 +179,36 @@ function ServiceCard({ card, navigate }) {
         background: card.color + '18',
         display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
       }}>
-        <card.Icon size={20} color={card.color} strokeWidth={1.8} />
+        <card.Icon size={20} color={card.comingSoon ? '#606060' : card.color} strokeWidth={1.8} />
       </div>
       <div style={{ flex: 1 }}>
-        <h3 style={{ fontSize: '16px', fontWeight: 600, color: '#F5F5F5', marginBottom: '6px', letterSpacing: '-0.01em' }}>
-          {card.label}
-        </h3>
-        <p style={{ fontSize: '13px', color: '#A0A0A0', lineHeight: 1.6 }}>{card.desc}</p>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+          <h3 style={{ fontSize: '16px', fontWeight: 600, color: card.comingSoon ? '#606060' : '#F5F5F5', letterSpacing: '-0.01em' }}>
+            {card.label}
+          </h3>
+          {card.comingSoon && (
+            <span style={{
+              fontSize: '10px', fontWeight: 600, color: '#606060',
+              padding: '2px 8px', borderRadius: '99px',
+              background: 'rgba(255,255,255,0.04)',
+              border: '1px solid rgba(255,255,255,0.08)',
+              letterSpacing: '0.04em', flexShrink: 0,
+            }}>Coming Soon</span>
+          )}
+        </div>
+        <p style={{ fontSize: '13px', color: '#606060', lineHeight: 1.6 }}>{card.desc}</p>
       </div>
-      <span style={{
-        fontSize: '16px',
-        color: hov ? card.color : '#606060',
-        transition: 'color 0.15s ease, transform 0.15s ease',
-        display: 'inline-block',
-        transform: hov ? 'translateX(3px)' : 'none',
-      }}>→</span>
+      {card.comingSoon ? (
+        <span style={{ fontSize: '12px', fontWeight: 600, color: '#606060' }}>Join Community →</span>
+      ) : (
+        <span style={{
+          fontSize: '16px',
+          color: hov ? card.color : '#606060',
+          transition: 'color 0.15s ease, transform 0.15s ease',
+          display: 'inline-block',
+          transform: hov ? 'translateX(3px)' : 'none',
+        }}>→</span>
+      )}
     </button>
   );
 }
@@ -642,7 +661,7 @@ const AGENT_COLS = [
   },
 ];
 
-function AgentModelSection({ navigate }) {
+function AgentModelSection({ openWaitlist }) {
   return (
     <section style={{
       background: 'rgba(0,196,140,0.018)',
@@ -731,7 +750,7 @@ function AgentModelSection({ navigate }) {
         {/* CTA */}
         <div style={{ textAlign: 'center', marginTop: '56px' }}>
           <button
-            onClick={() => navigate('/agent/register')}
+            onClick={() => openWaitlist?.('Agent')}
             style={{
               display: 'inline-flex', alignItems: 'center', gap: '8px',
               padding: '14px 32px', borderRadius: '8px',
@@ -880,7 +899,7 @@ function ImpactNumbersSection() {
 }
 
 /* ─── Section 6: Vision Statement ───────────────────────────────── */
-function VisionStatementSection({ onScanToEnter, navigate }) {
+function VisionStatementSection({ openWaitlist }) {
   return (
     <section style={{ background: '#080809', padding: '120px 0', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
       <div className="mission-inner" style={{ maxWidth: '860px' }}>
@@ -908,7 +927,7 @@ function VisionStatementSection({ onScanToEnter, navigate }) {
 
         <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
           <button
-            onClick={onScanToEnter}
+            onClick={() => openWaitlist?.('User')}
             style={{
               display: 'inline-flex', alignItems: 'center', gap: '8px',
               padding: '13px 28px', borderRadius: '8px',
@@ -920,7 +939,7 @@ function VisionStatementSection({ onScanToEnter, navigate }) {
             Join as User
           </button>
           <button
-            onClick={() => navigate('/agent/register')}
+            onClick={() => openWaitlist?.('Agent')}
             style={{
               display: 'inline-flex', alignItems: 'center', gap: '8px',
               padding: '13px 28px', borderRadius: '8px',

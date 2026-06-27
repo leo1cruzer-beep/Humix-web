@@ -41,6 +41,9 @@ import AgentRegisterPage from './pages/agent/AgentRegisterPage.jsx';
 import AgentDashboardPage from './pages/agent/AgentDashboardPage.jsx';
 import AgentLeaderboardPage from './pages/agent/AgentLeaderboardPage.jsx';
 import FlowPage from './pages/FlowPage.jsx';
+import PartnerPage from './pages/PartnerPage.jsx';
+import DevelopersPage from './pages/DevelopersPage.jsx';
+import WaitlistModal from './components/WaitlistModal.jsx';
 
 // Allows up to 2 guest tool accesses; prompts signup on the 3rd attempt.
 function ProtectedRoute({ children, isVerified, guestUses, onGuestAccess, openSignup }) {
@@ -66,8 +69,10 @@ export default function App() {
   const navigate = useNavigate();
   const { isVerified, guestUses, incrementGuestUse } = useIdentity();
   const { gateOpen, setGateOpen } = useEmailGate();
-  const [scanOpen, setScanOpen]     = useState(false);
-  const [signupOpen, setSignupOpen] = useState(false);
+  const [scanOpen, setScanOpen]       = useState(false);
+  const [signupOpen, setSignupOpen]   = useState(false);
+  const [waitlistOpen, setWaitlistOpen] = useState(false);
+  const [waitlistRole, setWaitlistRole] = useState('User');
 
   useEffect(() => {
     const params = new URLSearchParams(search);
@@ -89,6 +94,11 @@ export default function App() {
 
   const openSignup  = useCallback(() => setSignupOpen(true),  []);
   const closeSignup = useCallback(() => setSignupOpen(false), []);
+
+  const openWaitlist = useCallback((role = 'User') => {
+    setWaitlistRole(role);
+    setWaitlistOpen(true);
+  }, []);
 
   // SignupModal "Use Face ID" → close signup, open passkey
   const handleSignupFaceId = useCallback(() => {
@@ -113,6 +123,7 @@ export default function App() {
         <ScrollManager />
         {scanOpen && <PasskeyAuth onComplete={onScanComplete} onClose={closeScan} />}
         <SignupModal isOpen={signupOpen} onClose={closeSignup} onFaceId={handleSignupFaceId} />
+        <WaitlistModal isOpen={waitlistOpen} onClose={() => setWaitlistOpen(false)} defaultRole={waitlistRole} />
         <Routes>
           <Route path="/life-assistant" element={guard(<LifeAssistantPage />)} />
         </Routes>
@@ -125,11 +136,12 @@ export default function App() {
       <ScrollManager />
       {scanOpen && <PasskeyAuth onComplete={onScanComplete} onClose={closeScan} />}
       <SignupModal isOpen={signupOpen} onClose={closeSignup} onFaceId={handleSignupFaceId} />
+      <WaitlistModal isOpen={waitlistOpen} onClose={() => setWaitlistOpen(false)} defaultRole={waitlistRole} />
       <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', background: 'var(--bg-page)' }}>
         <Navbar onScanToEnter={openScan} isVerified={isVerified} />
         <div style={{ flex: 1 }}>
           <Routes>
-            <Route path="/"               element={<HomePage onScanToEnter={openScan} />} />
+            <Route path="/"               element={<HomePage onScanToEnter={openScan} openWaitlist={openWaitlist} />} />
             <Route path="/explore"        element={guard(<ExplorePage />)} />
             <Route path="/services"       element={guard(<ServicesPage />)} />
             <Route path="/pricing"        element={guard(<PricingPage />)} />
@@ -161,6 +173,8 @@ export default function App() {
             <Route path="/creative/brand"      element={guard(<BrandVoice />)} />
             <Route path="/flow"                element={guard(<FlowPage />)} />
             <Route path="/profile"             element={guard(<IdentityProfile />)} />
+            <Route path="/partner"             element={<PartnerPage />} />
+            <Route path="/developers"          element={<DevelopersPage />} />
             <Route path="*"                    element={<NotFoundPage />} />
           </Routes>
         </div>

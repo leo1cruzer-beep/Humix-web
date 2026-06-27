@@ -3,11 +3,13 @@ import { Link } from 'react-router-dom';
 import { X } from 'lucide-react';
 
 const NAV_LINKS = [
-  { label: 'Explore',   to: '/explore' },
-  { label: 'Services',  to: '/services' },
-  { label: 'Pricing',   to: '/pricing' },
-  { label: 'Community', to: '/community' },
-  { label: 'Career',    to: '/career' },
+  { label: 'Explore',       to: '/explore' },
+  { label: 'Services',      to: '/services' },
+  { label: 'Pricing',       to: '/pricing' },
+  { label: 'Community',     to: '/community' },
+  { label: 'Career',        to: '/career' },
+  { label: 'Partner with Us', to: '/partner' },
+  { label: 'Developers',    to: '/developers' },
 ];
 
 const CATEGORY_LINKS = [
