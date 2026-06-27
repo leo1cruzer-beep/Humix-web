@@ -32,6 +32,7 @@ export default function EmailGateModal({ isOpen, onClose }) {
     setLoading(true);
     try {
       const deviceId = localStorage.getItem('havro_device_id');
+      if (deviceId) localStorage.setItem('havro_device_id_backup', deviceId);
       const redirectUrl = new URL('https://havro.app');
       if (deviceId) redirectUrl.searchParams.set('device_id', deviceId);
       const { error: err } = await supabase.auth.signInWithOtp({

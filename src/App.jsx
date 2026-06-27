@@ -85,10 +85,14 @@ export default function App() {
   useEffect(() => {
     const hash = window.location.hash;
     if (!hash.includes('access_token')) return;
-    // Restore original device ID if it was embedded in the redirect URL
+    // Restore original device ID: first try URL param (may be stripped by Supabase),
+    // then fall back to the backup key saved before the email was sent.
     const params = new URLSearchParams(window.location.search);
-    const deviceId = params.get('device_id');
-    if (deviceId) localStorage.setItem('havro_device_id', deviceId);
+    const deviceIdFromUrl = params.get('device_id');
+    const deviceIdBackup = localStorage.getItem('havro_device_id_backup');
+    const restoredId = deviceIdFromUrl || deviceIdBackup;
+    if (restoredId) localStorage.setItem('havro_device_id', restoredId);
+    if (deviceIdBackup) localStorage.removeItem('havro_device_id_backup');
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session?.user) {
         localStorage.setItem('havro_email_verified', 'true');
