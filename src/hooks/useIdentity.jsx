@@ -27,7 +27,9 @@ const IdentityCtx = createContext(null);
 export function IdentityProvider({ children }) {
   const [isVerified, setIsVerified]   = useState(() => checkAndRefresh());
   const [userId, setUserId]           = useState(() => localStorage.getItem(USER_ID_KEY) ?? null);
-  const [userHasEmail, setUserHasEmail] = useState(false);
+  const [userHasEmail, setUserHasEmail] = useState(
+    () => localStorage.getItem('havro_email_verified') === 'true',
+  );
   const [guestUses, setGuestUses]     = useState(() =>
     parseInt(localStorage.getItem(GUEST_USES_KEY) || '0', 10),
   );
@@ -44,7 +46,10 @@ export function IdentityProvider({ children }) {
         localStorage.setItem(LAST_ACTIVE_KEY, Date.now().toString());
         setIsVerified(true);
         setUserId(session.user.id);
-        if (session.user.email) setUserHasEmail(true);
+        if (session.user.email) {
+          setUserHasEmail(true);
+          localStorage.setItem('havro_email_verified', 'true');
+        }
       }
       if (event === 'SIGNED_OUT') {
         localStorage.removeItem(CONFIRMED_KEY);

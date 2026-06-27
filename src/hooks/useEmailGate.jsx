@@ -47,6 +47,7 @@ export function EmailGateProvider({ children }) {
   // Call this when the user successfully initiates an AI action.
   const recordUse = (category) => {
     if (userHasEmail) return;
+    if (localStorage.getItem('havro_email_verified') === 'true') return;
     if (category === 'life-assistant') {
       const next = lifeUses + 1;
       localStorage.setItem(LIFE_USES_KEY, next.toString());
