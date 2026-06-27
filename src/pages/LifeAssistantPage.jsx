@@ -19,6 +19,15 @@ const LANGUAGES = [
   { code: 'ar', label: 'العربية', content: 'Arabic'  },
 ];
 
+function getDeviceId() {
+  let id = localStorage.getItem('havro_device_id');
+  if (!id) {
+    id = crypto.randomUUID();
+    localStorage.setItem('havro_device_id', id);
+  }
+  return id;
+}
+
 async function apiPost(path, body) {
   const res = await fetch(path, {
     method: 'POST',
@@ -71,7 +80,7 @@ export default function LifeAssistantPage() {
     setIsInitializing(true);
 
     try {
-      const sessionData = await apiPost('/api/proxy/api/chat/session', { service: svc.id });
+      const sessionData = await apiPost('/api/proxy/api/chat/session', { service: svc.id, userId: getDeviceId() });
       const newId = sessionData.sessionId;
       setSessionId(newId);
       // Complete all 4 onboarding steps so real AI kicks in immediately
@@ -95,7 +104,7 @@ export default function LifeAssistantPage() {
     setIsInitializing(true);
 
     try {
-      const sessionData = await apiPost('/api/proxy/api/chat/session', { service: activeService.id });
+      const sessionData = await apiPost('/api/proxy/api/chat/session', { service: activeService.id, userId: getDeviceId() });
       const newId = sessionData.sessionId;
       setSessionId(newId);
       await apiPost('/api/proxy/api/chat/message', { sessionId: newId, content: lang.content }); // step 0 → language
