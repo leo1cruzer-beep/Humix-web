@@ -217,12 +217,12 @@ const s = {
   header: {
     background: 'var(--bg-page)',
     borderBottom: '1px solid var(--border)',
-    padding: '64px 48px',
+    padding: '64px 16px',
   },
   container: {
     maxWidth: '1200px',
     margin: '0 auto',
-    padding: '0 48px',
+    padding: '0 16px',
     overflowX: 'hidden',
     width: '100%',
     boxSizing: 'border-box',
