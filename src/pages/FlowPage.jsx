@@ -52,8 +52,10 @@ export default function FlowPage() {
         body: JSON.stringify({
           model: 'deepseek/deepseek-r1',
           max_tokens: 1000,
-          system: SYSTEM_PROMPT,
-          messages: [{ role: 'user', content: input.trim() }]
+          messages: [
+            { role: 'system', content: SYSTEM_PROMPT },
+            { role: 'user', content: input.trim() }
+          ]
         })
       });
       const data = await res.json();
