@@ -109,7 +109,7 @@ export default function DevelopersPage() {
       {/* Coming Soon */}
       <section style={s.sectionAlt}>
         <div style={s.container}>
-          <p style={s.sectionEyebrow}>COMING SOON</p>
+          <p style={s.sectionEyebrow}>ROADMAP</p>
           <h2 style={s.sectionTitle}>On the roadmap</h2>
           <div style={s.comingGrid}>
             {COMING_SOON.map((api, i) => (
@@ -118,7 +118,7 @@ export default function DevelopersPage() {
                   <div style={{ ...s.apiIcon, background: api.color + '0f', border: `1px solid ${api.color}22` }}>
                     <api.Icon size={20} color={api.color} strokeWidth={1.8} />
                   </div>
-                  <span style={{ ...s.comingSoonBadge }}>Coming Soon</span>
+                  <span style={{ ...s.comingSoonBadge }}>Roadmap</span>
                 </div>
                 <h3 style={s.apiTitle}>{api.title}</h3>
                 <p style={s.apiDesc}>{api.desc}</p>

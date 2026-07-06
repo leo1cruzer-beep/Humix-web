@@ -8,6 +8,7 @@ const NAV_LINKS = [
   { label: 'Pricing',       to: '/pricing' },
   { label: 'Community',     to: '/community' },
   { label: 'Career',        to: '/career' },
+  { label: 'For Institutions', to: '/mfi' },
   { label: 'Partner with Us', to: '/partner' },
   { label: 'Developers',    to: '/developers' },
 ];

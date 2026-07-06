@@ -102,7 +102,7 @@ export default function SignupModal({ isOpen, onClose, onFaceId }) {
             </div>
             <p style={{ ...s.cardTitle, color: '#475569' }}>Phone Number</p>
             <p style={s.cardSub}>SMS OTP</p>
-            <div style={s.comingSoonBadge}>Coming Soon</div>
+            <div style={s.comingSoonBadge}>Roadmap</div>
           </div>
         </div>
       </div>

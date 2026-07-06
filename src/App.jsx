@@ -44,6 +44,7 @@ import AgentLeaderboardPage from './pages/agent/AgentLeaderboardPage.jsx';
 import FlowPage from './pages/FlowPage.jsx';
 import PartnerPage from './pages/PartnerPage.jsx';
 import DevelopersPage from './pages/DevelopersPage.jsx';
+import MFIPage from './pages/MFIPage.jsx';
 import WaitlistModal from './components/WaitlistModal.jsx';
 
 // Allows up to 2 guest tool accesses; prompts signup on the 3rd attempt.
@@ -214,6 +215,7 @@ export default function App() {
             <Route path="/flow"                element={guard(<FlowPage />)} />
             <Route path="/profile"             element={guard(<IdentityProfile />)} />
             <Route path="/partner"             element={<PartnerPage />} />
+            <Route path="/mfi"                 element={<MFIPage />} />
             <Route path="/developers"          element={<DevelopersPage />} />
             <Route path="*"                    element={<NotFoundPage />} />
           </Routes>

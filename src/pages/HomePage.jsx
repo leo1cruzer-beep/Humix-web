@@ -48,7 +48,7 @@ const SERVICE_CARDS = [
   { id: 'career',         label: 'Career',         desc: 'AI résumés, interview prep & salary insights',  Icon: Briefcase,  to: '/career',         color: '#0A84FF' },
   { id: 'business',       label: 'Business',       desc: 'Business plans, pitch decks & market research', Icon: Gem,        to: '/business',       color: '#FF6B35' },
   { id: 'creative',       label: 'Creative',       desc: 'Content writing, social media & brand voice',   Icon: Pencil,     to: '/creative',       color: '#BF5AF2' },
-  { id: 'community',      label: 'Community',      desc: 'Growing community',                             Icon: Users,      comingSoon: true,      color: '#FF375F' },
+  { id: 'community',      label: 'Community',      desc: 'Growing community',                             Icon: Users,      comingSoon: true, roadmap: true, color: '#FF375F' },
 ];
 
 const STEPS = [
@@ -193,7 +193,7 @@ function ServiceCard({ card, onClick }) {
               background: 'rgba(255,255,255,0.04)',
               border: '1px solid rgba(255,255,255,0.08)',
               letterSpacing: '0.04em', flexShrink: 0,
-            }}>Coming Soon</span>
+            }}>Roadmap</span>
           )}
         </div>
         <p style={{ fontSize: '13px', color: '#606060', lineHeight: 1.6 }}>{card.desc}</p>
@@ -637,7 +637,7 @@ const AGENT_COLS = [
     points: [
       'A teacher, imam, or community leader downloads Havro',
       'They become the access point for everyone around them',
-      'They earn $0.25 per registration, $0.10 per consultation',
+      'They earn per registration and per consultation — rates shown in the app',
     ],
   },
   {
@@ -773,19 +773,19 @@ const CONNECTIVITY_TIERS = [
     Icon: <Phone size={28} color="#606060" strokeWidth={1.5} />,
     title: 'Feature phones',
     body: 'IVR voice calls and SMS. No smartphone needed. No internet needed. Just a basic phone.',
-    badge: 'Coming Soon',
+    badge: 'Roadmap',
     badgeColor: '#606060',
     badgeBg: 'rgba(255,255,255,0.05)',
     borderColor: 'rgba(255,255,255,0.08)',
   },
   {
-    Icon: <Wifi size={28} color="#FFB340" strokeWidth={1.5} />,
+    Icon: <Wifi size={28} color="#606060" strokeWidth={1.5} />,
     title: 'Village Starlink Hub',
     body: 'One Starlink connection shared by the whole village. The agent\'s hub becomes the community\'s gateway.',
-    badge: 'Pilot Planning',
-    badgeColor: '#FFB340',
-    badgeBg: 'rgba(255,179,64,0.08)',
-    borderColor: 'rgba(255,179,64,0.15)',
+    badge: 'Roadmap',
+    badgeColor: '#606060',
+    badgeBg: 'rgba(255,255,255,0.05)',
+    borderColor: 'rgba(255,255,255,0.08)',
   },
   {
     Icon: <Smartphone size={28} color="#00C48C" strokeWidth={1.5} />,

@@ -131,8 +131,8 @@ export default function ServicesPage() {
       <div style={s.container}>
         <div style={{ textAlign: 'center', padding: '60px 20px', color: 'var(--text-muted)' }}>
           <div style={{ fontSize: '32px', marginBottom: '12px' }}>🛠️</div>
-          <div style={{ fontWeight: 700, fontSize: '18px', marginBottom: '8px', color: 'var(--text-primary)' }}>Coming Soon</div>
-          <div style={{ fontSize: '14px', lineHeight: 1.6 }}>Real service providers are being verified. Check back soon.</div>
+          <div style={{ fontWeight: 700, fontSize: '18px', marginBottom: '8px', color: 'var(--text-primary)' }}>In development</div>
+          <div style={{ fontSize: '14px', lineHeight: 1.6 }}>Service providers are being onboarded. Early access available via the partner program.</div>
         </div>
       </div>
     </main>

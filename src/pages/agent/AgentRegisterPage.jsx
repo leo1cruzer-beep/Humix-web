@@ -96,12 +96,13 @@ export default function AgentRegisterPage() {
             Help your community use Havro — earn money for every person you register and every consultation you help with.
           </p>
           <div style={{ display: 'flex', gap: '24px', marginTop: '24px', flexWrap: 'wrap' }}>
-            {[['$0.25', 'Per new user'], ['$0.10', 'Per consultation'], ['5%', 'Of their earnings']].map(([val, lbl]) => (
+            {[['Earn', 'per registration'], ['Earn', 'per consultation'], ['5%', 'of their earnings']].map(([val, lbl]) => (
               <div key={lbl} style={{ textAlign: 'center' }}>
                 <div style={{ fontSize: '22px', fontWeight: 800, color: 'var(--success)' }}>{val}</div>
                 <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '2px' }}>{lbl}</div>
               </div>
             ))}
+            <div style={{ fontSize: '11px', color: 'var(--text-muted)', alignSelf: 'flex-end', paddingBottom: '4px' }}>Rates shown in the app</div>
           </div>
         </div>
       </div>

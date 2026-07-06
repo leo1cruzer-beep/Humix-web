@@ -6,6 +6,7 @@ const NAV_LINKS = [
   { label: 'Home',         to: '/' },
   { label: 'Services',     to: '/services' },
   { label: 'Community',    to: '/community' },
+  { label: 'For Institutions', to: '/mfi' },
   { label: 'Partner',      to: '/partner' },
   { label: 'Developers',   to: '/developers' },
 ];
