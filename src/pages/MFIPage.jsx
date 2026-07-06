@@ -196,15 +196,13 @@ export default function MFIPage() {
         <div style={s.container}>
           <p style={s.sectionEyebrow}>THE BUILDER</p>
           <div style={s.founderCard}>
-            {/* TODO: Replace with actual founder photo */}
-            <div style={s.founderPhoto} aria-label="Founder photo placeholder">
-              <span style={s.founderPhotoText}>Photo</span>
-            </div>
+            <img
+              src="/founder.jpg"
+              alt="Saeed Ahmad, founder of Havro"
+              style={{ width: '120px', height: '120px', flexShrink: 0, borderRadius: '16px', objectFit: 'cover', border: '1px solid rgba(255,255,255,0.10)' }}
+            />
             <div style={s.founderText}>
-              <h3 style={s.founderName}>
-                {/* TODO: Add last name */}
-                Saeed
-              </h3>
+              <h3 style={s.founderName}>Saeed Ahmad</h3>
               <p style={s.founderTitle}>Founder, Havro</p>
               <p style={s.founderBio}>
                 Self-funded. Built the full stack — voice AI, WhatsApp delivery, and multilingual
@@ -212,9 +210,8 @@ export default function MFIPage() {
                 Havro is built from direct exposure to the informal lending and labour markets
                 across South Asia and the Gulf.
               </p>
-              {/* TODO: Replace # with actual LinkedIn profile URL */}
               <a
-                href="#TODO_LINKEDIN_URL"
+                href="https://www.linkedin.com/in/saeed-ahmad-273a17225?trk=contact-info"
                 style={s.linkedinLink}
                 target="_blank"
                 rel="noopener noreferrer"
