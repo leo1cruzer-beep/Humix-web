@@ -1,667 +1,692 @@
 <!DOCTYPE html>
-<html lang="ur" dir="rtl">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="noindex, nofollow">
-  <title>Voice Loan Shield — Kashf Foundation</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;600;700&display=swap');
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Voice Loan Shield — Live Demo | Havro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600&family=Noto+Nastaliq+Urdu:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     CONFIG lives in the <script> block at the bottom of this file.
+     Adjust API_BASE and endpoint paths there.
+     ============================================================ */
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --ink: #14261f;          /* deep forest ink */
+    --ink-soft: #45564e;
+    --paper: #f7f8f6;        /* cool paper */
+    --card: #ffffff;
+    --line: #dfe5e0;
+    --green: #0e6d4f;        /* Havro trust green */
+    --green-deep: #0a5039;
+    --green-tint: #e8f3ee;
+    --amber: #b7791f;        /* pending / caution */
+    --amber-tint: #fbf3e3;
+    --red: #b3372f;
+    --radius: 14px;
+    --shadow: 0 1px 2px rgba(20,38,31,.06), 0 8px 24px rgba(20,38,31,.07);
+  }
 
-    :root {
-      --green:       #2d7d46;
-      --green-light: #e8f5ed;
-      --green-dark:  #1e5c31;
-      --gold:        #c9962a;
-      --red:         #c0392b;
-      --bg:          #f4f4ef;
-      --card:        #ffffff;
-      --border:      #deded8;
-      --text:        #1a1a1a;
-      --muted:       #666;
-    }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    body {
-      font-family: 'Noto Nastaliq Urdu', 'Jameel Noori Nastaleeq', Georgia, serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      padding: 28px 16px 48px;
-      direction: rtl;
-    }
+  html { -webkit-text-size-adjust: 100%; }
 
-    .container { max-width: 680px; margin: 0 auto; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    min-height: 100vh;
+    line-height: 1.5;
+  }
 
-    /* ── Header ─────────────────────────────────────────────── */
-    .header {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding-bottom: 20px;
-      margin-bottom: 24px;
-      border-bottom: 2px solid var(--green);
-    }
+  .urdu {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    direction: rtl;
+    text-align: right;
+    line-height: 2.1;
+    font-size: 1.06rem;
+  }
 
-    .logo {
-      width: 50px; height: 50px;
-      background: var(--green);
-      border-radius: 12px;
-      display: flex; align-items: center; justify-content: center;
-      color: #fff; font-size: 24px; font-weight: 700;
-      flex-shrink: 0;
-    }
+  /* ---------- header ---------- */
+  header {
+    background: var(--card);
+    border-bottom: 1px solid var(--line);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .brand {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 1.15rem;
+    letter-spacing: -.01em;
+    color: var(--green-deep);
+  }
+  .brand small {
+    display: block;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: .68rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-top: 1px;
+  }
+  .demo-badge {
+    font-size: .68rem;
+    font-weight: 600;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--amber);
+    background: var(--amber-tint);
+    border: 1px solid #ecd9b3;
+    border-radius: 999px;
+    padding: 4px 11px;
+  }
 
-    .header h1 { font-size: 20px; color: var(--green); font-weight: 700; }
-    .header p  { font-size: 13px; color: var(--muted); margin-top: 3px; }
+  main {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 22px 16px 80px;
+  }
 
-    /* ── Loan card ───────────────────────────────────────────── */
-    .loan-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 20px;
-      margin-bottom: 22px;
-    }
+  /* ---------- stepper ---------- */
+  .stepper {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 20px;
+  }
+  .stepper span {
+    flex: 1;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--line);
+    transition: background .3s;
+  }
+  .stepper span.on { background: var(--green); }
 
-    .loan-card h2 {
-      font-size: 15px; color: var(--green);
-      font-weight: 700; margin-bottom: 14px;
-    }
+  /* ---------- cards ---------- */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 22px 20px;
+    margin-bottom: 16px;
+  }
+  .card h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 1.25rem;
+    margin-bottom: 4px;
+  }
+  .card .sub {
+    color: var(--ink-soft);
+    font-size: .88rem;
+    margin-bottom: 18px;
+  }
 
-    .loan-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
+  /* ---------- form ---------- */
+  label {
+    display: block;
+    font-size: .78rem;
+    font-weight: 600;
+    letter-spacing: .03em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin: 14px 0 5px;
+  }
+  input, select {
+    width: 100%;
+    padding: 11px 13px;
+    font: inherit;
+    font-size: .95rem;
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    background: var(--paper);
+    color: var(--ink);
+  }
+  input:focus, select:focus {
+    outline: 2px solid var(--green);
+    outline-offset: 1px;
+    border-color: var(--green);
+  }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 12px; }
+  @media (max-width: 430px) { .grid2 { grid-template-columns: 1fr; } }
 
-    .lf {
-      background: var(--green-light);
-      border-radius: 10px;
-      padding: 10px 13px;
-    }
+  button {
+    font: inherit;
+    font-weight: 600;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background .15s, transform .05s;
+  }
+  button:active { transform: translateY(1px); }
+  button:focus-visible { outline: 2px solid var(--green-deep); outline-offset: 2px; }
+  .btn-primary {
+    width: 100%;
+    background: var(--green);
+    color: #fff;
+    padding: 13px;
+    font-size: 1rem;
+    margin-top: 22px;
+  }
+  .btn-primary:hover { background: var(--green-deep); }
+  .btn-primary:disabled { background: #9db8ac; cursor: wait; }
+  .btn-ghost {
+    background: var(--green-tint);
+    color: var(--green-deep);
+    padding: 10px 16px;
+    font-size: .88rem;
+  }
+  .btn-ghost:hover { background: #d9ebe2; }
 
-    .lf .lbl { font-size: 11px; color: #555; margin-bottom: 3px; }
-    .lf .val { font-size: 14px; font-weight: 700; }
-    .lf .alt { font-size: 12px; color: var(--muted); font-weight: 400; }
+  /* ---------- conversation ---------- */
+  #convo { display: none; }
+  .loan-summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+    font-size: .82rem;
+    color: var(--ink-soft);
+    padding: 12px 16px;
+    background: var(--green-tint);
+    border-radius: 10px;
+    margin-bottom: 16px;
+  }
+  .loan-summary b { color: var(--ink); font-weight: 600; }
 
-    /* ── Start section ───────────────────────────────────────── */
-    .start-section { text-align: center; margin-bottom: 24px; }
+  .bubble {
+    max-width: 88%;
+    padding: 13px 16px;
+    border-radius: 14px;
+    margin-bottom: 12px;
+    font-size: .95rem;
+    animation: rise .25s ease both;
+  }
+  @keyframes rise { from { opacity: 0; transform: translateY(6px); } }
+  @media (prefers-reduced-motion: reduce) { .bubble { animation: none; } }
+  .bubble.assistant {
+    background: var(--card);
+    border: 1px solid var(--line);
+    margin-right: auto;
+  }
+  .bubble.user {
+    background: var(--green);
+    color: #fff;
+    margin-left: auto;
+  }
+  .bubble .who {
+    font-size: .67rem;
+    font-weight: 600;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    opacity: .65;
+    margin-bottom: 6px;
+    direction: ltr;
+    text-align: left;
+    font-family: 'Inter', sans-serif;
+  }
+  .bubble.user .who { text-align: right; }
 
-    .btn-start {
-      background: var(--green);
-      color: #fff;
-      border: none; border-radius: 12px;
-      padding: 15px 44px;
-      font-family: inherit; font-size: 18px;
-      cursor: pointer;
-      transition: background .18s, transform .1s;
-    }
-    .btn-start:hover  { background: var(--green-dark); }
-    .btn-start:active { transform: scale(.97); }
-    .btn-start:disabled { background: #999; cursor: not-allowed; }
+  /* ---------- audio row ---------- */
+  .audio-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 4px 0 16px;
+  }
+  .play-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--ink);
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 999px;
+    font-size: .88rem;
+  }
+  .play-btn:hover { background: #22392f; }
+  .play-btn:disabled { background: #8b968f; cursor: wait; }
+  .play-btn svg { width: 13px; height: 13px; fill: currentColor; flex-shrink: 0; }
+  .wave {
+    display: none;
+    align-items: center;
+    gap: 3px;
+    height: 22px;
+  }
+  .wave.playing { display: flex; }
+  .wave i {
+    width: 3px;
+    background: var(--green);
+    border-radius: 2px;
+    animation: wv 1s ease-in-out infinite;
+  }
+  .wave i:nth-child(1){height:8px;animation-delay:0s}
+  .wave i:nth-child(2){height:16px;animation-delay:.15s}
+  .wave i:nth-child(3){height:22px;animation-delay:.3s}
+  .wave i:nth-child(4){height:12px;animation-delay:.45s}
+  .wave i:nth-child(5){height:18px;animation-delay:.6s}
+  @keyframes wv { 0%,100%{transform:scaleY(.4)} 50%{transform:scaleY(1)} }
+  @media (prefers-reduced-motion: reduce) { .wave i { animation: none; } }
 
-    .start-note {
-      font-size: 12px; color: #aaa;
-      margin-top: 10px; direction: ltr;
-    }
+  /* ---------- reply input ---------- */
+  .reply-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .reply-row input { flex: 1; }
+  .reply-row button {
+    background: var(--green);
+    color: #fff;
+    padding: 0 18px;
+    font-size: .9rem;
+  }
 
-    /* ── Session panel ───────────────────────────────────────── */
-    .session-panel { display: none; }
-    .session-panel.active { display: block; }
+  /* ---------- consent panel ---------- */
+  .consent-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 18px;
+  }
+  .btn-consent {
+    padding: 14px;
+    font-size: .95rem;
+  }
+  .btn-yes { background: var(--green); color: #fff; }
+  .btn-yes:hover { background: var(--green-deep); }
+  .btn-no { background: var(--card); color: var(--red); border: 1.5px solid var(--red); }
+  .btn-no:hover { background: #fbeceb; }
 
-    /* Status bar */
-    .status-bar {
-      background: #ececea;
-      border-radius: 8px;
-      padding: 8px 14px;
-      font-size: 12px; color: #666;
-      text-align: center;
-      margin-bottom: 14px;
-    }
+  /* ---------- consent record (the signature moment) ---------- */
+  #record { display: none; }
+  .record-card {
+    background: var(--card);
+    border: 1.5px solid var(--green);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    animation: rise .35s ease both;
+  }
+  .record-head {
+    background: var(--green);
+    color: #fff;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .record-head .tick {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.18);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .record-head .tick svg { width: 17px; height: 17px; fill: #fff; }
+  .record-head h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 1.05rem;
+  }
+  .record-head small { display: block; font-size: .75rem; opacity: .85; font-weight: 400; }
+  .record-body { padding: 18px 20px; }
+  .record-body dl {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 9px 16px;
+    font-size: .86rem;
+  }
+  .record-body dt { color: var(--ink-soft); font-weight: 500; }
+  .record-body dd { font-weight: 600; word-break: break-all; }
+  .record-body dd.mono { font-family: ui-monospace, monospace; font-size: .78rem; font-weight: 500; }
 
-    /* ── Transcript ──────────────────────────────────────────── */
-    .transcript {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 16px;
-      margin-bottom: 14px;
-      max-height: 430px;
-      overflow-y: auto;
-      scroll-behavior: smooth;
-    }
+  .status-line {
+    margin-top: 14px;
+    padding: 10px 14px;
+    border-radius: 9px;
+    font-size: .84rem;
+    display: none;
+  }
+  .status-line.err { display: block; background: #fbeceb; color: var(--red); }
+  .status-line.info { display: block; background: var(--amber-tint); color: var(--amber); }
 
-    .transcript-header {
-      font-size: 12px; color: #aaa;
-      text-align: center; margin-bottom: 14px;
-      letter-spacing: .03em; direction: ltr;
-    }
-
-    .bubble { margin-bottom: 16px; }
-    .bubble .speaker { font-size: 11px; color: #999; margin-bottom: 5px; }
-
-    .bubble .text {
-      display: inline-block;
-      padding: 12px 16px;
-      border-radius: 14px;
-      font-size: 15px;
-      line-height: 2;
-      max-width: 92%;
-    }
-
-    .bubble.ai .text {
-      background: var(--green-light);
-      border: 1px solid #bde0c9;
-      border-top-left-radius: 2px;
-    }
-
-    .bubble.user         { text-align: left; }
-    .bubble.user .text {
-      background: #fff9e6;
-      border: 1px solid #eed998;
-      border-top-right-radius: 2px;
-    }
-
-    /* ── TTS bar ─────────────────────────────────────────────── */
-    .tts-bar {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 13px 16px;
-      margin-bottom: 14px;
-      display: flex; align-items: center; gap: 12px;
-    }
-
-    .btn-play {
-      width: 42px; height: 42px;
-      border-radius: 50%;
-      background: var(--green);
-      border: none; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-      transition: background .18s;
-    }
-    .btn-play:hover   { background: var(--green-dark); }
-    .btn-play:disabled { background: #ccc; cursor: not-allowed; }
-    .btn-play svg { fill: #fff; width: 18px; height: 18px; margin-right: -2px; }
-
-    .waveform {
-      flex: 1; height: 38px;
-      display: flex; align-items: center; gap: 3px;
-    }
-
-    .wb {
-      flex: 1;
-      background: #b8ddc5;
-      border-radius: 3px;
-      transform-origin: bottom;
-      transition: background .3s;
-    }
-
-    /* static heights */
-    .wb:nth-child(1)  { height: 28%; }
-    .wb:nth-child(2)  { height: 55%; }
-    .wb:nth-child(3)  { height: 80%; }
-    .wb:nth-child(4)  { height: 45%; }
-    .wb:nth-child(5)  { height: 70%; }
-    .wb:nth-child(6)  { height: 38%; }
-    .wb:nth-child(7)  { height: 90%; }
-    .wb:nth-child(8)  { height: 52%; }
-    .wb:nth-child(9)  { height: 66%; }
-    .wb:nth-child(10) { height: 32%; }
-    .wb:nth-child(11) { height: 78%; }
-    .wb:nth-child(12) { height: 42%; }
-    .wb:nth-child(13) { height: 62%; }
-    .wb:nth-child(14) { height: 28%; }
-    .wb:nth-child(15) { height: 72%; }
-    .wb:nth-child(16) { height: 48%; }
-    .wb:nth-child(17) { height: 84%; }
-    .wb:nth-child(18) { height: 36%; }
-    .wb:nth-child(19) { height: 58%; }
-    .wb:nth-child(20) { height: 30%; }
-
-    .waveform.playing .wb {
-      background: var(--green);
-      animation: wave .7s ease-in-out infinite alternate;
-    }
-    .waveform.playing .wb:nth-child(odd)  { animation-delay: 0s; }
-    .waveform.playing .wb:nth-child(even) { animation-delay: .18s; }
-    .waveform.playing .wb:nth-child(3n)   { animation-delay: .35s; }
-
-    @keyframes wave {
-      from { transform: scaleY(.35); }
-      to   { transform: scaleY(1); }
-    }
-
-    .tts-label { font-size: 12px; color: #999; white-space: nowrap; }
-
-    /* ── Question input ──────────────────────────────────────── */
-    .question-area {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 14px 16px;
-      margin-bottom: 14px;
-    }
-
-    .question-area textarea {
-      width: 100%;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 10px 13px;
-      font-family: inherit; font-size: 15px;
-      resize: none; direction: rtl;
-      outline: none; line-height: 1.8;
-    }
-    .question-area textarea:focus { border-color: var(--green); }
-
-    .btn-send {
-      margin-top: 10px;
-      background: var(--gold); color: #fff;
-      border: none; border-radius: 9px;
-      padding: 10px 26px;
-      font-family: inherit; font-size: 15px;
-      cursor: pointer; transition: background .18s;
-    }
-    .btn-send:hover    { background: #a87720; }
-    .btn-send:disabled { background: #ccc; cursor: not-allowed; }
-
-    /* ── Consent section ─────────────────────────────────────── */
-    .consent-section {
-      display: none;
-      background: var(--card);
-      border: 2px solid var(--green);
-      border-radius: 14px;
-      padding: 22px 20px;
-      margin-bottom: 14px;
-      text-align: center;
-    }
-    .consent-section.visible { display: block; }
-
-    .consent-q    { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
-    .consent-sub  { font-size: 13px; color: var(--muted); margin-bottom: 22px; line-height: 1.9; }
-
-    .consent-btns { display: flex; gap: 18px; justify-content: center; }
-
-    .btn-c {
-      padding: 13px 40px;
-      border-radius: 11px; border: none;
-      font-family: inherit; font-size: 18px;
-      font-weight: 700; cursor: pointer;
-      transition: transform .1s, background .18s;
-    }
-    .btn-c:active { transform: scale(.95); }
-
-    .btn-yes { background: var(--green); color: #fff; }
-    .btn-yes:hover { background: var(--green-dark); }
-
-    .btn-no  { background: #fff; color: var(--red); border: 2px solid var(--red) !important; }
-    .btn-no:hover { background: #fdf0ef; }
-
-    .btn-c:disabled { opacity: .45; cursor: not-allowed; }
-
-    /* ── Consent result card ─────────────────────────────────── */
-    .consent-result { display: none; border-radius: 14px; padding: 26px 20px; text-align: center; }
-
-    .consent-result.granted {
-      display: block;
-      background: var(--green-light);
-      border: 2px solid var(--green);
-    }
-    .consent-result.declined {
-      display: block;
-      background: #fdf0ef;
-      border: 2px solid var(--red);
-    }
-
-    .res-icon   { font-size: 52px; margin-bottom: 12px; }
-    .res-title  { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
-    .res-detail { font-size: 14px; color: #555; line-height: 2; }
-    .res-id     {
-      display: inline-block;
-      background: #fff; border: 1px solid var(--border);
-      border-radius: 7px; padding: 4px 14px;
-      font-size: 12px; color: #999;
-      margin-top: 12px; font-family: monospace; direction: ltr;
-    }
-
-    /* ── Spinner ─────────────────────────────────────────────── */
-    .spinner {
-      display: inline-block; width: 18px; height: 18px;
-      border: 2px solid rgba(255,255,255,.35);
-      border-top-color: #fff;
-      border-radius: 50%;
-      animation: spin .7s linear infinite;
-      vertical-align: middle; margin-right: 6px;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    /* ── Footer ──────────────────────────────────────────────── */
-    .footer {
-      text-align: center; font-size: 11px; color: #bbb;
-      margin-top: 36px; padding-top: 16px;
-      border-top: 1px solid var(--border);
-      direction: ltr;
-    }
-  </style>
+  footer {
+    text-align: center;
+    font-size: .74rem;
+    color: var(--ink-soft);
+    padding: 30px 16px;
+  }
+</style>
 </head>
 <body>
-<div class="container">
 
-  <!-- Header -->
-  <div class="header">
-    <div class="logo">K</div>
-    <div>
-      <h1>Voice Loan Shield — کاشف فاؤنڈیشن</h1>
-      <p>آواز کے ذریعے قرض کی شرائط اور رضامندی</p>
-    </div>
+<header>
+  <div class="brand">Havro<small>Voice Loan Shield</small></div>
+  <span class="demo-badge">Live demo</span>
+</header>
+
+<main>
+  <div class="stepper" aria-hidden="true">
+    <span id="st1" class="on"></span><span id="st2"></span><span id="st3"></span>
   </div>
 
-  <!-- Loan card -->
-  <div class="loan-card">
-    <h2>قرض کی تفصیل</h2>
-    <div class="loan-grid">
-      <div class="lf">
-        <div class="lbl">قرض لینے والی</div>
-        <div class="val">فاطمہ بیگم</div>
+  <!-- STEP 1: session setup -->
+  <section id="setup" class="card">
+    <h2>Start a consent session</h2>
+    <p class="sub">The borrower hears their loan terms explained in Urdu, asks questions, and gives recorded verbal consent.</p>
+
+    <div class="grid2">
+      <div>
+        <label for="bname">Borrower name</label>
+        <input id="bname" value="Rukhsana Bibi" autocomplete="off">
       </div>
-      <div class="lf">
-        <div class="lbl">اصل قرض</div>
-        <div class="val">پچاس ہزار <span class="alt">(50,000 PKR)</span></div>
+      <div>
+        <label for="lid">Loan ID</label>
+        <input id="lid" value="KF-2026-04417" autocomplete="off">
       </div>
-      <div class="lf">
-        <div class="lbl">ماہانہ قسط</div>
-        <div class="val">چار ہزار نو سو سترہ <span class="alt">(4,917 PKR)</span></div>
+      <div>
+        <label for="amt">Loan amount (PKR)</label>
+        <input id="amt" type="number" value="50000">
       </div>
-      <div class="lf">
-        <div class="lbl">قسطوں کی تعداد</div>
-        <div class="val">بارہ <span class="alt">(12 ماہ)</span></div>
+      <div>
+        <label for="term">Term (months)</label>
+        <input id="term" type="number" value="12">
       </div>
-      <div class="lf">
-        <div class="lbl">مارک اپ</div>
-        <div class="val">اٹھارہ فیصد <span class="alt">(18% سالانہ)</span></div>
+      <div>
+        <label for="markup">Markup / service charge (%)</label>
+        <input id="markup" type="number" value="22" step="0.5">
       </div>
-      <div class="lf">
-        <div class="lbl">کل واپسی</div>
-        <div class="val">انسٹھ ہزار <span class="alt">(59,000 PKR)</span></div>
+      <div>
+        <label for="freq">Repayment</label>
+        <select id="freq">
+          <option value="monthly" selected>Monthly</option>
+          <option value="biweekly">Every 2 weeks</option>
+          <option value="weekly">Weekly</option>
+        </select>
       </div>
     </div>
-  </div>
 
-  <!-- Start -->
-  <div class="start-section" id="startSection">
-    <button class="btn-start" id="startBtn">سیشن شروع کریں ▶</button>
-    <p class="start-note">Demo · Kashf Foundation Loan Shield · Confidential</p>
-  </div>
+    <button id="startBtn" class="btn-primary">Begin voice explanation</button>
+    <div id="setupStatus" class="status-line"></div>
+  </section>
 
-  <!-- Session panel -->
-  <div class="session-panel" id="sessionPanel">
+  <!-- STEP 2: conversation -->
+  <section id="convo" class="card">
+    <h2>Terms explained to borrower</h2>
+    <p class="sub">Spoken in Urdu. Transcript keeps written and numeric amounts for the audit record.</p>
 
-    <div class="status-bar" id="statusBar">سیشن شروع ہو رہا ہے…</div>
+    <div class="loan-summary" id="loanSummary"></div>
+    <div id="messages" aria-live="polite"></div>
 
-    <!-- Transcript -->
-    <div class="transcript" id="transcript">
-      <div class="transcript-header">Voice Loan Shield · گفتگو</div>
-    </div>
-
-    <!-- TTS bar -->
-    <div class="tts-bar">
-      <button class="btn-play" id="playBtn" disabled>
-        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+    <div class="audio-row">
+      <button id="playBtn" class="play-btn">
+        <svg viewBox="0 0 16 16"><path d="M3 1.5v13l11-6.5z"/></svg>
+        <span id="playLabel">Play in Urdu</span>
       </button>
-      <div class="waveform" id="waveform">
-        <div class="wb"></div><div class="wb"></div><div class="wb"></div>
-        <div class="wb"></div><div class="wb"></div><div class="wb"></div>
-        <div class="wb"></div><div class="wb"></div><div class="wb"></div>
-        <div class="wb"></div><div class="wb"></div><div class="wb"></div>
-        <div class="wb"></div><div class="wb"></div><div class="wb"></div>
-        <div class="wb"></div><div class="wb"></div><div class="wb"></div>
-        <div class="wb"></div><div class="wb"></div>
+      <div class="wave" id="wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+    </div>
+
+    <div class="reply-row">
+      <input id="replyInput" placeholder="Borrower question (e.g. قسط کتنی ہوگی؟)" autocomplete="off">
+      <button id="sendBtn">Ask</button>
+    </div>
+
+    <div class="consent-actions">
+      <button id="consentYes" class="btn-consent btn-yes">✓ &nbsp;Borrower consents</button>
+      <button id="consentNo" class="btn-consent btn-no">Declines / needs time</button>
+    </div>
+    <div id="convoStatus" class="status-line"></div>
+  </section>
+
+  <!-- STEP 3: consent record -->
+  <section id="record">
+    <div class="record-card">
+      <div class="record-head">
+        <div class="tick"><svg viewBox="0 0 16 16"><path d="M6.2 12.6 1.9 8.3l1.5-1.5 2.8 2.8 6.4-6.4 1.5 1.5z"/></svg></div>
+        <div>
+          <h3 id="recordTitle">Consent recorded</h3>
+          <small>Stored with audio clip, transcript &amp; timestamp</small>
+        </div>
       </div>
-      <span class="tts-label" id="ttsLabel">آواز</span>
-    </div>
-
-    <!-- Question input -->
-    <div class="question-area" id="questionArea">
-      <textarea id="questionInput" rows="2"
-        placeholder="اپنا سوال یہاں لکھیں…"></textarea>
-      <button class="btn-send" id="sendBtn">بھیجیں</button>
-    </div>
-
-    <!-- Consent prompt -->
-    <div class="consent-section" id="consentSection">
-      <div class="consent-q">کیا آپ یہ شرائط قبول کرتے ہیں؟</div>
-      <div class="consent-sub">
-        پچاس ہزار (50,000) روپے — بارہ (12) ماہانہ اقساط<br>
-        اٹھارہ فیصد (18%) مارک اپ — پہلی قسط یکم اگست 2026
-      </div>
-      <div class="consent-btns">
-        <button class="btn-c btn-yes" id="btnYes">جی ہاں ✓</button>
-        <button class="btn-c btn-no"  id="btnNo">نہیں ✗</button>
+      <div class="record-body">
+        <dl>
+          <dt>Borrower</dt><dd id="rBorrower"></dd>
+          <dt>Loan ID</dt><dd id="rLoan"></dd>
+          <dt>Amount</dt><dd id="rAmount"></dd>
+          <dt>Consent</dt><dd id="rConsent"></dd>
+          <dt>Session</dt><dd class="mono" id="rSession"></dd>
+          <dt>Recorded at</dt><dd id="rTime"></dd>
+        </dl>
+        <div style="margin-top:16px;">
+          <button id="newSession" class="btn-ghost">Start another session</button>
+        </div>
       </div>
     </div>
+  </section>
+</main>
 
-    <!-- Result card -->
-    <div class="consent-result" id="consentResult">
-      <div class="res-icon"   id="resIcon"></div>
-      <div class="res-title"  id="resTitle"></div>
-      <div class="res-detail" id="resDetail"></div>
-      <div class="res-id"     id="resId"></div>
-    </div>
-
-  </div><!-- /session-panel -->
-
-  <div class="footer">
-    Voice Loan Shield · Kashf Foundation Pilot · Confidential Demo · Not for distribution
-  </div>
-
-</div><!-- /container -->
+<footer>Havro · Voice Loan Shield — verifiable verbal consent for microfinance · havro.app</footer>
 
 <script>
-// ── CONFIG ──────────────────────────────────────────────────────────────────
-const API_BASE   = "";                                          // same-origin via Vercel rewrite
-const EP_SESSION = `${API_BASE}/loan-shield/session`;
+/* ================= CONFIG ================= */
+const API_BASE   = "";  // same-origin via Vercel /loan-shield/* proxy
+const EP_CREATE  = ()   => `${API_BASE}/loan-shield/session`;
 const EP_MESSAGE = (id) => `${API_BASE}/loan-shield/session/${id}/message`;
 const EP_TTS     = (id) => `${API_BASE}/loan-shield/session/${id}/tts`;
 const EP_CONSENT = (id) => `${API_BASE}/loan-shield/session/${id}/consent`;
+/* ========================================== */
 
-const LOAN = {
-  borrowerName:         "فاطمہ بیگم",
-  lenderName:           "کاشف فاؤنڈیشن",
-  principal:            50000,
-  currency:             "PKR",
-  markupRate:           "18% سالانہ",
-  totalRepayment:       59000,
-  installmentAmount:    4917,
-  installmentCount:     12,
-  installmentFrequency: "ماہانہ",
-  latePenalty:          "2% ماہانہ",
-  firstDueDate:         "2026-08-01",
-  loanId:               "KASHF-DEMO-001",
-};
-// ── END CONFIG ───────────────────────────────────────────────────────────────
+const $ = id => document.getElementById(id);
+let sessionId = null, audioEl = null, currentAudioUrl = null;
+let currentForm = null;  // saved so consent card can read without hitting the DOM
 
-let sessionId = null;
-let audioBlob = null;
-let audioEl   = null;
+function setStep(n) {
+  $("st1").classList.toggle("on", n >= 1);
+  $("st2").classList.toggle("on", n >= 2);
+  $("st3").classList.toggle("on", n >= 3);
+}
+function showStatus(el, msg, cls = "err") {
+  el.className = "status-line " + cls;
+  el.textContent = msg;
+}
+function clearStatus(el) { el.className = "status-line"; el.textContent = ""; }
 
-const $  = (id) => document.getElementById(id);
-
-// ── Helpers ──────────────────────────────────────────────────────────────────
 function addBubble(role, text) {
-  const d = document.createElement("div");
-  d.className = `bubble ${role}`;
-  d.innerHTML = `
-    <div class="speaker">${role === "ai" ? "Voice Loan Shield" : "فاطمہ بیگم"}</div>
-    <div class="text">${text.replace(/\n/g, "<br>")}</div>`;
-  $("transcript").appendChild(d);
-  $("transcript").scrollTop = $("transcript").scrollHeight;
+  const b = document.createElement("div");
+  b.className = "bubble " + role;
+  const who = document.createElement("div");
+  who.className = "who";
+  who.textContent = role === "assistant" ? "Loan Shield · اردو" : "Borrower";
+  const body = document.createElement("div");
+  body.className = "urdu";
+  body.textContent = text;
+  b.appendChild(who); b.appendChild(body);
+  $("messages").appendChild(b);
+  b.scrollIntoView({ behavior: "smooth", block: "end" });
 }
 
-function setStatus(msg) { $("statusBar").textContent = msg; }
-
-// ── TTS ──────────────────────────────────────────────────────────────────────
-async function fetchTTS() {
-  $("playBtn").disabled = true;
-  $("ttsLabel").textContent = "لوڈ ہو رہا ہے…";
-  try {
-    const r = await fetch(EP_TTS(sessionId), { method: "POST" });
-    if (!r.ok) throw new Error(`TTS ${r.status}`);
-    audioBlob = await r.blob();
-    $("playBtn").disabled = false;
-    $("ttsLabel").textContent = "چلانے کے لیے دبائیں ▶";
-  } catch (e) {
-    $("ttsLabel").textContent = "آواز دستیاب نہیں";
-    console.error("TTS error", e);
-  }
-}
-
-function playAudio() {
-  if (!audioBlob) return;
-  if (audioEl) { audioEl.pause(); audioEl = null; }
-  const url = URL.createObjectURL(audioBlob);
-  audioEl = new Audio(url);
-  $("waveform").classList.add("playing");
-  $("ttsLabel").textContent = "چل رہا ہے…";
-  audioEl.play().catch(console.error);
-  audioEl.onended = () => {
-    $("waveform").classList.remove("playing");
-    $("ttsLabel").textContent = "مکمل ✓";
-    URL.revokeObjectURL(url);
-  };
-}
-
-// ── START ─────────────────────────────────────────────────────────────────────
+/* ---------- start session ---------- */
 $("startBtn").addEventListener("click", async () => {
-  $("startBtn").disabled = true;
-  $("startBtn").innerHTML = '<span class="spinner"></span> شروع ہو رہا ہے…';
+  const btn = $("startBtn");
+  btn.disabled = true; btn.textContent = "Starting…";
+  clearStatus($("setupStatus"));
+
+  // Form-level fields (used for display)
+  currentForm = {
+    borrowerName: $("bname").value.trim(),
+    loanId:       $("lid").value.trim(),
+    amount:       Number($("amt").value),
+    termMonths:   Number($("term").value),
+    markupPct:    Number($("markup").value),
+    frequency:    $("freq").value,
+  };
+
+  // Compute derived fields so the API's LLM system prompt has full data
+  const freqUrdu = { monthly: "ماہانہ", biweekly: "ہر دو ہفتے", weekly: "ہفتہ وار" };
+  const totalRepayment   = Math.round(currentForm.amount * (1 + currentForm.markupPct / 100));
+  const installmentAmount = Math.round(totalRepayment / currentForm.termMonths);
+  const firstDueDate = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1)
+    .toISOString().split("T")[0];
+
+  // API expects the full LoanRecord shape
+  const payload = {
+    borrowerName:         currentForm.borrowerName,
+    lenderName:           "Kashf Foundation",
+    loanId:               currentForm.loanId,
+    principal:            currentForm.amount,
+    currency:             "PKR",
+    markupRate:           `${currentForm.markupPct}% سالانہ`,
+    totalRepayment,
+    installmentAmount,
+    installmentCount:     currentForm.termMonths,
+    installmentFrequency: freqUrdu[currentForm.frequency] || "ماہانہ",
+    latePenalty:          "2% ماہانہ",
+    firstDueDate,
+  };
 
   try {
-    const r    = await fetch(EP_SESSION, {
+    const res = await fetch(EP_CREATE(), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(LOAN),
+      body: JSON.stringify(payload)
     });
-    const data = await r.json();
-    sessionId  = data.sessionId;
+    if (!res.ok) throw new Error(`API ${res.status}`);
+    const data = await res.json();
+    sessionId = data.sessionId || data.session_id || data.id;
+    if (!sessionId) throw new Error("No session ID in response");
 
-    $("startSection").style.display = "none";
-    $("sessionPanel").classList.add("active");
+    $("loanSummary").innerHTML =
+      `<span><b>${currentForm.borrowerName}</b></span>` +
+      `<span>Loan <b>${currentForm.loanId}</b></span>` +
+      `<span><b>PKR ${currentForm.amount.toLocaleString()}</b> · ${currentForm.termMonths} mo · ${currentForm.markupPct}%</span>`;
 
-    // Fix #1: real API returns `opening`, fall back to `reply` if absent
-    const first = data.opening ?? data.reply ?? "";
-    addBubble("ai", first);
-    setStatus("قرض کی شرائط سمجھائی جا رہی ہیں");
+    // Fix: real API returns `opening`, not `reply`
+    const firstMsg = data.opening ?? data.reply;
+    if (firstMsg) addBubble("assistant", firstMsg);
 
-    await fetchTTS();
+    $("setup").style.display = "none";
+    $("convo").style.display = "block";
+    setStep(2);
   } catch (e) {
-    $("startBtn").disabled = false;
-    $("startBtn").textContent = "سیشن شروع کریں ▶";
-    alert("خرابی: " + e.message);
-  }
-});
-
-// ── PLAY ──────────────────────────────────────────────────────────────────────
-$("playBtn").addEventListener("click", playAudio);
-
-// ── SEND MESSAGE ──────────────────────────────────────────────────────────────
-async function sendMessage() {
-  const text = $("questionInput").value.trim();
-  if (!text || !sessionId) return;
-
-  $("sendBtn").disabled      = true;
-  $("questionInput").disabled = true;
-  addBubble("user", text);
-  $("questionInput").value = "";
-  setStatus("جواب آ رہا ہے…");
-
-  try {
-    const r    = await fetch(EP_MESSAGE(sessionId), {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text }),
-    });
-    const data = await r.json();
-    addBubble("ai", data.reply);
-
-    await fetchTTS();
-
-    if (data.phase === "consent" || data.phase === "consented") {
-      showConsent();
-    } else {
-      setStatus("سوال پوچھ سکتے ہیں");
-    }
-  } catch (e) {
-    setStatus("خرابی: " + e.message);
-    console.error(e);
+    showStatus($("setupStatus"), "Could not start session — " + e.message + ". Check the API is up (session IDs are in-memory; a restart wipes them).");
   } finally {
-    $("sendBtn").disabled      = false;
-    $("questionInput").disabled = false;
-    $("questionInput").focus();
+    btn.disabled = false; btn.textContent = "Begin voice explanation";
   }
-}
-
-$("sendBtn").addEventListener("click", sendMessage);
-$("questionInput").addEventListener("keydown", (e) => {
-  if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); }
 });
 
-// ── CONSENT ───────────────────────────────────────────────────────────────────
-function showConsent() {
-  $("questionArea").style.display = "none";
-  $("consentSection").classList.add("visible");
-  setStatus("رضامندی کا انتظار ہے");
-  $("consentSection").scrollIntoView({ behavior: "smooth" });
-}
-
-async function recordConsent(granted) {
-  $("btnYes").disabled = true;
-  $("btnNo").disabled  = true;
-  setStatus("ریکارڈ ہو رہا ہے…");
-
+/* ---------- borrower question ---------- */
+async function sendReply() {
+  const text = $("replyInput").value.trim();
+  if (!text || !sessionId) return;
+  $("replyInput").value = "";
+  addBubble("user", text);
+  clearStatus($("convoStatus"));
   try {
-    const r    = await fetch(EP_CONSENT(sessionId), {
+    const res = await fetch(EP_MESSAGE(sessionId), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ consent: granted }),
+      body: JSON.stringify({ text })
     });
-    const data = await r.json();
-
-    $("consentSection").classList.remove("visible");
-    const box = $("consentResult");
-    box.classList.add(granted ? "granted" : "declined");
-
-    if (granted) {
-      $("resIcon").textContent   = "✅";
-      $("resTitle").textContent  = "رضامندی ریکارڈ ہو گئی";
-      $("resTitle").style.color  = "var(--green)";
-      $("resDetail").textContent =
-        "فاطمہ بیگم نے قرض کی شرائط قبول کر لی ہیں۔\nآڈیو کلپ محفوظ ہو گیا ہے۔";
-      setStatus("رضامندی مکمل — سیشن محفوظ ہے ✓");
-    } else {
-      $("resIcon").textContent   = "❌";
-      $("resTitle").textContent  = "رضامندی نہیں دی گئی";
-      $("resTitle").style.color  = "var(--red)";
-      $("resDetail").textContent =
-        "فاطمہ بیگم نے شرائط قبول نہیں کیں۔\nانکار ریکارڈ کیا گیا ہے۔";
-      setStatus("سیشن مکمل — انکار ریکارڈ ہے");
-    }
-
-    $("resId").textContent =
-      `Consent ID: ${data.consentId}  ·  ${new Date(data.created_at).toLocaleString("ur-PK")}`;
-
-    box.scrollIntoView({ behavior: "smooth" });
+    if (!res.ok) throw new Error(`API ${res.status}`);
+    const data = await res.json();
+    if (data.reply) addBubble("assistant", data.reply);
   } catch (e) {
-    setStatus("خرابی: " + e.message);
-    $("btnYes").disabled = false;
-    $("btnNo").disabled  = false;
+    showStatus($("convoStatus"), "Message failed — " + e.message);
   }
 }
+$("sendBtn").addEventListener("click", sendReply);
+$("replyInput").addEventListener("keydown", e => { if (e.key === "Enter") sendReply(); });
 
-$("btnYes").addEventListener("click", () => recordConsent(true));
-$("btnNo").addEventListener("click",  () => recordConsent(false));
+/* ---------- TTS playback ---------- */
+$("playBtn").addEventListener("click", async () => {
+  if (!sessionId) return;
+  const btn = $("playBtn"), label = $("playLabel"), wave = $("wave");
+
+  // toggle stop if already playing
+  if (audioEl && !audioEl.paused) {
+    audioEl.pause(); audioEl.currentTime = 0;
+    wave.classList.remove("playing"); label.textContent = "Play in Urdu";
+    return;
+  }
+
+  btn.disabled = true; label.textContent = "Generating…";
+  clearStatus($("convoStatus"));
+  try {
+    const res = await fetch(EP_TTS(sessionId), { method: "POST" });
+    if (!res.ok) throw new Error(`TTS ${res.status}`);
+    const blob = await res.blob();
+    if (currentAudioUrl) URL.revokeObjectURL(currentAudioUrl);
+    currentAudioUrl = URL.createObjectURL(blob);
+    audioEl = new Audio(currentAudioUrl);
+    audioEl.addEventListener("ended", () => {
+      wave.classList.remove("playing");
+      label.textContent = "Play in Urdu";
+    });
+    await audioEl.play();
+    wave.classList.add("playing");
+    label.textContent = "Stop";
+  } catch (e) {
+    showStatus($("convoStatus"), "Audio failed — " + e.message);
+    label.textContent = "Play in Urdu";
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+/* ---------- consent ---------- */
+async function recordConsent(consent) {
+  if (!sessionId) return;
+  clearStatus($("convoStatus"));
+  try {
+    const res = await fetch(EP_CONSENT(sessionId), {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ consent })
+    });
+    if (!res.ok) throw new Error(`API ${res.status}`);
+    const data = await res.json().catch(() => ({}));
+
+    // Use saved currentForm — not DOM inputs — so values are correct
+    $("rBorrower").textContent = currentForm.borrowerName;
+    $("rLoan").textContent     = currentForm.loanId;
+    $("rAmount").textContent   = "PKR " + currentForm.amount.toLocaleString();
+    $("rConsent").textContent  = consent ? "Given — verbal, recorded" : "Declined";
+    $("rSession").textContent  = sessionId;
+    $("rTime").textContent     = new Date(data.created_at || Date.now()).toLocaleString();
+    $("recordTitle").textContent = consent ? "Consent recorded" : "Decline recorded";
+
+    if (audioEl && !audioEl.paused) audioEl.pause();
+    $("convo").style.display = "none";
+    $("record").style.display = "block";
+    setStep(3);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  } catch (e) {
+    showStatus($("convoStatus"), "Consent logging failed — " + e.message);
+  }
+}
+$("consentYes").addEventListener("click", () => recordConsent(true));
+$("consentNo").addEventListener("click",  () => recordConsent(false));
+
+/* ---------- reset ---------- */
+$("newSession").addEventListener("click", () => {
+  sessionId = null; currentForm = null;
+  $("messages").innerHTML = "";
+  $("record").style.display = "none";
+  $("setup").style.display = "block";
+  setStep(1);
+  window.scrollTo({ top: 0 });
+});
 </script>
 </body>
 </html>
