@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Voice Loan Shield — Kashf Foundation</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;600;700&display=swap');
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green:       #2d7d46;
+      --green-light: #e8f5ed;
+      --green-dark:  #1e5c31;
+      --gold:        #c9962a;
+      --red:         #c0392b;
+      --bg:          #f4f4ef;
+      --card:        #ffffff;
+      --border:      #deded8;
+      --text:        #1a1a1a;
+      --muted:       #666;
+    }
+
+    body {
+      font-family: 'Noto Nastaliq Urdu', 'Jameel Noori Nastaleeq', Georgia, serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 28px 16px 48px;
+      direction: rtl;
+    }
+
+    .container { max-width: 680px; margin: 0 auto; }
+
+    /* ── Header ─────────────────────────────────────────────── */
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+      border-bottom: 2px solid var(--green);
+    }
+
+    .logo {
+      width: 50px; height: 50px;
+      background: var(--green);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 24px; font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .header h1 { font-size: 20px; color: var(--green); font-weight: 700; }
+    .header p  { font-size: 13px; color: var(--muted); margin-top: 3px; }
+
+    /* ── Loan card ───────────────────────────────────────────── */
+    .loan-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 22px;
+    }
+
+    .loan-card h2 {
+      font-size: 15px; color: var(--green);
+      font-weight: 700; margin-bottom: 14px;
+    }
+
+    .loan-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .lf {
+      background: var(--green-light);
+      border-radius: 10px;
+      padding: 10px 13px;
+    }
+
+    .lf .lbl { font-size: 11px; color: #555; margin-bottom: 3px; }
+    .lf .val { font-size: 14px; font-weight: 700; }
+    .lf .alt { font-size: 12px; color: var(--muted); font-weight: 400; }
+
+    /* ── Start section ───────────────────────────────────────── */
+    .start-section { text-align: center; margin-bottom: 24px; }
+
+    .btn-start {
+      background: var(--green);
+      color: #fff;
+      border: none; border-radius: 12px;
+      padding: 15px 44px;
+      font-family: inherit; font-size: 18px;
+      cursor: pointer;
+      transition: background .18s, transform .1s;
+    }
+    .btn-start:hover  { background: var(--green-dark); }
+    .btn-start:active { transform: scale(.97); }
+    .btn-start:disabled { background: #999; cursor: not-allowed; }
+
+    .start-note {
+      font-size: 12px; color: #aaa;
+      margin-top: 10px; direction: ltr;
+    }
+
+    /* ── Session panel ───────────────────────────────────────── */
+    .session-panel { display: none; }
+    .session-panel.active { display: block; }
+
+    /* Status bar */
+    .status-bar {
+      background: #ececea;
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-size: 12px; color: #666;
+      text-align: center;
+      margin-bottom: 14px;
+    }
+
+    /* ── Transcript ──────────────────────────────────────────── */
+    .transcript {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 14px;
+      max-height: 430px;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+    }
+
+    .transcript-header {
+      font-size: 12px; color: #aaa;
+      text-align: center; margin-bottom: 14px;
+      letter-spacing: .03em; direction: ltr;
+    }
+
+    .bubble { margin-bottom: 16px; }
+    .bubble .speaker { font-size: 11px; color: #999; margin-bottom: 5px; }
+
+    .bubble .text {
+      display: inline-block;
+      padding: 12px 16px;
+      border-radius: 14px;
+      font-size: 15px;
+      line-height: 2;
+      max-width: 92%;
+    }
+
+    .bubble.ai .text {
+      background: var(--green-light);
+      border: 1px solid #bde0c9;
+      border-top-left-radius: 2px;
+    }
+
+    .bubble.user         { text-align: left; }
+    .bubble.user .text {
+      background: #fff9e6;
+      border: 1px solid #eed998;
+      border-top-right-radius: 2px;
+    }
+
+    /* ── TTS bar ─────────────────────────────────────────────── */
+    .tts-bar {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 13px 16px;
+      margin-bottom: 14px;
+      display: flex; align-items: center; gap: 12px;
+    }
+
+    .btn-play {
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      background: var(--green);
+      border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: background .18s;
+    }
+    .btn-play:hover   { background: var(--green-dark); }
+    .btn-play:disabled { background: #ccc; cursor: not-allowed; }
+    .btn-play svg { fill: #fff; width: 18px; height: 18px; margin-right: -2px; }
+
+    .waveform {
+      flex: 1; height: 38px;
+      display: flex; align-items: center; gap: 3px;
+    }
+
+    .wb {
+      flex: 1;
+      background: #b8ddc5;
+      border-radius: 3px;
+      transform-origin: bottom;
+      transition: background .3s;
+    }
+
+    /* static heights */
+    .wb:nth-child(1)  { height: 28%; }
+    .wb:nth-child(2)  { height: 55%; }
+    .wb:nth-child(3)  { height: 80%; }
+    .wb:nth-child(4)  { height: 45%; }
+    .wb:nth-child(5)  { height: 70%; }
+    .wb:nth-child(6)  { height: 38%; }
+    .wb:nth-child(7)  { height: 90%; }
+    .wb:nth-child(8)  { height: 52%; }
+    .wb:nth-child(9)  { height: 66%; }
+    .wb:nth-child(10) { height: 32%; }
+    .wb:nth-child(11) { height: 78%; }
+    .wb:nth-child(12) { height: 42%; }
+    .wb:nth-child(13) { height: 62%; }
+    .wb:nth-child(14) { height: 28%; }
+    .wb:nth-child(15) { height: 72%; }
+    .wb:nth-child(16) { height: 48%; }
+    .wb:nth-child(17) { height: 84%; }
+    .wb:nth-child(18) { height: 36%; }
+    .wb:nth-child(19) { height: 58%; }
+    .wb:nth-child(20) { height: 30%; }
+
+    .waveform.playing .wb {
+      background: var(--green);
+      animation: wave .7s ease-in-out infinite alternate;
+    }
+    .waveform.playing .wb:nth-child(odd)  { animation-delay: 0s; }
+    .waveform.playing .wb:nth-child(even) { animation-delay: .18s; }
+    .waveform.playing .wb:nth-child(3n)   { animation-delay: .35s; }
+
+    @keyframes wave {
+      from { transform: scaleY(.35); }
+      to   { transform: scaleY(1); }
+    }
+
+    .tts-label { font-size: 12px; color: #999; white-space: nowrap; }
+
+    /* ── Question input ──────────────────────────────────────── */
+    .question-area {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 14px;
+    }
+
+    .question-area textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 13px;
+      font-family: inherit; font-size: 15px;
+      resize: none; direction: rtl;
+      outline: none; line-height: 1.8;
+    }
+    .question-area textarea:focus { border-color: var(--green); }
+
+    .btn-send {
+      margin-top: 10px;
+      background: var(--gold); color: #fff;
+      border: none; border-radius: 9px;
+      padding: 10px 26px;
+      font-family: inherit; font-size: 15px;
+      cursor: pointer; transition: background .18s;
+    }
+    .btn-send:hover    { background: #a87720; }
+    .btn-send:disabled { background: #ccc; cursor: not-allowed; }
+
+    /* ── Consent section ─────────────────────────────────────── */
+    .consent-section {
+      display: none;
+      background: var(--card);
+      border: 2px solid var(--green);
+      border-radius: 14px;
+      padding: 22px 20px;
+      margin-bottom: 14px;
+      text-align: center;
+    }
+    .consent-section.visible { display: block; }
+
+    .consent-q    { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+    .consent-sub  { font-size: 13px; color: var(--muted); margin-bottom: 22px; line-height: 1.9; }
+
+    .consent-btns { display: flex; gap: 18px; justify-content: center; }
+
+    .btn-c {
+      padding: 13px 40px;
+      border-radius: 11px; border: none;
+      font-family: inherit; font-size: 18px;
+      font-weight: 700; cursor: pointer;
+      transition: transform .1s, background .18s;
+    }
+    .btn-c:active { transform: scale(.95); }
+
+    .btn-yes { background: var(--green); color: #fff; }
+    .btn-yes:hover { background: var(--green-dark); }
+
+    .btn-no  { background: #fff; color: var(--red); border: 2px solid var(--red) !important; }
+    .btn-no:hover { background: #fdf0ef; }
+
+    .btn-c:disabled { opacity: .45; cursor: not-allowed; }
+
+    /* ── Consent result card ─────────────────────────────────── */
+    .consent-result { display: none; border-radius: 14px; padding: 26px 20px; text-align: center; }
+
+    .consent-result.granted {
+      display: block;
+      background: var(--green-light);
+      border: 2px solid var(--green);
+    }
+    .consent-result.declined {
+      display: block;
+      background: #fdf0ef;
+      border: 2px solid var(--red);
+    }
+
+    .res-icon   { font-size: 52px; margin-bottom: 12px; }
+    .res-title  { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+    .res-detail { font-size: 14px; color: #555; line-height: 2; }
+    .res-id     {
+      display: inline-block;
+      background: #fff; border: 1px solid var(--border);
+      border-radius: 7px; padding: 4px 14px;
+      font-size: 12px; color: #999;
+      margin-top: 12px; font-family: monospace; direction: ltr;
+    }
+
+    /* ── Spinner ─────────────────────────────────────────────── */
+    .spinner {
+      display: inline-block; width: 18px; height: 18px;
+      border: 2px solid rgba(255,255,255,.35);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+      vertical-align: middle; margin-right: 6px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Footer ──────────────────────────────────────────────── */
+    .footer {
+      text-align: center; font-size: 11px; color: #bbb;
+      margin-top: 36px; padding-top: 16px;
+      border-top: 1px solid var(--border);
+      direction: ltr;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="logo">K</div>
+    <div>
+      <h1>Voice Loan Shield — کاشف فاؤنڈیشن</h1>
+      <p>آواز کے ذریعے قرض کی شرائط اور رضامندی</p>
+    </div>
+  </div>
+
+  <!-- Loan card -->
+  <div class="loan-card">
+    <h2>قرض کی تفصیل</h2>
+    <div class="loan-grid">
+      <div class="lf">
+        <div class="lbl">قرض لینے والی</div>
+        <div class="val">فاطمہ بیگم</div>
+      </div>
+      <div class="lf">
+        <div class="lbl">اصل قرض</div>
+        <div class="val">پچاس ہزار <span class="alt">(50,000 PKR)</span></div>
+      </div>
+      <div class="lf">
+        <div class="lbl">ماہانہ قسط</div>
+        <div class="val">چار ہزار نو سو سترہ <span class="alt">(4,917 PKR)</span></div>
+      </div>
+      <div class="lf">
+        <div class="lbl">قسطوں کی تعداد</div>
+        <div class="val">بارہ <span class="alt">(12 ماہ)</span></div>
+      </div>
+      <div class="lf">
+        <div class="lbl">مارک اپ</div>
+        <div class="val">اٹھارہ فیصد <span class="alt">(18% سالانہ)</span></div>
+      </div>
+      <div class="lf">
+        <div class="lbl">کل واپسی</div>
+        <div class="val">انسٹھ ہزار <span class="alt">(59,000 PKR)</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Start -->
+  <div class="start-section" id="startSection">
+    <button class="btn-start" id="startBtn">سیشن شروع کریں ▶</button>
+    <p class="start-note">Demo · Kashf Foundation Loan Shield · Confidential</p>
+  </div>
+
+  <!-- Session panel -->
+  <div class="session-panel" id="sessionPanel">
+
+    <div class="status-bar" id="statusBar">سیشن شروع ہو رہا ہے…</div>
+
+    <!-- Transcript -->
+    <div class="transcript" id="transcript">
+      <div class="transcript-header">Voice Loan Shield · گفتگو</div>
+    </div>
+
+    <!-- TTS bar -->
+    <div class="tts-bar">
+      <button class="btn-play" id="playBtn" disabled>
+        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      </button>
+      <div class="waveform" id="waveform">
+        <div class="wb"></div><div class="wb"></div><div class="wb"></div>
+        <div class="wb"></div><div class="wb"></div><div class="wb"></div>
+        <div class="wb"></div><div class="wb"></div><div class="wb"></div>
+        <div class="wb"></div><div class="wb"></div><div class="wb"></div>
+        <div class="wb"></div><div class="wb"></div><div class="wb"></div>
+        <div class="wb"></div><div class="wb"></div><div class="wb"></div>
+        <div class="wb"></div><div class="wb"></div>
+      </div>
+      <span class="tts-label" id="ttsLabel">آواز</span>
+    </div>
+
+    <!-- Question input -->
+    <div class="question-area" id="questionArea">
+      <textarea id="questionInput" rows="2"
+        placeholder="اپنا سوال یہاں لکھیں…"></textarea>
+      <button class="btn-send" id="sendBtn">بھیجیں</button>
+    </div>
+
+    <!-- Consent prompt -->
+    <div class="consent-section" id="consentSection">
+      <div class="consent-q">کیا آپ یہ شرائط قبول کرتے ہیں؟</div>
+      <div class="consent-sub">
+        پچاس ہزار (50,000) روپے — بارہ (12) ماہانہ اقساط<br>
+        اٹھارہ فیصد (18%) مارک اپ — پہلی قسط یکم اگست 2026
+      </div>
+      <div class="consent-btns">
+        <button class="btn-c btn-yes" id="btnYes">جی ہاں ✓</button>
+        <button class="btn-c btn-no"  id="btnNo">نہیں ✗</button>
+      </div>
+    </div>
+
+    <!-- Result card -->
+    <div class="consent-result" id="consentResult">
+      <div class="res-icon"   id="resIcon"></div>
+      <div class="res-title"  id="resTitle"></div>
+      <div class="res-detail" id="resDetail"></div>
+      <div class="res-id"     id="resId"></div>
+    </div>
+
+  </div><!-- /session-panel -->
+
+  <div class="footer">
+    Voice Loan Shield · Kashf Foundation Pilot · Confidential Demo · Not for distribution
+  </div>
+
+</div><!-- /container -->
+
+<script>
+// ── CONFIG ──────────────────────────────────────────────────────────────────
+const API_BASE   = "";                                          // same-origin via Vercel rewrite
+const EP_SESSION = `${API_BASE}/loan-shield/session`;
+const EP_MESSAGE = (id) => `${API_BASE}/loan-shield/session/${id}/message`;
+const EP_TTS     = (id) => `${API_BASE}/loan-shield/session/${id}/tts`;
+const EP_CONSENT = (id) => `${API_BASE}/loan-shield/session/${id}/consent`;
+
+const LOAN = {
+  borrowerName:         "فاطمہ بیگم",
+  lenderName:           "کاشف فاؤنڈیشن",
+  principal:            50000,
+  currency:             "PKR",
+  markupRate:           "18% سالانہ",
+  totalRepayment:       59000,
+  installmentAmount:    4917,
+  installmentCount:     12,
+  installmentFrequency: "ماہانہ",
+  latePenalty:          "2% ماہانہ",
+  firstDueDate:         "2026-08-01",
+  loanId:               "KASHF-DEMO-001",
+};
+// ── END CONFIG ───────────────────────────────────────────────────────────────
+
+let sessionId = null;
+let audioBlob = null;
+let audioEl   = null;
+
+const $  = (id) => document.getElementById(id);
+
+// ── Helpers ──────────────────────────────────────────────────────────────────
+function addBubble(role, text) {
+  const d = document.createElement("div");
+  d.className = `bubble ${role}`;
+  d.innerHTML = `
+    <div class="speaker">${role === "ai" ? "Voice Loan Shield" : "فاطمہ بیگم"}</div>
+    <div class="text">${text.replace(/\n/g, "<br>")}</div>`;
+  $("transcript").appendChild(d);
+  $("transcript").scrollTop = $("transcript").scrollHeight;
+}
+
+function setStatus(msg) { $("statusBar").textContent = msg; }
+
+// ── TTS ──────────────────────────────────────────────────────────────────────
+async function fetchTTS() {
+  $("playBtn").disabled = true;
+  $("ttsLabel").textContent = "لوڈ ہو رہا ہے…";
+  try {
+    const r = await fetch(EP_TTS(sessionId), { method: "POST" });
+    if (!r.ok) throw new Error(`TTS ${r.status}`);
+    audioBlob = await r.blob();
+    $("playBtn").disabled = false;
+    $("ttsLabel").textContent = "چلانے کے لیے دبائیں ▶";
+  } catch (e) {
+    $("ttsLabel").textContent = "آواز دستیاب نہیں";
+    console.error("TTS error", e);
+  }
+}
+
+function playAudio() {
+  if (!audioBlob) return;
+  if (audioEl) { audioEl.pause(); audioEl = null; }
+  const url = URL.createObjectURL(audioBlob);
+  audioEl = new Audio(url);
+  $("waveform").classList.add("playing");
+  $("ttsLabel").textContent = "چل رہا ہے…";
+  audioEl.play().catch(console.error);
+  audioEl.onended = () => {
+    $("waveform").classList.remove("playing");
+    $("ttsLabel").textContent = "مکمل ✓";
+    URL.revokeObjectURL(url);
+  };
+}
+
+// ── START ─────────────────────────────────────────────────────────────────────
+$("startBtn").addEventListener("click", async () => {
+  $("startBtn").disabled = true;
+  $("startBtn").innerHTML = '<span class="spinner"></span> شروع ہو رہا ہے…';
+
+  try {
+    const r    = await fetch(EP_SESSION, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(LOAN),
+    });
+    const data = await r.json();
+    sessionId  = data.sessionId;
+
+    $("startSection").style.display = "none";
+    $("sessionPanel").classList.add("active");
+
+    // Fix #1: real API returns `opening`, fall back to `reply` if absent
+    const first = data.opening ?? data.reply ?? "";
+    addBubble("ai", first);
+    setStatus("قرض کی شرائط سمجھائی جا رہی ہیں");
+
+    await fetchTTS();
+  } catch (e) {
+    $("startBtn").disabled = false;
+    $("startBtn").textContent = "سیشن شروع کریں ▶";
+    alert("خرابی: " + e.message);
+  }
+});
+
+// ── PLAY ──────────────────────────────────────────────────────────────────────
+$("playBtn").addEventListener("click", playAudio);
+
+// ── SEND MESSAGE ──────────────────────────────────────────────────────────────
+async function sendMessage() {
+  const text = $("questionInput").value.trim();
+  if (!text || !sessionId) return;
+
+  $("sendBtn").disabled      = true;
+  $("questionInput").disabled = true;
+  addBubble("user", text);
+  $("questionInput").value = "";
+  setStatus("جواب آ رہا ہے…");
+
+  try {
+    const r    = await fetch(EP_MESSAGE(sessionId), {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text }),
+    });
+    const data = await r.json();
+    addBubble("ai", data.reply);
+
+    await fetchTTS();
+
+    if (data.phase === "consent" || data.phase === "consented") {
+      showConsent();
+    } else {
+      setStatus("سوال پوچھ سکتے ہیں");
+    }
+  } catch (e) {
+    setStatus("خرابی: " + e.message);
+    console.error(e);
+  } finally {
+    $("sendBtn").disabled      = false;
+    $("questionInput").disabled = false;
+    $("questionInput").focus();
+  }
+}
+
+$("sendBtn").addEventListener("click", sendMessage);
+$("questionInput").addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+});
+
+// ── CONSENT ───────────────────────────────────────────────────────────────────
+function showConsent() {
+  $("questionArea").style.display = "none";
+  $("consentSection").classList.add("visible");
+  setStatus("رضامندی کا انتظار ہے");
+  $("consentSection").scrollIntoView({ behavior: "smooth" });
+}
+
+async function recordConsent(granted) {
+  $("btnYes").disabled = true;
+  $("btnNo").disabled  = true;
+  setStatus("ریکارڈ ہو رہا ہے…");
+
+  try {
+    const r    = await fetch(EP_CONSENT(sessionId), {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ consent: granted }),
+    });
+    const data = await r.json();
+
+    $("consentSection").classList.remove("visible");
+    const box = $("consentResult");
+    box.classList.add(granted ? "granted" : "declined");
+
+    if (granted) {
+      $("resIcon").textContent   = "✅";
+      $("resTitle").textContent  = "رضامندی ریکارڈ ہو گئی";
+      $("resTitle").style.color  = "var(--green)";
+      $("resDetail").textContent =
+        "فاطمہ بیگم نے قرض کی شرائط قبول کر لی ہیں۔\nآڈیو کلپ محفوظ ہو گیا ہے۔";
+      setStatus("رضامندی مکمل — سیشن محفوظ ہے ✓");
+    } else {
+      $("resIcon").textContent   = "❌";
+      $("resTitle").textContent  = "رضامندی نہیں دی گئی";
+      $("resTitle").style.color  = "var(--red)";
+      $("resDetail").textContent =
+        "فاطمہ بیگم نے شرائط قبول نہیں کیں۔\nانکار ریکارڈ کیا گیا ہے۔";
+      setStatus("سیشن مکمل — انکار ریکارڈ ہے");
+    }
+
+    $("resId").textContent =
+      `Consent ID: ${data.consentId}  ·  ${new Date(data.created_at).toLocaleString("ur-PK")}`;
+
+    box.scrollIntoView({ behavior: "smooth" });
+  } catch (e) {
+    setStatus("خرابی: " + e.message);
+    $("btnYes").disabled = false;
+    $("btnNo").disabled  = false;
+  }
+}
+
+$("btnYes").addEventListener("click", () => recordConsent(true));
+$("btnNo").addEventListener("click",  () => recordConsent(false));
+</script>
+</body>
+</html>

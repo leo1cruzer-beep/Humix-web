@@ -5,6 +5,10 @@
       "destination": "https://13.140.184.192:8443/:path*"
     },
     {
+      "source": "/loan-shield/:path*",
+      "destination": "https://api.humix.app:8443/loan-shield/:path*"
+    },
+    {
       "source": "/((?!api).*)",
       "destination": "/index.html"
     }
