@@ -1,4 +1,4 @@
-import { CheckCircle2, FileText, MessageSquare, ClipboardCheck, Play } from 'lucide-react';
+import { CheckCircle2, FileText, MessageSquare, ClipboardCheck } from 'lucide-react';
 
 const PROBLEM_POINTS = [
   {
@@ -176,17 +176,20 @@ export default function MFIPage() {
             A 60–90 second walkthrough of a borrower interaction — from WhatsApp call initiation
             to consent confirmation.
           </p>
-          {/* TODO: Replace this placeholder with the actual demo video file */}
           <div style={s.videoWrap}>
-            <div style={s.videoPoster} aria-label="Demo video placeholder">
-              <div style={s.playBtn}>
-                <Play size={28} color="#000" fill="#000" />
-              </div>
-              <p style={s.videoNote}>
-                Demo video — recording in progress
-                {/* TODO: insert <video> or <iframe> here once demo is recorded */}
-              </p>
-            </div>
+            <video
+              controls
+              preload="metadata"
+              style={s.videoEl}
+            >
+              <source src="/loan-shield-demo.mp4" type="video/mp4" />
+            </video>
+            <p style={s.videoCaption}>
+              Verifiable Urdu verbal consent — recorded with audio clip, transcript, and timestamp.{' '}
+              <a href="/demo-ks7x.html" style={s.videoCaptionLink} target="_blank" rel="noopener noreferrer">
+                Try the live demo →
+              </a>
+            </p>
           </div>
         </div>
       </section>
@@ -386,26 +389,20 @@ const s = {
   },
   metricDesc: { fontSize: '12px', color: '#606060', lineHeight: 1.5 },
 
-  videoWrap: { maxWidth: '700px', margin: '0 auto' },
-  videoPoster: {
-    width: '100%', aspectRatio: '16 / 9',
-    background: 'rgba(255,255,255,0.03)',
-    border: '1px solid rgba(255,255,255,0.08)',
+  videoWrap: { maxWidth: '720px', margin: '0 auto' },
+  videoEl: {
+    width: '100%', display: 'block',
     borderRadius: '16px',
-    display: 'flex', flexDirection: 'column',
-    alignItems: 'center', justifyContent: 'center', gap: '16px',
-    cursor: 'default',
-    position: 'relative',
+    border: '1px solid rgba(255,255,255,0.08)',
+    background: '#000',
   },
-  playBtn: {
-    width: '64px', height: '64px', borderRadius: '50%',
-    background: '#00C48C',
-    display: 'flex', alignItems: 'center', justifyContent: 'center',
-    opacity: 0.7,
+  videoCaption: {
+    fontSize: '14px', color: '#606060',
+    fontFamily: "'Inter', sans-serif",
+    textAlign: 'center', marginTop: '16px', lineHeight: 1.6,
   },
-  videoNote: {
-    fontSize: '13px', color: '#606060',
-    fontFamily: "'Inter', sans-serif", textAlign: 'center',
+  videoCaptionLink: {
+    color: '#00C48C', textDecoration: 'none', fontWeight: 500,
   },
 
   founderCard: {
