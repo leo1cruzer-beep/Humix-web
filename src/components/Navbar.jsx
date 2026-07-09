@@ -1,29 +1,18 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, UserCircle, ChevronDown } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 
 const NAV_LINKS = [
-  { label: 'Home',         to: '/' },
-  { label: 'Services',     to: '/services' },
-  { label: 'Community',    to: '/community' },
-  { label: 'For Institutions', to: '/mfi' },
-  { label: 'Partner',      to: '/partner' },
-  { label: 'Developers',   to: '/developers' },
+  { label: 'Home',              to: '/' },
+  { label: 'Voice Loan Shield', to: '/mfi' },
+  { label: 'Live Demo',         to: '/life-assistant' },
 ];
 
-const TOOLS_LINKS = [
-  { label: 'Finance',        to: '/finance' },
-  { label: 'Business',       to: '/business' },
-  { label: 'Creative',       to: '/creative' },
-  { label: 'Career',         to: '/career' },
-  { label: 'Life Assistant', to: '/life-assistant' },
-];
+const CONTACT_HREF = 'mailto:saeed@havro.app?subject=MFI%20Pilot%20Inquiry';
 
-export default function Navbar({ onScanToEnter, isVerified }) {
+export default function Navbar() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const { pathname } = useLocation();
-
-  const handleCTA = () => { setDrawerOpen(false); onScanToEnter?.(); };
 
   useEffect(() => {
     document.body.style.overflow = drawerOpen ? 'hidden' : '';
@@ -42,24 +31,11 @@ export default function Navbar({ onScanToEnter, isVerified }) {
             {NAV_LINKS.map(({ label, to }) => (
               <NavLink key={to} to={to} label={label} active={pathname === to} />
             ))}
-            <ToolsDropdown pathname={pathname} />
+            <a href={CONTACT_HREF} style={s.contactLink}>Pilot / Contact</a>
           </div>
 
           <div className="nav-right-buttons" style={s.rightButtons}>
-            {isVerified ? (
-              <Link to="/profile" style={s.verifiedLink}>
-                <span style={s.verifiedDot} />
-                Verified
-                <UserCircle size={15} color="#00C48C" strokeWidth={1.8} />
-              </Link>
-            ) : (
-              <button
-                style={s.ctaBtn}
-                onClick={handleCTA}
-              >
-                Get Started
-              </button>
-            )}
+            <a href={CONTACT_HREF} style={s.ctaBtn}>Discuss a pilot</a>
           </div>
 
           <div style={s.hamburgerGroup} className="nav-hamburger-group">
@@ -106,7 +82,7 @@ export default function Navbar({ onScanToEnter, isVerified }) {
                 ...s.drawerLink,
                 color: active ? '#F5F5F5' : '#A0A0A0',
                 fontWeight: active ? 600 : 400,
-                borderLeft: active ? '2px solid #6366F1' : '2px solid transparent',
+                borderLeft: active ? '2px solid #00C48C' : '2px solid transparent',
                 paddingLeft: active ? '22px' : '24px',
               }}
             >
@@ -114,44 +90,14 @@ export default function Navbar({ onScanToEnter, isVerified }) {
             </Link>
           );
         })}
-        <div style={{ padding: '6px 24px 4px', fontSize: '10px', fontWeight: 700, color: '#3A3A3A', letterSpacing: '0.1em', textTransform: 'uppercase', fontFamily: "'Inter', sans-serif" }}>
-          Tools
-        </div>
-        {TOOLS_LINKS.map(({ label, to }) => {
-          const active = pathname === to;
-          return (
-            <Link
-              key={to}
-              to={to}
-              style={{
-                ...s.drawerLink,
-                color: active ? '#F5F5F5' : '#A0A0A0',
-                fontWeight: active ? 600 : 400,
-                borderLeft: active ? '2px solid #6366F1' : '2px solid transparent',
-                paddingLeft: active ? '36px' : '38px',
-                fontSize: '14px',
-              }}
-            >
-              {label}
-            </Link>
-          );
-        })}
+        <a href={CONTACT_HREF} style={{ ...s.drawerLink, color: '#A0A0A0', borderLeft: '2px solid transparent', paddingLeft: '24px' }}>
+          Pilot / Contact
+        </a>
 
         <div style={{ padding: '16px 24px', marginTop: 'auto', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-          {isVerified ? (
-            <Link to="/profile" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '12px 16px', fontSize: '14px', color: '#00C48C', fontWeight: 600, fontFamily: "'Inter', sans-serif", textDecoration: 'none' }}>
-              <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#00C48C', display: 'inline-block' }} />
-              Identity Verified
-              <UserCircle size={15} color="#00C48C" strokeWidth={1.8} />
-            </Link>
-          ) : (
-            <button
-              style={{ ...s.ctaBtn, width: '100%', justifyContent: 'center', padding: '12px 16px', fontSize: '15px' }}
-              onClick={handleCTA}
-            >
-              Get Started Free
-            </button>
-          )}
+          <a href={CONTACT_HREF} style={{ ...s.ctaBtn, width: '100%', justifyContent: 'center', padding: '12px 16px', fontSize: '15px', display: 'flex', textDecoration: 'none' }}>
+            Discuss a pilot
+          </a>
         </div>
       </div>
     </>
@@ -181,64 +127,6 @@ function NavLink({ to, label, active }) {
   );
 }
 
-function ToolsDropdown({ pathname }) {
-  const [open, setOpen] = useState(false);
-  const timerRef = useRef(null);
-  const isActive = TOOLS_LINKS.some(l => l.to === pathname);
-
-  const show = () => { clearTimeout(timerRef.current); setOpen(true); };
-  const hide = () => { timerRef.current = setTimeout(() => setOpen(false), 120); };
-
-  return (
-    <div style={{ position: 'relative' }} onMouseEnter={show} onMouseLeave={hide}>
-      <button style={{
-        background: 'none', border: 'none', cursor: 'pointer', padding: 0,
-        fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: '14px',
-        letterSpacing: '-0.01em',
-        color: isActive ? '#F5F5F5' : (open ? '#F5F5F5' : '#A0A0A0'),
-        display: 'inline-flex', alignItems: 'center', gap: '3px',
-        transition: 'color 0.15s ease',
-      }}>
-        Tools
-        <ChevronDown size={12} strokeWidth={2} style={{ transition: 'transform 0.15s ease', transform: open ? 'rotate(180deg)' : 'rotate(0deg)' }} />
-      </button>
-      {open && (
-        <div style={{
-          position: 'absolute', top: '100%', left: '50%', transform: 'translateX(-50%)',
-          marginTop: '10px',
-          background: 'rgba(17,17,17,0.96)', backdropFilter: 'blur(16px)',
-          border: '1px solid rgba(255,255,255,0.08)',
-          borderRadius: '12px', padding: '6px',
-          minWidth: '160px',
-          boxShadow: '0 16px 48px rgba(0,0,0,0.6)',
-          zIndex: 200,
-        }}>
-          {TOOLS_LINKS.map(({ label, to }) => (
-            <Link
-              key={to}
-              to={to}
-              onClick={() => setOpen(false)}
-              style={{
-                display: 'block', padding: '9px 14px',
-                fontFamily: "'Inter', sans-serif", fontSize: '13px', fontWeight: 400,
-                color: pathname === to ? '#F5F5F5' : '#A0A0A0',
-                textDecoration: 'none', borderRadius: '8px',
-                background: pathname === to ? 'rgba(255,255,255,0.06)' : 'transparent',
-                transition: 'background 0.12s ease, color 0.12s ease',
-                letterSpacing: '-0.01em',
-              }}
-              onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.06)'; e.currentTarget.style.color = '#F5F5F5'; }}
-              onMouseLeave={e => { e.currentTarget.style.background = pathname === to ? 'rgba(255,255,255,0.06)' : 'transparent'; e.currentTarget.style.color = pathname === to ? '#F5F5F5' : '#A0A0A0'; }}
-            >
-              {label}
-            </Link>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
-
 const s = {
   nav: {
     position: 'sticky', top: 0, zIndex: 100,
@@ -256,6 +144,11 @@ const s = {
     letterSpacing: '0.04em', color: '#F5F5F5', textDecoration: 'none', flexShrink: 0,
   },
   centerLinks: { display: 'flex', alignItems: 'center', gap: '28px', flex: 1, justifyContent: 'center' },
+  contactLink: {
+    fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: '14px',
+    letterSpacing: '-0.01em', color: '#A0A0A0', textDecoration: 'none',
+    transition: 'color 0.15s ease',
+  },
   rightButtons: { display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 },
   ctaBtn: {
     display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
@@ -263,15 +156,7 @@ const s = {
     background: '#00C48C', color: '#000', border: 'none', borderRadius: '6px',
     fontFamily: "'Inter', sans-serif", fontSize: '12px', fontWeight: 600,
     cursor: 'pointer', transition: 'background 0.15s ease',
-    letterSpacing: '0.01em',
-  },
-  verifiedLink: {
-    display: 'flex', alignItems: 'center', gap: '6px',
-    fontSize: '13px', color: '#00C48C', fontWeight: 600,
-    fontFamily: "'Inter', sans-serif", textDecoration: 'none',
-  },
-  verifiedDot: {
-    width: 6, height: 6, borderRadius: '50%', background: '#00C48C', display: 'inline-block',
+    letterSpacing: '0.01em', textDecoration: 'none',
   },
   hamburgerGroup: { display: 'flex', alignItems: 'center', gap: '8px', marginLeft: 'auto' },
   hamburger: { background: 'none', border: 'none', cursor: 'pointer', padding: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center' },
@@ -289,7 +174,7 @@ const s = {
   },
   closeBtn: { background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4px' },
   drawerLink: {
-    display: 'flex', alignItems: 'center', height: '48px', padding: '0 24px',
+    display: 'flex', alignItems: 'center', height: '48px',
     borderBottom: '1px solid rgba(255,255,255,0.05)', fontFamily: "'Inter', sans-serif",
     fontSize: '15px', textDecoration: 'none', transition: 'color 0.15s ease',
   },

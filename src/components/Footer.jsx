@@ -3,20 +3,12 @@ import { Link } from 'react-router-dom';
 import { X } from 'lucide-react';
 
 const NAV_LINKS = [
-  { label: 'Explore',       to: '/explore' },
-  { label: 'Services',      to: '/services' },
-  { label: 'Pricing',       to: '/pricing' },
-  { label: 'Community',     to: '/community' },
-  { label: 'Career',        to: '/career' },
-  { label: 'For Institutions', to: '/mfi' },
-  { label: 'Partner with Us', to: '/partner' },
-  { label: 'Developers',    to: '/developers' },
+  { label: 'Home',              to: '/' },
+  { label: 'Voice Loan Shield', to: '/mfi' },
+  { label: 'Live Demo',         to: '/life-assistant' },
 ];
 
-const CATEGORY_LINKS = [
-  'Automate', 'Finance', 'Companion', 'Life Assistant',
-  'Community', 'Career', 'Business', 'Creative',
-];
+const CONTACT_HREF = 'mailto:saeed@havro.app?subject=MFI%20Pilot%20Inquiry';
 
 const LEGAL_CONTENT = {
   privacy: {
@@ -67,7 +59,7 @@ For questions about these terms, email legal@havro.app.`,
 };
 
 export default function Footer() {
-  const [modal, setModal] = useState(null); // 'privacy' | 'terms' | null
+  const [modal, setModal] = useState(null);
 
   return (
     <>
@@ -80,21 +72,14 @@ export default function Footer() {
               {NAV_LINKS.map(({ label, to }) => (
                 <FooterLink key={to} to={to}>{label}</FooterLink>
               ))}
+              <a href={CONTACT_HREF} style={s.extLink}>Pilot / Contact</a>
             </div>
           </div>
 
-          {/* Middle row */}
-          <div style={s.midRow}>
-            {CATEGORY_LINKS.map((cat, i) => (
-              <span key={cat}>
-                <FooterLink to={`/explore?category=${cat.toLowerCase().replace(' ', '-')}`}>
-                  {cat}
-                </FooterLink>
-                {i < CATEGORY_LINKS.length - 1 && (
-                  <span className="footer-sep" style={{ color: '#3A3A3A', margin: '0 4px' }}>|</span>
-                )}
-              </span>
-            ))}
+          {/* Tagline */}
+          <div style={s.taglineWrap}>
+            <p style={s.taglinePrimary}>Voice-first borrower protection for microfinance.</p>
+            <p style={s.taglineSecondary}>Karachi to Kashmore, over any phone.</p>
           </div>
 
           {/* Bottom row */}
@@ -120,7 +105,7 @@ export default function Footer() {
               <span className="footer-sep" style={{ color: '#3A3A3A' }}>·</span>
               <a
                 className="footer-link"
-                href="mailto:hello@havro.app"
+                href={CONTACT_HREF}
                 style={s.legalBtn}
               >
                 Contact
@@ -130,7 +115,6 @@ export default function Footer() {
         </div>
       </footer>
 
-      {/* Legal modal */}
       {modal && (
         <LegalModal
           title={LEGAL_CONTENT[modal].title}
@@ -209,7 +193,7 @@ const s = {
     justifyContent: 'space-between',
     flexWrap: 'wrap',
     gap: '16px',
-    marginBottom: '32px',
+    marginBottom: '40px',
   },
   logo: {
     fontFamily: "'Inter', sans-serif",
@@ -223,14 +207,26 @@ const s = {
     display: 'flex',
     gap: '24px',
     flexWrap: 'wrap',
-  },
-  midRow: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    gap: '4px',
-    marginBottom: '32px',
-    fontSize: '13px',
     alignItems: 'center',
+  },
+  extLink: {
+    color: '#737373', fontSize: '13px', textDecoration: 'none', transition: 'color 0.18s ease',
+  },
+  taglineWrap: {
+    textAlign: 'center',
+    marginBottom: '40px',
+  },
+  taglinePrimary: {
+    fontFamily: "'Inter', sans-serif",
+    fontSize: '15px',
+    color: '#606060',
+    marginBottom: '6px',
+    letterSpacing: '-0.01em',
+  },
+  taglineSecondary: {
+    fontFamily: "'Inter', sans-serif",
+    fontSize: '13px',
+    color: '#3A3A3A',
   },
   borderTop: {
     borderTop: '1px solid #2A2A2A',
