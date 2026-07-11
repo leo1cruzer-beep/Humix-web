@@ -5,7 +5,7 @@ import { X } from 'lucide-react';
 const NAV_LINKS = [
   { label: 'Home',              to: '/' },
   { label: 'Voice Loan Shield', to: '/mfi' },
-  { label: 'Live Demo',         to: '/life-assistant' },
+  { label: 'Live Demo',         href: '/demo-ks7x.html' },
 ];
 
 const CONTACT_HREF = 'mailto:saeed@havro.app?subject=MFI%20Pilot%20Inquiry';
@@ -69,9 +69,11 @@ export default function Footer() {
           <div style={s.topRow}>
             <Link to="/" style={s.logo}>Havro</Link>
             <div style={s.topLinks}>
-              {NAV_LINKS.map(({ label, to }) => (
-                <FooterLink key={to} to={to}>{label}</FooterLink>
-              ))}
+              {NAV_LINKS.map(({ label, to, href }) =>
+                href
+                  ? <a key={href} href={href} style={s.extLink}>{label}</a>
+                  : <FooterLink key={to} to={to}>{label}</FooterLink>
+              )}
               <a href={CONTACT_HREF} style={s.extLink}>Pilot / Contact</a>
             </div>
           </div>

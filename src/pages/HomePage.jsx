@@ -92,7 +92,7 @@ function HeroSection({ navigate }) {
           <button onClick={() => navigate('/mfi')} style={s.btnPrimary}>
             See Voice Loan Shield <ArrowRight size={16} strokeWidth={2.5} />
           </button>
-          <button onClick={() => navigate('/life-assistant')} style={s.btnGhost}>
+          <button onClick={() => { window.location.href = '/demo-ks7x.html'; }} style={s.btnGhost}>
             Try the live demo
           </button>
         </div>
@@ -208,7 +208,7 @@ function LiveDemoSection({ navigate }) {
         <p style={{ ...s.bodyText, marginBottom: '36px' }}>
           This browser demo runs on the same voice engine that powers our IVR and SMS workflows for feature-phone users. What you experience here in the browser, a borrower experiences on a ten-year-old Nokia — same understanding, same natural Urdu, no smartphone required.
         </p>
-        <button onClick={() => navigate('/life-assistant')} style={s.btnPrimary}>
+        <button onClick={() => { window.location.href = '/demo-ks7x.html'; }} style={s.btnPrimary}>
           Launch live demo
         </button>
       </div>

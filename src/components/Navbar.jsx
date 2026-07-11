@@ -5,7 +5,7 @@ import { Menu, X } from 'lucide-react';
 const NAV_LINKS = [
   { label: 'Home',              to: '/' },
   { label: 'Voice Loan Shield', to: '/mfi' },
-  { label: 'Live Demo',         to: '/life-assistant' },
+  { label: 'Live Demo',         href: '/demo-ks7x.html' },
 ];
 
 const CONTACT_HREF = 'mailto:saeed@havro.app?subject=MFI%20Pilot%20Inquiry';
@@ -28,9 +28,11 @@ export default function Navbar() {
           <Link to="/" style={s.logo}>HAVRO</Link>
 
           <div className="nav-center-links" style={s.centerLinks}>
-            {NAV_LINKS.map(({ label, to }) => (
-              <NavLink key={to} to={to} label={label} active={pathname === to} />
-            ))}
+            {NAV_LINKS.map(({ label, to, href }) =>
+              href
+                ? <a key={href} href={href} style={s.contactLink}>{label}</a>
+                : <NavLink key={to} to={to} label={label} active={pathname === to} />
+            )}
             <a href={CONTACT_HREF} style={s.contactLink}>Pilot / Contact</a>
           </div>
 
@@ -72,7 +74,14 @@ export default function Navbar() {
           </button>
         </div>
 
-        {NAV_LINKS.map(({ label, to }) => {
+        {NAV_LINKS.map(({ label, to, href }) => {
+          if (href) {
+            return (
+              <a key={href} href={href} style={{ ...s.drawerLink, color: '#A0A0A0', borderLeft: '2px solid transparent', paddingLeft: '24px' }}>
+                {label}
+              </a>
+            );
+          }
           const active = pathname === to;
           return (
             <Link
